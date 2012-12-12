@@ -47,7 +47,7 @@ class Lecturer(User):
     profession = models.CharField(max_length=50)
     
 class UserPreference(models.Model):
-    uuid = models.CharField(max_length=36, primary_key=True)
+    uuid = models.CharField(max_length=35, primary_key=True)
     user = models.ForeignKey(User)
     key =  models.CharField(max_length=50)
     content =  models.CharField(max_length=150)
