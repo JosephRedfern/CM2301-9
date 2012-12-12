@@ -15,3 +15,4 @@ class User(models.Model):
         
     class Meta:
         app_label = "Learn"
+        abstract = True
