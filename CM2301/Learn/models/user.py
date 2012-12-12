@@ -2,9 +2,6 @@ from django.db import models
 
 class User(models.Model):
     
-    class Meta:
-        app_label = 'learn'
-    
     uuid = models.CharField(max_length=36, primary_key=True)
     forename = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
@@ -15,3 +12,6 @@ class User(models.Model):
     def __init__(self, *args, **kwargs):
         super(User, self).__init__(*args, **kwargs)
         self.uuid = str(uuid.uuid4())
+        
+    class Meta:
+        app_label = "Learn"
