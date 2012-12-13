@@ -1,12 +1,6 @@
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
-*.pyc
-
-
+.project
+.pydevproject
+*pyc
 *.7z
 *.dmg
 *.gz
@@ -15,11 +9,9 @@
 *.rar
 *.tar
 *.zip
-
 *.log
 *.sql
 *.sqlite
-
 .DS_Store
 .DS_Store?
 ._*
@@ -29,3 +21,4 @@ Icon?
 ehthumbs.db
 Thumbs.db
 .pydevproject
+CM2301/.DS_Store
