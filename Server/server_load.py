@@ -14,14 +14,17 @@ class ServerLoad(object):
 
     def persist_load(self):
         """Saves the current server load to the database"""
+        #Use the database class to update it
 
     def update_load(self):
+        """Updates the historical load list, capped to 60 and is a blocking method"""
         if (len(self.cpu_usage) >= 60):
             self.cpu_usage.pop(60-1)
         self.cpu_usage.insert(0, psutil.cpu_percent(interval=1))
         self.last_update = datetime.datetime.now()
 
     def calculate_load(self, interval=10):
+        """Returns the actual useful load!"""
         if (len(self.cpu_usage) < interval):
             raise Exception("Not long enough fuck tard")
             return
@@ -31,11 +34,13 @@ class ServerLoad(object):
         return (total/interval) / float(psutil.virtual_memory().available)
 
     def start_updating(self):
+        """Stards the object logging load"""
         self.updating = True
         t = threading.Thread(target=self.__update)
         t.start()
 
     def stop_updating(self):
+        """Stops the object logging load"""
         self.updating = False
 
     def __update(self):
