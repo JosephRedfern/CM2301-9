@@ -30,6 +30,7 @@ class QueueManager(list):
         "QueueManager"
         
     def get_pending_queue(self):
+        """Fetches all uncomplete queue items from db"""
         self.__db = Database()
         self.__db.cur.execute("SELECT * FROM queue WHERE waiting=True AND progress<100")
         rs = self.__db.cur.fetchall()
@@ -45,9 +46,6 @@ class QueueManager(list):
             qi.progress = row[3]
             self.append(qi)
 
-    def __del__():
-        self.cur.close()
-        self.con.close()
 
 class QueueItem(object):
     uuid = None
