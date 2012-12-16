@@ -1,5 +1,5 @@
 import MySQLdb, datetime
-
+#hghghg
 class Database(object):
 
     host = '127.0.0.1'
