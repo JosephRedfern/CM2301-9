@@ -89,6 +89,14 @@ class Revision(Base):
         """Returns the File object for the current revision"""
         return
 
+class Video(Base):
+    """
+    Represents a video.
+    Contains video title, keywords and description.
+    """
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+
 class Lecture(Base):
     """
     Represents a lecture within a module.
@@ -104,3 +112,5 @@ class Lecture(Base):
     visible = models.BooleanField(default=True)
     links = models.ManyToManyField(Link)
     lectureMaterials = models.ManyToManyField(LectureMaterial)
+
+
