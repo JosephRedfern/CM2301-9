@@ -88,6 +88,12 @@ class Revision(Base):
     def get_file(self):
         """Returns the File object for the current revision"""
         return
+    
+class Link(Base):
+    """Holds a link for other objects, both external and internal"""
+    title = models.CharField(max_length=250)
+    description = models.TextField()
+    link = models.URLField(max_length=250)
 
 class Lecture(Base):
     """
