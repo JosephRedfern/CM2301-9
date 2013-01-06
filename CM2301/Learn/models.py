@@ -24,11 +24,21 @@ class User(Base):
     phone = models.EmailField(max_length=20)
     
 class UserField(Base):
+    """
+    A UserField is a value attached to a user.
+    Users can have multiple UserFields
+    """
     user = models.ForeignKey(User)
     key = models.CharField(max_length=250)
     value = models.CharField(max_length=250)
 
 class Attachment(Base):
+    """
+    An attachment is a collection of revisions. 
+    
+    Attachment objects can be used to derive a full file revision history, 
+    and retrieve the original version of the file
+    """
     title = models.CharField(max_length=50)
     file_type = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
@@ -36,8 +46,47 @@ class Attachment(Base):
     owner = models.ForeignKey(User)
     
     def get_total_size(self):
+        """
+        Returns the total size used of all revisions
+        """
         return
     
-    def remove_revision(self):
+    def remove_revision(self, revision_uuid):
+        """
+        Removes the revision from the attachment with the 
+        specified uuid.
+        
+            Args:
+                revision_uuid - The UUID of the revision you wish to purge
+            Returns:
+                None
+        """
         return
+    
+    def delete_all_revisions(self):
+        """
+        Revisions all revisions but the most recent from the attachment object
+        """
+        return
+    
+    def get_all_revisions(self):
+        """
+        Returns an ordered List of revisions for the Attachment based on time uploaded.
+        """
+        
+class Revision(Base):
+    """
+    A revision object represents a single file that belongs to an attachment, 
+    this class allows attachments to have full versioning.
+    """
+    TimeUploaded = models.DateTimeField(auto_now_add=True)
+    File = models.FileField()
+    Approved = models.BooleanField()
+    UploadedBy = models.ForeignKey(User)
+    FileSize = models.FloatField()
+    
+    def get_file(self):
+        """Returns the File object for the current revision"""
+        return
+
     
