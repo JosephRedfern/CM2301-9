@@ -101,7 +101,19 @@ class Video(Base):
     Contains video title, keywords and description.
     """
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+    description = models.TextField()
+    
+class Module(Base):
+    """
+    A module belonging to a course
+    """
+    title = models.CharField(max_length=100)
+    module_code = models.CharField(max_length=100)
+    attachments = models.ManyToManyField(Attachment)
+    
+class LectureMaterial(Attachment):
+    """Extends the Attachment Class, allows for attachment revisions to be approved"""
+    approved = models.BooleanField()
 
 class Lecture(Base):
     """
