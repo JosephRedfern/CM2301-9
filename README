@@ -4,3 +4,7 @@ Please stick to Python code convention
 http://www.python.org/dev/peps/pep-0008/
 
 Now supporting seperate model files.
+
+If using admin
+user: admin
+pass: admin
