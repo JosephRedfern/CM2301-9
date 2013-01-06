@@ -5,12 +5,10 @@ class Base(models.Model):
     
     uuid = models.CharField(max_length=36, primary_key=True)
     
-    def __init__(self, *args, **kwargs):
-        super(Base, self).__init__(*args, **kwargs)
-        self.uuid = str(uuid.uuid4())
-    
-    class Meta:
-        abstract = True
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            uuid = str(uuid.uuid4())
+        super(Base, self).save(*args, **kwargs)
         
 class User(Base):
     """
@@ -20,8 +18,8 @@ class User(Base):
     forename = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     username = models.CharField(max_length=25)
-    email = models.CharField(max_length=75)
-    phone = models.EmailField(max_length=20)
+    email = models.EmailField(max_length=75)
+    phone = models.CharField(max_length=20)
     
 class UserField(Base):
     """
@@ -40,9 +38,8 @@ class Attachment(Base):
     and retrieve the original version of the file
     """
     title = models.CharField(max_length=50)
-    file_type = models.CharField(max_length=50)
+    file_name = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
-    revision = models.CharField(max_length=50)
     owner = models.ForeignKey(User)
     
     def get_total_size(self):
@@ -79,11 +76,12 @@ class Revision(Base):
     A revision object represents a single file that belongs to an attachment, 
     this class allows attachments to have full versioning.
     """
-    TimeUploaded = models.DateTimeField(auto_now_add=True)
-    File = models.FileField()
-    Approved = models.BooleanField()
-    UploadedBy = models.ForeignKey(User)
-    FileSize = models.FloatField()
+    time_uploaded = models.DateTimeField(auto_now_add=True)
+    attachment = models.ForeignKey(Attachment)
+    file = models.FileField(upload_to='/')
+    approved = models.BooleanField()
+    uploaded_by = models.ForeignKey(User)
+    file_size = models.FloatField()
     
     def get_file(self):
         """Returns the File object for the current revision"""
@@ -110,10 +108,6 @@ class Module(Base):
     title = models.CharField(max_length=100)
     module_code = models.CharField(max_length=100)
     attachments = models.ManyToManyField(Attachment)
-    
-class LectureMaterial(Attachment):
-    """Extends the Attachment Class, allows for attachment revisions to be approved"""
-    approved = models.BooleanField()
 
 class Lecture(Base):
     """
@@ -129,6 +123,5 @@ class Lecture(Base):
     validTo = models.DateField()
     visible = models.BooleanField(default=True)
     links = models.ManyToManyField(Link)
-    lectureMaterials = models.ManyToManyField(LectureMaterial)
 
 
