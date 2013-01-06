@@ -40,4 +40,19 @@ class Attachment(Base):
     
     def remove_revision(self):
         return
-    
+
+class Lecture(Base):
+    """
+    Represents a lecture within a module.
+    Contains details about an individual lecture & references to
+    lecture content (Videos, Attachments and Lecture Notes).
+    """
+    title = models.CharField(max_length=50)
+    modules = models.ManyToManyField(Module)
+    videos = models.ManyToManyField(Video)
+    attachments = models.ManyToManyField(Attachment)
+    validFrom = models.DateField()
+    validTo = models.DateField()
+    visible = models.BooleanField(default=True)
+    links = models.ManyToManyField(Link)
+    lectureMaterials = models.ManyToManyField(LectureMaterial)
