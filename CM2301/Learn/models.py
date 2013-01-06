@@ -62,6 +62,32 @@ class Attachment(Base):
                 None
         """
         return
+    
+    def delete_all_revisions(self):
+        """
+        Revisions all revisions but the most recent from the attachment object
+        """
+        return
+    
+    def get_all_revisions(self):
+        """
+        Returns an ordered List of revisions for the Attachment based on time uploaded.
+        """
+        
+class Revision(Base):
+    """
+    A revision object represents a single file that belongs to an attachment, 
+    this class allows attachments to have full versioning.
+    """
+    TimeUploaded = models.DateTimeField(auto_now_add=True)
+    File = models.FileField()
+    Approved = models.BooleanField()
+    UploadedBy = models.ForeignKey(User)
+    FileSize = models.FloatField()
+    
+    def get_file(self):
+        """Returns the File object for the current revision"""
+        return
 
 class Lecture(Base):
     """
