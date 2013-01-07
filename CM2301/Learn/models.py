@@ -95,11 +95,53 @@ class Link(Base):
 
 class Video(Base):
     """
-    Represents a video.
+    Represents a video, can contain multiple VideoFormats.
     Contains video title, keywords and description.
     """
     title = models.CharField(max_length=50)
     description = models.TextField()
+    
+    def get_file_paths(self):
+        """
+        Returns a dictionary of filepaths for every availiable format
+        """
+        return
+    
+    def get_file_path(self, format):
+        """
+        Returns the video file path for the specified format
+        """
+        return
+    
+class VideoFormat(Base):
+    """
+    Repersents a specific format converted video file
+    belongs to a video object
+    """
+    format = models.CharField(max_length=20)
+    encoding = models.CharField(max_length=50)
+    bitrate = models.CharField(max_length=10)
+    file = models.FileField(upload_to='/')
+    
+    def probe(self):
+        """Return ffprobe class from video."""
+        return
+    
+class Lecture(Base):
+    """
+    Represents a lecture within a module.
+    Contains details about an individual lecture & references to
+    lecture content (Videos, Attachments and Lecture Notes).
+    """
+    title = models.CharField(max_length=50)
+    videos = models.ManyToManyField(Video)
+    attachments = models.ManyToManyField(Attachment)
+    validFrom = models.DateField()
+    validTo = models.DateField()
+    visible = models.BooleanField(default=True)
+    links = models.ManyToManyField(Link)
+    lecturers = models.ManyToManyField(User)
+
     
 class Module(Base):
     """
@@ -108,20 +150,105 @@ class Module(Base):
     title = models.CharField(max_length=100)
     module_code = models.CharField(max_length=100)
     attachments = models.ManyToManyField(Attachment)
-
-class Lecture(Base):
+    lectures = models.ManyToManyField(Lecture)
+    
+class Course(Base):
     """
-    Represents a lecture within a module.
-    Contains details about an individual lecture & references to
-    lecture content (Videos, Attachments and Lecture Notes).
+    A course represents a top level definition of a degree, they are a collection of modules
     """
     title = models.CharField(max_length=50)
+    code = models.CharField(max_length=50)
+    description = models.TextField()
     modules = models.ManyToManyField(Module)
-    videos = models.ManyToManyField(Video)
     attachments = models.ManyToManyField(Attachment)
-    validFrom = models.DateField()
-    validTo = models.DateField()
-    visible = models.BooleanField(default=True)
-    links = models.ManyToManyField(Link)
+    
+class Config(Base):
+    """
+    Contains configuration and preferences for the system.
+    """
+    key = models.CharField(max_length=250)
+    data_type = models.CharField(max_length=10)
+    value = models.TextField()
+    
+    
+class Question(Base):
+    """
+    An instance of the Question class will hold the question string 
+    with a List of answer objects that the user can pick.
+    """
+    content = models.TextField()
+    type = models.CharField(max_length=40)
+    
+    def get_answers(self):
+        """Returns the possible answers for the question"""
+    
+    def get_correct_answer(self):
+        """Returns the correct answer for the question"""
+        
+        
+class Test(Base):
+    """
+    An instance of the test class will contain details of the Test with the lecture it belongs to. 
+    
+    As well as the full set of questions that could be asked.
+    """
+    title = models.CharField(max_length=250)
+    description = models.TextField()
+    question_count = models.IntegerField()
+    questions = models.ManyToManyField(Question)
+    lecture = models.ManyToManyField(Lecture)
+    
+    def get_random_questions(self):
+        """
+        Returns a List of random questions taken from the property 
+        QuestionList with the length of questionCount, 
+        if questionCount is larger than the length of QuestionList a Exception will be thrown.
+        """
+        return
+        
+        
+class Answer(Base):
+    """
+    An instance of the Answer class will hold text 
+    associated with an answer, and whether or not the answer is correct or not.
+    """
+    content = models.CharField(max_length=250)
+    correct = models.BooleanField()
+    question = models.ForeignKey(Question)
+    
+class TestInstance(Base):
+    """
+    A TestInstance object contains a reference to related Test,
+     the student completing it and the time it was completed
+    """
+    student = models.ForeignKey(User)
+    test = models.ForeignKey(Test)
+    time_completed = models.DateTimeField()
+    
+    def calc_result(self):
+        """
+        Returns the percentage of answers correct in the TestInstance as a float.
+        """
+        return
+    
+class Result(Base):
+    """
+    The result class stores a reference to the answer selected 
+    for a single question in a test, belonging to a TestInstance.
+    """
+    test_instance = models.ForeignKey(TestInstance)
+    question = models.ForeignKey(Question)
+    answer = models.ForeignKey(Answer)
+    
 
+class EventLog(Base):
+    """
+    Handles the storing of events in the log
+    """
+    event_uuid = models.CharField(max_length=36)
+    event_type = models.CharField(max_length=50)
+    severity = models.CharField(max_length=50)
+    content = models.TextField()
+    timestamp = models.DateTimeField()
+    
 
