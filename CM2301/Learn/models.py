@@ -37,14 +37,23 @@ class Attachment(Base):
     Attachment objects can be used to derive a full file revision history, 
     and retrieve the original version of the file
     """
+    
+    ##The title of the attachment
     title = models.CharField(max_length=50)
+    ##The file name e.g file.pdf
     file_name = models.CharField(max_length=50)
+    ##The description of the attachment
     description = models.CharField(max_length=250)
+    ##
+    #@property Owner 
+    #@type User User
+    ##
     owner = models.ForeignKey(User)
     
     def get_total_size(self):
         """
         Returns the total size used of all revisions
+        @param self: FUCKING SELF
         """
         return
     
@@ -52,6 +61,8 @@ class Attachment(Base):
         """
         Removes the revision from the attachment with the 
         specified uuid.
+        @param self: FUCKING SELF
+        @param uuid: The uuid of the revision 
         
             Args:
                 revision_uuid - The UUID of the revision you wish to purge
