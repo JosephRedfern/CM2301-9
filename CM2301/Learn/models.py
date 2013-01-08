@@ -27,15 +27,15 @@ class User(Base):
     A User contains attributes that are common for any user of the system.
     Other attributes can be linked with a user using the UserField class
     """
-    """Forename of the User"""
+    ##Forename of the User
     forename = models.CharField(max_length=50)
-    """Surname of the User"""
+    ##Surname of the User
     surname = models.CharField(max_length=50)
-    """Username or alias for the User object"""
+    ##Username or alias for the User object
     username = models.CharField(max_length=25)
-    """Email address registered with the User"""
+    ##Email address registered with the User
     email = models.EmailField(max_length=75)
-    """Phone number for the User"""
+    ##Phone number for the User
     phone = models.CharField(max_length=20)
     
     def add_user_field(self, UserField):
@@ -55,11 +55,11 @@ class UserField(Base):
     Users can have multiple UserFields allowing for unique fields
     to be added to a specific User.
     """
-    """The User the UserField belongs to"""
+    ##The User the UserField belongs to
     user = models.ForeignKey(User)
-    """The field key"""
+    ##The field key
     key = models.CharField(max_length=250)
-    """The field value"""
+    ##The field value
     value = models.TextField()
 
 class Attachment(Base):
@@ -70,13 +70,13 @@ class Attachment(Base):
     and retrieve the original version of the file
     """
     
-    """The title of the Attachment"""
+    ##The title of the Attachment
     title = models.CharField(max_length=50)
-    """The file name e.g file.pdf"""
+    ##The file name e.g file.pdf
     file_name = models.CharField(max_length=50)
-    """The description of the Attachment"""
+    ##The description of the Attachment
     description = models.CharField(max_length=250)
-    """The User owning the Attachment, usually the uploader."""
+    ##The User owning the Attachment, usually the uploader.
     owner = models.ForeignKey(User)
     
     def get_total_size(self):
@@ -124,17 +124,17 @@ class Revision(Base):
     
     This class facilitates Attachment versioning
     """
-    """The timestamp the document was uploaded/attached to the revision"""
+    ##The timestamp the document was uploaded/attached to the revision
     time_uploaded = models.DateTimeField(auto_now_add=True)
-    """The Attachment object the Revision belongs to."""
+    ##The Attachment object the Revision belongs to.
     attachment = models.ForeignKey(Attachment)
-    """#The File Object"""
+    ###The File Object
     file = models.FileField(upload_to='/')
-    """Whether or not the Revision has been approved"""
+    ##Whether or not the Revision has been approved
     approved = models.BooleanField()
-    """The User whom owns the Revision - Usually the uploader."""
+    ##The User whom owns the Revision - Usually the uploader.
     uploaded_by = models.ForeignKey(User)
-    """The file size of the Revision file."""
+    ##The file size of the Revision file.
     file_size = models.FloatField()
     
     def get_file(self):
@@ -150,42 +150,48 @@ class Link(Base):
     
     Links can be added to many other Objects.
     """
-    """The title for the Link story"""
+    ##The title for the Link story
     title = models.CharField(max_length=250)
-    """The description of the Link"""
+    ##The description of the Link
     description = models.TextField()
-    """The Link URl in string form"""
+    ##The Link URl in string form
     link = models.URLField(max_length=250)
 
-class Video(Base):
+class Video(Attachment):
     """
     Represents a video, can contain multiple VideoFormats.
+    
     Contains video title, keywords and description.
     """
+    ##The title of the Video
     title = models.CharField(max_length=50)
+    ##The description for the video
     description = models.TextField()
     
     def get_file_paths(self):
         """
         Returns a dictionary of filepaths for every availiable format
+        
+        @return Dict Returns a dictionary of format:filepath
         """
         return
     
     def get_file_path(self, format):
         """
         Returns the video file path for the specified format
+        
+        @return String A string of the Format filepath
         """
         return
     
-class VideoFormat(Base):
+class VideoFormat(Revision):
     """
-    Repersents a specific format converted video file
+    Represents a specific format converted video file
     belongs to a video object
     """
     format = models.CharField(max_length=20)
     encoding = models.CharField(max_length=50)
     bitrate = models.CharField(max_length=10)
-    file = models.FileField(upload_to='/')
     
     def probe(self):
         """Return ffprobe class from video."""
