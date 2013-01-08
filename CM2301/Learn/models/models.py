@@ -11,6 +11,10 @@ class Base(models.Model):
     """UUID of the object, as String"""
     uuid = models.CharField(max_length=36, primary_key=True)
     
+    class Meta:
+        app_label = "Learn"
+        abstract = True
+    
     def save(self, *args, **kwargs):
         """
         Overrides the django.model.save() method to add a random UUID
@@ -253,6 +257,22 @@ class Lecture(Base):
     links = models.ManyToManyField(Link)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(User)
+    
+class Module(Base):
+    """
+    A module is a set of lectures belonging to multiple courses.
+    
+    Modules can share Lecture objects, Module objects can belong
+    to multiple Course objects.
+    """
+    ##The title of the Module. E.g Python
+    title = models.CharField(max_length=100)
+    ##The module code - CM2103
+    module_code = models.CharField(max_length=100)
+    ##Attachments linked to the module obejct
+    attachments = models.ManyToManyField(Attachment)
+    ##The lectures used in the module
+    lectures = models.ManyToManyField(Lecture)
 
 class Course(Base):
     """
@@ -276,22 +296,6 @@ class Course(Base):
         Returns a list of all Lecture objects in this course.
         @return List Returns a list of Lecture objects.
         """
-    
-class Module(Base):
-    """
-    A module is a set of lectures belonging to multiple courses.
-    
-    Modules can share Lecture objects, Module objects can belong
-    to multiple Course objects.
-    """
-    ##The title of the Module. E.g Python
-    title = models.CharField(max_length=100)
-    ##The module code - CM2103
-    module_code = models.CharField(max_length=100)
-    ##Attachments linked to the module obejct
-    attachments = models.ManyToManyField(Attachment)
-    ##The lectures used in the module
-    lectures = models.ManyToManyField(Lecture)
     
     
 ################################################################
@@ -463,7 +467,7 @@ class CourseworkSubmission(Base):
         """
         return
 
-class ProgrammingSubmission(CourseworkSubmisison):
+class ProgrammingSubmission(CourseworkSubmission):
     """
     The ProgrammingSubmission class extends the CourseworkSubmission Class.
     
@@ -527,7 +531,7 @@ class Server(Base):
     ##The server private key for executing ssh
     private_key = models.TextField()
     ##The role of the Server in the serverfarm
-    role = models.CharField(30)
+    role = models.CharField(max_length=30)
     ##The last updated load on server
     load = models.FloatField()
     ##The amount of free disk storage on the server
