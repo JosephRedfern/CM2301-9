@@ -157,7 +157,7 @@ class Link(Base):
     ##The Link URl in string form
     link = models.URLField(max_length=250)
 
-class Video(Attachment):
+class Video(Base):
     """
     Represents a video, can contain multiple VideoFormats.
     
@@ -186,74 +186,129 @@ class Video(Attachment):
     
 class VideoFormat(Revision):
     """
-    Represents a specific format converted video file
-    belongs to a video object
+    Represents a specific video format containing a file.
+    
+    Belongs to a video object.
     """
+    ##The container format as a string. e.g .ogg
     format = models.CharField(max_length=20)
+    ##The encoding used for the video. e.g H.264
     encoding = models.CharField(max_length=50)
+    ##The bitrate of the video
     bitrate = models.CharField(max_length=10)
+    ##The Video object the format belongs to.
+    video = models.ForeignKey(Video)
     
     def probe(self):
-        """Return ffprobe class from video."""
+        """
+        Return ffprobe class from video.
+        
+        Gets details about the video file using FFPROBE
+        
+        @return: ffprobe 
+        """
         return
     
 class Lecture(Base):
     """
-    Represents a lecture within a module.
+    Represents a lecture in the system.
+    
     Contains details about an individual lecture & references to
     lecture content (Videos, Attachments and Lecture Notes).
     """
+    ##The title of the lecture
     title = models.CharField(max_length=50)
+    ##The videos used in the lecture
     videos = models.ManyToManyField(Video)
+    ##Attachments to be presented with the lecture
     attachments = models.ManyToManyField(Attachment)
+    ##The date the Lecture becomes valid.
     validFrom = models.DateField()
+    ##The date the lecture expires.
     validTo = models.DateField()
+    ##Whether the lecture is visible
     visible = models.BooleanField(default=True)
+    ##Links that may be useful.
     links = models.ManyToManyField(Link)
+    ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(User)
 
+class Course(Base):
+    """
+    A course represents a top level definition of a degree. 
+    
+    Contains a collection of modules
+    """
+    ##The title of the course
+    title = models.CharField(max_length=50)
+    ##The course code it holds e.g G400
+    code = models.CharField(max_length=50)
+    ##The description of the course
+    description = models.TextField()
+    ##The modules which are in the course
+    modules = models.ManyToManyField(Module)
+    ##Attachments attached to the course. E.g Timetable
+    attachments = models.ManyToManyField(Attachment)
+    
+    def get_lectures(self):
+        """
+        Returns a list of all Lecture objects in this course.
+        @return List Returns a list of Lecture objects.
+        """
     
 class Module(Base):
     """
-    A module belonging to a course
-    """
-    title = models.CharField(max_length=100)
-    module_code = models.CharField(max_length=100)
-    attachments = models.ManyToManyField(Attachment)
-    lectures = models.ManyToManyField(Lecture)
+    A module is a set of lectures belonging to multiple courses.
     
-class Course(Base):
+    Modules can share Lecture objects, Module objects can belong
+    to multiple Course objects.
     """
-    A course represents a top level definition of a degree, they are a collection of modules
-    """
-    title = models.CharField(max_length=50)
-    code = models.CharField(max_length=50)
-    description = models.TextField()
-    modules = models.ManyToManyField(Module)
+    ##The title of the Module. E.g Python
+    title = models.CharField(max_length=100)
+    ##The module code - CM2103
+    module_code = models.CharField(max_length=100)
+    ##Attachments linked to the module obejct
     attachments = models.ManyToManyField(Attachment)
+    ##The lectures used in the module
+    lectures = models.ManyToManyField(Lecture)
     
 class Config(Base):
     """
     Contains configuration and preferences for the system.
+    
+    This class stores configuration and system wide preferences.
     """
+    ##The key for the preference e.g stylesheet
     key = models.CharField(max_length=250)
+    ##The type of data the value is stored as e.g xml
     data_type = models.CharField(max_length=10)
+    ##The config value
     value = models.TextField()
     
     
 class Question(Base):
     """
-    An instance of the Question class will hold the question string 
+    An instance of the Question class holds the question string
     with a List of answer objects that the user can pick.
     """
+    ##The question text - Can be any format.
     content = models.TextField()
+    ##The type of question - e.g Multiple Choice
     type = models.CharField(max_length=40)
     
     def get_answers(self):
-        """Returns the possible answers for the question"""
+        """
+        Returns the possible answers for the question
+        @return List Returns all Answer objects for the Question
+        """
     
     def get_correct_answer(self):
-        """Returns the correct answer for the question"""
+        """
+        Returns the correct Answer for the question
+        
+        @return Answer Returns the correct Answer object
+        @throws TestException If no correct Answer found.
+        """
         
         
 class Test(Base):
@@ -262,28 +317,40 @@ class Test(Base):
     
     As well as the full set of questions that could be asked.
     """
+    ##The title of the Test
     title = models.CharField(max_length=250)
+    ##The description of the Test
     description = models.TextField()
+    ##The number of questions to be presented to the user
     question_count = models.IntegerField()
+    ##The questions from which they will be randomly selected.
     questions = models.ManyToManyField(Question)
+    ##The lectures the test belong to.
     lecture = models.ManyToManyField(Lecture)
     
     def get_random_questions(self):
         """
-        Returns a List of random questions taken from the property 
+        Returns a List of random questions taken from the
         QuestionList with the length of questionCount, 
         if questionCount is larger than the length of QuestionList a Exception will be thrown.
+        
+        @return List Returns a list of Question objects
+        @throws TestException
         """
         return
         
         
 class Answer(Base):
     """
-    An instance of the Answer class will hold text 
-    associated with an answer, and whether or not the answer is correct or not.
+    An instance of the Answer class hold answer details.
+     
+    Associated with an Question, and whether or not the answer is correct or not.
     """
+    ##The answer text
     content = models.CharField(max_length=250)
+    ##Whether or not the question is correct
     correct = models.BooleanField()
+    ##The question the 
     question = models.ForeignKey(Question)
     
 class TestInstance(Base):
@@ -291,13 +358,18 @@ class TestInstance(Base):
     A TestInstance object contains a reference to related Test,
      the student completing it and the time it was completed
     """
+    ##The User who completed the Test
     student = models.ForeignKey(User)
+    ##The associated Test object.
     test = models.ForeignKey(Test)
+    ##The time the Test was completed.
     time_completed = models.DateTimeField()
     
     def calc_result(self):
         """
         Returns the percentage of answers correct in the TestInstance as a float.
+        
+        @return Float Returns mark as a percentage
         """
         return
     
@@ -306,19 +378,30 @@ class Result(Base):
     The result class stores a reference to the answer selected 
     for a single question in a test, belonging to a TestInstance.
     """
+    ##The Test instance the result set belongs to
     test_instance = models.ForeignKey(TestInstance)
+    ##The question answered
     question = models.ForeignKey(Question)
+    ##The answer chosen
     answer = models.ForeignKey(Answer)
     
 
 class EventLog(Base):
     """
     Handles the storing of events in the log
-    """
-    event_uuid = models.CharField(max_length=36)
-    event_type = models.CharField(max_length=50)
-    severity = models.CharField(max_length=50)
-    content = models.TextField()
-    timestamp = models.DateTimeField()
     
+    This class handles logging accross the system, if debugging 
+    is enabled everything will be dumped.
+    """
+    ##The UUID of the object in question
+    event_uuid = models.CharField(max_length=36)
+    ##The type of event, e.g created, exception etc
+    event_type = models.CharField(max_length=50)
+    ##The severity of the logged event
+    severity = models.CharField(max_length=50)
+    ##Any content of the event
+    content = models.TextField()
+    ##The timestamp of the event
+    timestamp = models.DateTimeField()
+
 
