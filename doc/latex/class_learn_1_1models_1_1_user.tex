@@ -1,0 +1,75 @@
+\hypertarget{class_learn_1_1models_1_1_user}{\section{Learn.\-models.\-User Class Reference}
+\label{class_learn_1_1models_1_1_user}\index{Learn.\-models.\-User@{Learn.\-models.\-User}}
+}
+
+
+Represents a user of the system.  
+
+
+Inheritance diagram for Learn.\-models.\-User\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_learn_1_1models_1_1_user}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{class_learn_1_1models_1_1_user_aefbdebc82f11edfa6de46493565b3bbc}{add\-\_\-user\-\_\-field}
+\begin{DoxyCompactList}\small\item\em Adds a \hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field} object to the \hyperlink{class_learn_1_1models_1_1_user}{User}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_learn_1_1models_1_1_user_a90bee78e749e518923cbb4934582401a}{tuple \hyperlink{class_learn_1_1models_1_1_user_a90bee78e749e518923cbb4934582401a}{forename} models.\-Char\-Field(max\-\_\-length=50)}\label{class_learn_1_1models_1_1_user_a90bee78e749e518923cbb4934582401a}
+
+\begin{DoxyCompactList}\small\item\em Forename of the \hyperlink{class_learn_1_1models_1_1_user}{User}. \end{DoxyCompactList}\item 
+\hypertarget{class_learn_1_1models_1_1_user_a2e5e150422fc3c1e31af7df2c0cfefb9}{tuple \hyperlink{class_learn_1_1models_1_1_user_a2e5e150422fc3c1e31af7df2c0cfefb9}{surname} models.\-Char\-Field(max\-\_\-length=50)}\label{class_learn_1_1models_1_1_user_a2e5e150422fc3c1e31af7df2c0cfefb9}
+
+\begin{DoxyCompactList}\small\item\em Surname of the \hyperlink{class_learn_1_1models_1_1_user}{User}. \end{DoxyCompactList}\item 
+\hypertarget{class_learn_1_1models_1_1_user_a042ac88deb5e3d1fb6022e318eae34b1}{tuple \hyperlink{class_learn_1_1models_1_1_user_a042ac88deb5e3d1fb6022e318eae34b1}{username} models.\-Char\-Field(max\-\_\-length=25)}\label{class_learn_1_1models_1_1_user_a042ac88deb5e3d1fb6022e318eae34b1}
+
+\begin{DoxyCompactList}\small\item\em Username or alias for the \hyperlink{class_learn_1_1models_1_1_user}{User} object. \end{DoxyCompactList}\item 
+\hypertarget{class_learn_1_1models_1_1_user_a7be9250587aecff1dc9b276b0fa7aa94}{tuple \hyperlink{class_learn_1_1models_1_1_user_a7be9250587aecff1dc9b276b0fa7aa94}{email} models.\-Email\-Field(max\-\_\-length=75)}\label{class_learn_1_1models_1_1_user_a7be9250587aecff1dc9b276b0fa7aa94}
+
+\begin{DoxyCompactList}\small\item\em Email address registered with the \hyperlink{class_learn_1_1models_1_1_user}{User}. \end{DoxyCompactList}\item 
+\hypertarget{class_learn_1_1models_1_1_user_ac5a80def84659153520d3ee4997b6823}{tuple \hyperlink{class_learn_1_1models_1_1_user_ac5a80def84659153520d3ee4997b6823}{phone} models.\-Char\-Field(max\-\_\-length=20)}\label{class_learn_1_1models_1_1_user_ac5a80def84659153520d3ee4997b6823}
+
+\begin{DoxyCompactList}\small\item\em Phone number for the \hyperlink{class_learn_1_1models_1_1_user}{User}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents a user of the system. 
+
+A \hyperlink{class_learn_1_1models_1_1_user}{User} contains attributes that are common for any user of the system. Other attributes can be linked with a user using the \hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field} class 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_learn_1_1models_1_1_user_aefbdebc82f11edfa6de46493565b3bbc}{\index{Learn\-::models\-::\-User@{Learn\-::models\-::\-User}!add\-\_\-user\-\_\-field@{add\-\_\-user\-\_\-field}}
+\index{add\-\_\-user\-\_\-field@{add\-\_\-user\-\_\-field}!Learn::models::User@{Learn\-::models\-::\-User}}
+\subsubsection[{add\-\_\-user\-\_\-field}]{\setlength{\rightskip}{0pt plus 5cm}def Learn.\-models.\-User.\-add\-\_\-user\-\_\-field (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{User\-Field}
+\end{DoxyParamCaption}
+)}}\label{class_learn_1_1models_1_1_user_aefbdebc82f11edfa6de46493565b3bbc}
+
+
+Adds a \hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field} object to the \hyperlink{class_learn_1_1models_1_1_user}{User}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field}} & The \hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field} object to set as belonging to the user. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field} Returns the \hyperlink{class_learn_1_1models_1_1_user_field}{User\-Field} added. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em User\-Data\-Exception} & \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/\-Users/\-Charlie/\-Documents/\-Aptana Studio 3 Workspace/\-C\-M2301-\/9/\-C\-M2301/\-Learn/models.\-py\end{DoxyCompactItemize}

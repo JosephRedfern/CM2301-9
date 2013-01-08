@@ -1,0 +1,88 @@
+\hypertarget{class_learn_1_1models_1_1_revision}{\section{Learn.\-models.\-Revision Class Reference}
+\label{class_learn_1_1models_1_1_revision}\index{Learn.\-models.\-Revision@{Learn.\-models.\-Revision}}
+}
+
+
+A revision object represents a single file that belongs to an \hyperlink{class_learn_1_1models_1_1_attachment}{Attachment}.  
+
+
+Inheritance diagram for Learn.\-models.\-Revision\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_learn_1_1models_1_1_revision}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{class_learn_1_1models_1_1_revision_aba5613cb5880b9c860f2713d4528e80e}{get\-\_\-file}
+\begin{DoxyCompactList}\small\item\em Returns the File object for the current \hyperlink{class_learn_1_1models_1_1_revision}{Revision}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_learn_1_1models_1_1_revision_ab99a5799125da47290ffeca85fb4d290}{tuple \hyperlink{class_learn_1_1models_1_1_revision_ab99a5799125da47290ffeca85fb4d290}{time\-\_\-uploaded} models.\-Date\-Time\-Field(auto\-\_\-now\-\_\-add=True)}\label{class_learn_1_1models_1_1_revision_ab99a5799125da47290ffeca85fb4d290}
+
+\begin{DoxyCompactList}\small\item\em The timestamp the document was uploaded/attached to the revision. \end{DoxyCompactList}\item 
+tuple \hyperlink{class_learn_1_1models_1_1_revision_a1e0c1e0fafeb906c3ed10e882571f9e2}{attachment} models.\-Foreign\-Key(\hyperlink{class_learn_1_1models_1_1_attachment}{Attachment})
+\begin{DoxyCompactList}\small\item\em The \hyperlink{class_learn_1_1models_1_1_attachment}{Attachment} object the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} belongs to. \end{DoxyCompactList}\item 
+\hypertarget{class_learn_1_1models_1_1_revision_ab6a44857b140b43e3dd0345a7bd94284}{tuple \hyperlink{class_learn_1_1models_1_1_revision_ab6a44857b140b43e3dd0345a7bd94284}{file} models.\-File\-Field(upload\-\_\-to='/')}\label{class_learn_1_1models_1_1_revision_ab6a44857b140b43e3dd0345a7bd94284}
+
+\begin{DoxyCompactList}\small\item\em The File Object. \end{DoxyCompactList}\item 
+\hypertarget{class_learn_1_1models_1_1_revision_a6bb6313e61fc4d6199b11c67ce6ea781}{tuple \hyperlink{class_learn_1_1models_1_1_revision_a6bb6313e61fc4d6199b11c67ce6ea781}{approved} models.\-Boolean\-Field()}\label{class_learn_1_1models_1_1_revision_a6bb6313e61fc4d6199b11c67ce6ea781}
+
+\begin{DoxyCompactList}\small\item\em Whether or not the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} has been approved. \end{DoxyCompactList}\item 
+tuple \hyperlink{class_learn_1_1models_1_1_revision_aba129f90cca558a21d55c49935ee0c1a}{uploaded\-\_\-by} models.\-Foreign\-Key(\hyperlink{class_learn_1_1models_1_1_user}{User})
+\begin{DoxyCompactList}\small\item\em The \hyperlink{class_learn_1_1models_1_1_user}{User} whom owns the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} -\/ Usually the uploader. \end{DoxyCompactList}\item 
+tuple \hyperlink{class_learn_1_1models_1_1_revision_ace081e49efb42548cc69b3f4dd13d0fb}{file\-\_\-size} models.\-Float\-Field()
+\begin{DoxyCompactList}\small\item\em The file size of the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A revision object represents a single file that belongs to an \hyperlink{class_learn_1_1models_1_1_attachment}{Attachment}. 
+
+This class facilitates \hyperlink{class_learn_1_1models_1_1_attachment}{Attachment} versioning 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_learn_1_1models_1_1_revision_aba5613cb5880b9c860f2713d4528e80e}{\index{Learn\-::models\-::\-Revision@{Learn\-::models\-::\-Revision}!get\-\_\-file@{get\-\_\-file}}
+\index{get\-\_\-file@{get\-\_\-file}!Learn::models::Revision@{Learn\-::models\-::\-Revision}}
+\subsubsection[{get\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}def Learn.\-models.\-Revision.\-get\-\_\-file (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}}\label{class_learn_1_1models_1_1_revision_aba5613cb5880b9c860f2713d4528e80e}
+
+
+Returns the File object for the current \hyperlink{class_learn_1_1models_1_1_revision}{Revision}. 
+
+\begin{DoxyReturn}{Returns}
+File Returns the File handler for the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_learn_1_1models_1_1_revision_a1e0c1e0fafeb906c3ed10e882571f9e2}{\index{Learn\-::models\-::\-Revision@{Learn\-::models\-::\-Revision}!attachment@{attachment}}
+\index{attachment@{attachment}!Learn::models::Revision@{Learn\-::models\-::\-Revision}}
+\subsubsection[{attachment}]{\setlength{\rightskip}{0pt plus 5cm}tuple Learn.\-models.\-Revision.\-attachment models.\-Foreign\-Key({\bf Attachment})\hspace{0.3cm}{\ttfamily [static]}}}\label{class_learn_1_1models_1_1_revision_a1e0c1e0fafeb906c3ed10e882571f9e2}
+
+
+The \hyperlink{class_learn_1_1models_1_1_attachment}{Attachment} object the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} belongs to. 
+
+\hypertarget{class_learn_1_1models_1_1_revision_ace081e49efb42548cc69b3f4dd13d0fb}{\index{Learn\-::models\-::\-Revision@{Learn\-::models\-::\-Revision}!file\-\_\-size@{file\-\_\-size}}
+\index{file\-\_\-size@{file\-\_\-size}!Learn::models::Revision@{Learn\-::models\-::\-Revision}}
+\subsubsection[{file\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}tuple Learn.\-models.\-Revision.\-file\-\_\-size models.\-Float\-Field()\hspace{0.3cm}{\ttfamily [static]}}}\label{class_learn_1_1models_1_1_revision_ace081e49efb42548cc69b3f4dd13d0fb}
+
+
+The file size of the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} file. 
+
+\hypertarget{class_learn_1_1models_1_1_revision_aba129f90cca558a21d55c49935ee0c1a}{\index{Learn\-::models\-::\-Revision@{Learn\-::models\-::\-Revision}!uploaded\-\_\-by@{uploaded\-\_\-by}}
+\index{uploaded\-\_\-by@{uploaded\-\_\-by}!Learn::models::Revision@{Learn\-::models\-::\-Revision}}
+\subsubsection[{uploaded\-\_\-by}]{\setlength{\rightskip}{0pt plus 5cm}tuple Learn.\-models.\-Revision.\-uploaded\-\_\-by models.\-Foreign\-Key({\bf User})\hspace{0.3cm}{\ttfamily [static]}}}\label{class_learn_1_1models_1_1_revision_aba129f90cca558a21d55c49935ee0c1a}
+
+
+The \hyperlink{class_learn_1_1models_1_1_user}{User} whom owns the \hyperlink{class_learn_1_1models_1_1_revision}{Revision} -\/ Usually the uploader. 
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/\-Users/\-Charlie/\-Documents/\-Aptana Studio 3 Workspace/\-C\-M2301-\/9/\-C\-M2301/\-Learn/models.\-py\end{DoxyCompactItemize}
