@@ -20,6 +20,20 @@ class Base(models.Model):
             uuid = str(uuid.uuid4())
         super(Base, self).save(*args, **kwargs)
         
+    def get_data_fields(self):
+        """
+        Returns any DataFields that are related to the object.
+        @return DataField Returns any DataField objects associated with the object
+        """
+        return
+        
+    
+        
+        
+################################################################
+#Core System
+################################################################
+        
 class User(Base):
     """
     Represents a user of the system. 
@@ -48,19 +62,22 @@ class User(Base):
         """
         return
     
-class UserField(Base):
+class DataField(Base):
     """
-    A UserField is a value attached to a user.
+    A UserField is a value attached to another object.
     
-    Users can have multiple UserFields allowing for unique fields
-    to be added to a specific User.
+    Objects can have multiple DataFields allowing for an extensiable Schema
     """
-    ##The User the UserField belongs to
-    user = models.ForeignKey(User)
+    ##The object uuid the datafield belongs to
+    object_uuid = models.CharField(max_length=36)
     ##The field key
     key = models.CharField(max_length=250)
     ##The field value
     value = models.TextField()
+    
+################################################################
+#File Handling
+################################################################
 
 class Attachment(Base):
     """
@@ -143,6 +160,10 @@ class Revision(Base):
         @return File Returns the File handler for the Revision
         """
         return
+    
+################################################################
+#Lecturing Classes
+################################################################
     
 class Link(Base):
     """
@@ -272,20 +293,11 @@ class Module(Base):
     ##The lectures used in the module
     lectures = models.ManyToManyField(Lecture)
     
-class Config(Base):
-    """
-    Contains configuration and preferences for the system.
     
-    This class stores configuration and system wide preferences.
-    """
-    ##The key for the preference e.g stylesheet
-    key = models.CharField(max_length=250)
-    ##The type of data the value is stored as e.g xml
-    data_type = models.CharField(max_length=10)
-    ##The config value
-    value = models.TextField()
-    
-    
+################################################################
+#Testing/Marking Classes
+################################################################
+
 class Question(Base):
     """
     An instance of the Question class holds the question string
@@ -384,7 +396,90 @@ class Result(Base):
     question = models.ForeignKey(Question)
     ##The answer chosen
     answer = models.ForeignKey(Answer)
+
+################################################################
+#Coursework Setting/Marking Classes
+################################################################
+
+class CourseworkTask(Base):
+    """
+    Represents a coursework attached to a module.
     
+    Holds details on how to complete/submit the coursework.
+    """
+    ##The titel of the coursework task
+    title = models.CharField(max_length=250)
+    ##The coursework instructions
+    content = models.TextField()
+    ##Any attachments associated with the coursework
+    attachments = models.ManyToManyField(Attachment)
+    ##The module the coursework belongs to
+    module = models.ManyToManyField(Module)
+    ##The coursework start date
+    start_date = models.DateTimeField()
+    ##The coursework submission date
+    due_date = models.DateTimeField()
+    
+class ProgrammingTask(CourseworkTask):
+    """
+    ProgrammingTask extends CourseworkTask, facilitating for autmation of marking.
+    
+    Allows the user to create a ProgrammingTask object which is subject
+    to automated marking.
+    """
+    ##The language used for the assessment
+    language = models.CharField(max_length=20)
+    ##The input and expected output to test the code
+    input_output = models.TextField()
+    
+    
+class CourseworkSubmission(Base):
+    """
+    CourseworkSubmission caters for the submission of coursework by a user.
+    
+    A CourseworkSubmission object contains details of uploaded files and
+    CourseworkTask.
+    """
+    ##The User submitting the coursework
+    student = models.ForeignKey(User)
+    ##The coursework attachments/uploads
+    attachments = models.ManyToManyField(Attachment)
+    ##The related CourseworkTask
+    courswork_task = models.ForeignKey(CourseworkTask)
+    ##The mark recieved by the student
+    score = models.FloatField()
+    ##Whether the CourseworkSubmission has been marked
+    marked = models.BooleanField()
+    
+    def set_marked(self):
+        """
+        Sets the marked attribute to be True
+        """
+        return
+    
+    def set_unmarked(self):
+        """
+        Sets the marked attribute to be False
+        """
+        return
+
+class ProgrammingSubmission(CourseworkSubmisison):
+    """
+    The ProgrammingSubmission class extends the CourseworkSubmission Class.
+    
+    Allows for automated marking of programming based courseworks.
+    """
+    ##The files to be run
+    scripts = models.ManyToManyField(Attachment)
+    ##The main entry point to the program e.g main.py
+    main = models.CharField(max_length=200)
+    ##Flag whether to extract zip files.
+    extract_compressed = models.BooleanField()
+    
+    
+################################################################
+#System Maintainence Classes
+################################################################
 
 class EventLog(Base):
     """
@@ -403,5 +498,59 @@ class EventLog(Base):
     content = models.TextField()
     ##The timestamp of the event
     timestamp = models.DateTimeField()
+    
+class Config(Base):
+    """
+    Contains configuration and preferences for the system.
+    
+    This class stores configuration and system wide preferences.
+    """
+    ##The key for the preference e.g stylesheet
+    key = models.CharField(max_length=250)
+    ##The type of data the value is stored as e.g xml
+    data_type = models.CharField(max_length=10)
+    ##The config value
+    value = models.TextField()
+    
+class Server(Base):
+    """
+    A Server represents a single server in a server farm configuration.
+    
+    Attributes of this class are utilised to aid in load balancing
+    """
+    ##The alias of the server
+    alias = models.CharField(max_length=250)
+    ##The server hostname as an IP. 10.0.0.3
+    hostname = models.GenericIPAddressField()
+    ##The operating system of the server
+    os = models.CharField(max_length=250)
+    ##The server private key for executing ssh
+    private_key = models.TextField()
+    ##The role of the Server in the serverfarm
+    role = models.CharField(30)
+    ##The last updated load on server
+    load = models.FloatField()
+    ##The amount of free disk storage on the server
+    free_storage = models.FloatField()
+    
+    
+class QueueItem(Base):
+    """
+    QueueItem is responsible for handling load balancing of CPU/Memory intensive tasks.
+    
+    If multiple servers are added to the system then they will poll for jobs to take
+    """
+    ##The job type 
+    job_type = models.CharField(max_length=30)
+    ##The UUID of the object the job relates to
+    item_uuid = models.CharField(max_length=32)
+    ##The time the QueueItem was created.
+    submission_time = models.DateTimeField()
+    ##Whether the job is pending
+    pending = models.BooleanField()
+    ##Progress of the job, as a percentage
+    progress = models.FloatField()
+    ##The time of job completion
+    completion_time = models.DateTimeField()
 
 
