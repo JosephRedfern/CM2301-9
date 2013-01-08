@@ -12,7 +12,7 @@ class Base(models.Model):
     uuid = models.CharField(max_length=36, primary_key=True)
     
     class Meta:
-        app_label = "discimus"
+        app_label = "learn"
         abstract = True
     
     def save(self, *args, **kwargs):
