@@ -10,3 +10,4 @@ Our wonderful, marvelous, beautiful group coursework code - written in Django.
 Requirements
 ------------
 * [Django 1.5](https://www.djangoproject.com/download/)
+* [psutil](http://code.google.com/p/psutil/)
