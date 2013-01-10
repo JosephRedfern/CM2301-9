@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.conf import settings
+
 import uuid
 
 class Base(models.Model):
@@ -37,14 +40,49 @@ class Base(models.Model):
 ################################################################
 #Core System
 ################################################################
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, email_address, forename, surname, password=None):
+        if (not username or not email_address):
+            raise ValueError('User must have username and email_address. %s, %s'
+                             ) % (username. email_address)
+                             
+        user = self.model(username,
+                          email_address=email_address,
+                          forename=forename,
+                          surname=surname
+                          )
+        user.set_password(password)
+        user.save()
+        return user
+    
+    def create_superuser(self, username, email_address, forename, surname, password):
+        if (not username or not email_address):
+            raise ValueError('User must have username and email_address. %s, %s'
+                             ) % (username. email_address)
+                             
+        user = self.model(username,
+                          email_address=email_address,
+                          forename=forename,
+                          surname=surname,
+                          password=password
+                          )
+        user.is_superuser = True
+        user.save()
         
-class User(Base):
+        return user
+             
+        
+class User(AbstractBaseUser):
     """
     Represents a user of the system. 
     
     A User contains attributes that are common for any user of the system.
     Other attributes can be linked with a user using the UserField class
     """
+    uuid = models.CharField(max_length=36, primary_key=True)
+    ##The username of the User
+    username = models.CharField(max_length=50, unique=True)
     ##Forename of the User
     forename = models.CharField(max_length=50)
     ##Surname of the User
@@ -52,9 +90,16 @@ class User(Base):
     ##Username or alias for the User object
     username = models.CharField(max_length=25)
     ##Email address registered with the User
-    email = models.EmailField(max_length=75)
+    email_address = models.EmailField(max_length=75)
     ##Phone number for the User
     phone = models.CharField(max_length=20)
+    ##Whether the user account is active
+    is_active = models.BooleanField(default=True)
+    ##Whether the user has super user rights
+    is_superuser = models.BooleanField(default=False)
+    
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['username', 'email_address', 'forename', 'surname']
     
     def add_user_field(self, UserField):
         """
@@ -65,6 +110,12 @@ class User(Base):
         @throws UserDataException
         """
         return
+    
+    def get_full_name(self):
+        return self.forename + ' ' + self.surname
+    
+    def get_short_name(self):
+        return self.forename[0].upper() + '. ' + self.surname
     
 class DataField(Base):
     """
@@ -98,7 +149,7 @@ class Attachment(Base):
     ##The description of the Attachment
     description = models.CharField(max_length=250)
     ##The User owning the Attachment, usually the uploader.
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     
     def get_total_size(self):
         """
