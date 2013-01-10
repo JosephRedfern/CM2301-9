@@ -99,7 +99,7 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['username', 'email_address', 'forename', 'surname']
+    REQUIRED_FIELDS = ['email_address', 'forename', 'surname']
     
     def add_user_field(self, UserField):
         """
@@ -205,7 +205,7 @@ class Revision(Base):
     ##Whether or not the Revision has been approved
     approved = models.BooleanField()
     ##The User whom owns the Revision - Usually the uploader.
-    uploaded_by = models.ForeignKey(User)
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The file size of the Revision file.
     file_size = models.FloatField()
     
@@ -307,7 +307,7 @@ class Lecture(Base):
     ##Links that may be useful.
     links = models.ManyToManyField(Link)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
-    lecturers = models.ManyToManyField(User)
+    lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
     
 class Module(Base):
     """
@@ -426,7 +426,7 @@ class TestInstance(Base):
      the student completing it and the time it was completed
     """
     ##The User who completed the Test
-    student = models.ForeignKey(User)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The associated Test object.
     test = models.ForeignKey(Test)
     ##The time the Test was completed.
@@ -496,7 +496,7 @@ class CourseworkSubmission(Base):
     CourseworkTask.
     """
     ##The User submitting the coursework
-    student = models.ForeignKey(User)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The coursework attachments/uploads
     attachments = models.ManyToManyField(Attachment)
     ##The related CourseworkTask
