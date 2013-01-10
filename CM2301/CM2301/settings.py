@@ -5,9 +5,12 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Charlie Mills', 'charlie@computerbacon.com'),
+    ('Joseph Redern', 'joseph@redfern.me')
 )
 
 MANAGERS = ADMINS
+
+AUTH_USER_MODEL = 'learn.User'
 
 DATABASES = {
     'default': {
