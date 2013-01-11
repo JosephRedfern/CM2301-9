@@ -646,5 +646,62 @@ class QueueItem(Base):
     progress = models.FloatField()
     ##The time of job completion
     completion_time = models.DateTimeField()
-
+    
+    
+class UserQuestion(Base):
+    """
+    Handles the User questioning system for an Object.
+    
+    The UserQuestion class allows for a Lecture, Module or CourseWorkTask to have 
+    Questions and Answers attached to them. This will ensure students maintain 
+    contact with the lecturers.
+    """
+    ##The UUID of the object the question is attached to.
+    object_uuid = models.CharField(max_length=36)
+    ##The title of the Question
+    title = models.CharField(max_length=250)
+    ##The question text.
+    text = models.TextField()
+    ##The User which posted the UserQuestion
+    posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    ##The TimeDate of the post submission
+    post_date = models.DateTimeField(auto_now_add=True)
+    ##Whether the Question has been approved by a User
+    approved = models.BooleanField(default=False)
+    ##Whether the question is still open to more responses.
+    closed = models.BooleanField(default=False)
+    
+    def get_responses(self):
+        """
+        Returns the QuestionResponse objects associated with the UserQuestion as a list.
+        
+        @return list Returns a list of QuestionResponse objects.
+        """
+        return
+    
+    def set_approved(self):
+        """
+        Sets the QuestionReponse object as being approved by a lecturer.
+        """
+        return
+    
+class QuestionResponse(Base):
+    """
+    QuestionReponse class handles the answering of UserQuestion objects.
+    
+    Multiple QuestionResponse objects can be attached to a single UserQuestion.
+    """
+    ##The parent UserQuestion object
+    question = models.ForeignKey(UserQuestion)
+    ##The answer text
+    text = models.TextField()
+    ##The date it was posted.
+    posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    ##The user who posted it.
+    post_date = models.DateTimeField(auto_now_add=True)
+    
+    
+    
+    
+    
 
