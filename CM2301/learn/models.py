@@ -42,31 +42,64 @@ class Base(models.Model):
 ################################################################
 
 class UserManager(BaseUserManager):
+    """
+    Extends Djangos BaseUserManager class. 
+    
+    Facilitates using Django authentication
+    whilst incorporating custom fields and methods without having to use relationships.
+    """
+    
     def create_user(self, username, email_address, forename, surname, password=None):
+        """
+        Factory method returning a new instance of the User class with the supplied details.
+        
+        @param username The username of the new user.
+        @param email_address The email address of the new user.
+        @param forename The users forename.
+        @param surname The users forename.
+        @param password The users set password, before hashing.
+        
+        @return User Returns the newly created User object.    
+        """
         if (not username or not email_address):
             raise ValueError('User must have username and email_address. %s, %s'
                              ) % (username. email_address)
                              
-        user = self.model(username,
+        user = self.model(username=username,
                           email_address=email_address,
                           forename=forename,
                           surname=surname
                           )
+        user.uuid = str(uuid.uuid4())
         user.set_password(password)
         user.save()
         return user
     
     def create_superuser(self, username, email_address, forename, surname, password):
+        """
+        Factory method returning a new instance of the User class 
+        with the supplied details as a superuser.
+        
+        @param username The username of the new user.
+        @param email_address The email address of the new user.
+        @param forename The users forename.
+        @param surname The users forename.
+        @param password The users set password, before hashing.
+        
+        @return User Returns the newly created User object.  
+        """  
+        
         if (not username or not email_address):
             raise ValueError('User must have username and email_address. %s, %s'
                              ) % (username. email_address)
                              
-        user = self.model(username,
+        user = self.model(username=username,
                           email_address=email_address,
                           forename=forename,
-                          surname=surname,
-                          password=password
+                          surname=surname
                           )
+        user.set_password(password)
+        user.uuid = str(uuid.uuid4())
         user.is_superuser = True
         user.save()
         
@@ -87,8 +120,6 @@ class User(AbstractBaseUser):
     forename = models.CharField(max_length=50)
     ##Surname of the User
     surname = models.CharField(max_length=50)
-    ##Username or alias for the User object
-    username = models.CharField(max_length=25)
     ##Email address registered with the User
     email_address = models.EmailField(max_length=75)
     ##Phone number for the User
@@ -101,6 +132,8 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email_address', 'forename', 'surname']
     
+    objects = UserManager()
+    
     def add_user_field(self, UserField):
         """
         Adds a UserField object to the User
@@ -112,9 +145,15 @@ class User(AbstractBaseUser):
         return
     
     def get_full_name(self):
+        """
+        Returns the full users name, e.g. 'Charlie Mills'
+        """
         return self.forename + ' ' + self.surname
     
     def get_short_name(self):
+        """
+        Returns the users name in an abbreviated form. e.g 'C. Mills'
+        """
         return self.forename[0].upper() + '. ' + self.surname
     
 class DataField(Base):
