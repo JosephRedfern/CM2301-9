@@ -34,7 +34,6 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-  <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -49,18 +48,31 @@
               Logged in as <a href="#" class="navbar-link">Joe</a>
             </p>
             <ul class="nav">
-              <li class="active"><a href="#">CM1101</a></li>
-              <li><a href="#about">CM1102</a></li>
-              <li><a href="#contact">CM1103</a></li>
-              <li><a href="#contact">CM1201</a></li>
-              <li><a href="#contact">CM1202</a></li>
-              <li><a href="#contact">CM1203</a></li>
-              <li><a href="#contact">CM1205</a></li>
+              <li><a href="#about">Overview</a></li>
+              <li class="dropdown" id="menu1">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  Modules
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="module.html"><b>CM1101</b> - <i>Computational Thinking</i></a></li>
+                  <li><a href="module.html"><b>CM1102</b> - <i>Web Applications</i></a></li>
+                  <li><a href="module.html"><b>CM1103</b> - <i>Problem Solving with Python</i></a></li>
+                  <li><a href="module.html"><b>CM1201</b> - <i>Professional Skills</i></a></li>
+                  <li><a href="module.html"><b>CM1202</b> - <i>Developing Quality Software</i></a></li>
+                  <li><a href="module.html"><b>CM1203</b> - <i>Fundementals of Computing with Java</i></a></li>
+                  <li><a href="module.html"><b>CM1205</b> - <i>Architecture and Operating Systems</i></a></li>
+                </ul>
+              </li>
+              <li><a href="#contact">Coursework</a></li>
+              <li><a href="alltests.html">Tests</a></li>
+              <li><a href="#contact">Progress</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
+
 
     <div class="container-fluid">
       <div class="row-fluid">
@@ -68,13 +80,13 @@
 
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
-              <li class="nav-header">Introduction to Computer Science</li>
-              <li class="active"><a href="#">Introduction</a></li>
-              <li><a href="lecture.html">History of Computing</a></li>
-              <li><a href="lecture.html">Internal Workings of a Computer</a></li>
+              <li class="nav-header">Introduction</li>
+              <li><a href="lecture.html">Introduction to Computer Science <span class="label">Viewed</span></a></li>
+              <li><a href="lecture.html">History of Computing <span class="label label-success">Passed</span></a></li>
+              <li><a href="lecture.html">Internal Workings of a Computer <span class="label label-success">Passed</span></a></li>
               <li class="nav-header">Python</li>
-              <li><a href="lecture.html">Introduction to Python</a></li>
-              <li><a href="lecture.html">Installing Python</a></li>
+              <li><a href="lecture.html">Introduction to Python <span class="label label-important">Failed</span></a></li>
+              <li><a href="lecture.html">Installing Python <span class="label">Viewed</span></a></li>
               <li><a href="lecture.html">Your First Program (Hello world)</a></li>
               <li><a href="lecture.html">Logic in Python</a></li>
               <li><a href="lecture.html">User Input</a></li>
@@ -107,9 +119,9 @@
               <p><a class="btn" href="lectures.html">View lectures &raquo;</a></p>
             </div><!--/span-->
             <div class="span4">
-              <h2>Course Materials</h2>
+              <h2>Module Materials</h2>
               <p>Access course-specific materials, such as details of assesments, deadlines, timetables and the like. </p>
-              <p><a class="btn" href="#">View materials &raquo;</a></p>
+              <p><a class="btn" href="modulematerials.html">View materials &raquo;</a></p>
             </div><!--/span-->
             <div class="span4">
               <h2>Coursework</h2>
@@ -124,9 +136,9 @@
               <p><a class="btn" href="#">View FAQ &raquo;</a></p>
             </div><!--/span-->
             <div class="span4">
-              <h2>Submit a Question</h2>
-              <p>So, you've checked the FAQ and it didn't answer your question about that nasty rash on your crotch? No issues. You can submit a question here. </p>
-              <p><a class="btn" href="#">Submit Question &raquo;</a></p>
+              <h2>Tests</h2>
+              <p>View a summary of all tests available for this module, including a breakdown of your marks.</p>
+              <p><a class="btn" href="#">View Tests &raquo;</a></p>
             </div><!--/span-->
             <div class="span4">
               <h2>Learning Outcomes</h2>
