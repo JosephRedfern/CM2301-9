@@ -24,17 +24,39 @@ class Base(models.Model):
         to new objects before they are persisted to the DB.
         """
         if not self.uuid:
-            uuid = str(uuid.uuid4())
+            self.uuid = str(uuid.uuid4())
         super(Base, self).save(*args, **kwargs)
         
-    def get_data_fields(self):
-        """
-        Returns any DataFields that are related to the object.
-        @return DataField Returns any DataField objects associated with the object
-        """
-        return
-        
+class BaseCustomFieldManager(object):
+    """
+    This class handles the management of CustomFields for an object.
     
+    For an object to use custom fields they should inherit this class.
+    """
+    def get_custom_fields(self):
+        """
+        Returns any CustomField objects that are related to the object.
+        @return CustomField Returns any CustomField objects associated with the object as a list.
+        """
+        return CustomField.objects.filter(object_uuid=self.uuid)
+    
+    def set_custom_field(self, data_type, key, value):
+        """
+        Uses the supplied paramaters to create a custom field
+        and attach it to the object.
+
+        @param data_type The datatype of the custom field.
+        @param key The CustomField key.
+        @param value The value of the field.
+        
+        @return CustomField Returns the created CustomField object. 
+        """
+        
+    def add_custom_field(self, custom_field):
+        """
+        Sets the supplied CustomField object to the object.
+        @param CustomField The CustomField object to set. 
+        """
         
         
 ################################################################
@@ -106,7 +128,7 @@ class UserManager(BaseUserManager):
         return user
              
         
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, BaseCustomFieldManager):
     """
     Represents a user of the system. 
     
@@ -156,14 +178,17 @@ class User(AbstractBaseUser):
         """
         return self.forename[0].upper() + '. ' + self.surname
     
-class DataField(Base):
+class CustomField(Base):
     """
-    A UserField is a value attached to another object.
+    A CustomField is a value attached to another object.
     
-    Objects can have multiple DataFields allowing for an extensiable Schema
+    This allows for a much more flexible model.
+    Objects can have multiple CustomField allowing for an extensiable Schema
     """
     ##The object uuid the datafield belongs to
     object_uuid = models.CharField(max_length=36)
+    ##The datatype of the field, it will be converted back.
+    data_type = models.CharField(max_length=15)
     ##The field key
     key = models.CharField(max_length=250)
     ##The field value
@@ -173,7 +198,7 @@ class DataField(Base):
 #File Handling
 ################################################################
 
-class Attachment(Base):
+class Attachment(Base, BaseCustomFieldManager):
     """
     An Attachment is a collection of revisions. 
     
@@ -699,7 +724,6 @@ class QuestionResponse(Base):
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The user who posted it.
     post_date = models.DateTimeField(auto_now_add=True)
-    
     
     
     
