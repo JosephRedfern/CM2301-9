@@ -27,12 +27,6 @@ class Base(models.Model):
             self.uuid = str(uuid.uuid4())
         super(Base, self).save(*args, **kwargs)
         
-class BaseCustomFieldManager(object):
-    """
-    This class handles the management of CustomFields for an object.
-    
-    For an object to use custom fields they should inherit this class.
-    """
     def get_custom_fields(self):
         """
         Returns any CustomField objects that are related to the object.
@@ -128,14 +122,13 @@ class UserManager(BaseUserManager):
         return user
              
         
-class User(AbstractBaseUser, BaseCustomFieldManager):
+class User(AbstractBaseUser, Base):
     """
     Represents a user of the system. 
     
     A User contains attributes that are common for any user of the system.
     Other attributes can be linked with a user using the UserField class
     """
-    uuid = models.CharField(max_length=36, primary_key=True)
     ##The username of the User
     username = models.CharField(max_length=50, unique=True)
     ##Forename of the User
@@ -198,7 +191,7 @@ class CustomField(Base):
 #File Handling
 ################################################################
 
-class Attachment(Base, BaseCustomFieldManager):
+class Attachment(Base):
     """
     An Attachment is a collection of revisions. 
     
@@ -726,6 +719,26 @@ class QuestionResponse(Base):
     post_date = models.DateTimeField(auto_now_add=True)
     
     
+class Search(object):
+    """
+    This Search class handles the searching of objects in the database.
     
+    The Search class will handle searching of objects in the database when passed a string.
+    """
+    
+    ##The list of strings to search against.
+    queries = []
+    
+    def add_search_string(self, string):
+        """
+        This method adds a string to the query list.
+        """
+        return
+    
+    def run_search(self):
+        """
+        Runs the search with supplied queries.
+        @returns Dictionary Retuns a dictionary of matching object types.
+        """
     
 
