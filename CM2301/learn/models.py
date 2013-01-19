@@ -171,6 +171,19 @@ class User(AbstractBaseUser, Base):
         """
         return self.forename[0].upper() + '. ' + self.surname
     
+    def has_perm(self, perm, obj=None):
+        # Handle whether the user has a specific permission?"
+        return True
+ 
+    def has_module_perms(self, app_label):
+        # Handle whether the user has permissions to view the app `app_label`?"
+        return True
+    
+    @property
+    def is_staff(self):
+        # Handle whether the user is a member of staff?"
+        return self.is_superuser
+    
 class CustomField(Base):
     """
     A CustomField is a value attached to another object.
