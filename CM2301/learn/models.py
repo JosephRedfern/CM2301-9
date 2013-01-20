@@ -38,15 +38,6 @@ class Base(models.Model):
         if (self._custom_fields is None):
             self._custom_fields = list(CustomField.objects.filter(object_id = self.id))
         return self._custom_fields
-    
-    def __init__(self, *args, **kwargs):
-        """
-        Overrides djangos __init__() method. Creates a random uuid
-        for the objects id field.
-        """
-        super(Base, self).__init__(*args, **kwargs)
-        if not self.id:
-            self.id = str(uuid.uuid4())
 
     
     def save(self, *args, **kwargs):
@@ -56,7 +47,8 @@ class Base(models.Model):
         
         Also iterates through Attachments and CustomFields, persisting changes.
         """
-        
+        if not self.id:
+            self.id = str(uuid.uuid4())
         
         if self._attachments is not None:
             for attachment in self._attachments:
