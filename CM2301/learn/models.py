@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser
 from django.conf import settings
-
 import uuid
 
 class Base(models.Model):
@@ -12,27 +11,60 @@ class Base(models.Model):
     """
     
     """UUID of the object, as String"""
-    uuid = models.CharField(max_length=36, primary_key=True)
+    id = models.CharField(max_length=36, primary_key=True)
+    _attachments = None
+    _custom_fields = None
     
     class Meta:
         app_label = "learn"
         abstract = True
+        
+    @property
+    def attachments(self):
+        """
+        The getter method for Attachments, will retrieve all attachments
+        associated with the object.
+        """
+        if (self._attachments is None):
+            self._attachments = list(Attachment.objects.filter(object_id = self.id))
+        return self._attachments
+    
+    @property
+    def custom_fields(self):
+        """
+        Getter method for CustomField, will return all associated CustomField
+        objects.
+        """
+        if (self._custom_fields is None):
+            self._custom_fields = list(CustomField.objects.filter(object_id = self.id))
+        return self._custom_fields
+
     
     def save(self, *args, **kwargs):
         """
         Overrides the django.model.save() method to add a random UUID
         to new objects before they are persisted to the DB.
+        
+        Also iterates through Attachments and CustomFields, persisting changes.
         """
-        if not self.uuid:
-            self.uuid = str(uuid.uuid4())
+        if not self.id:
+            self.id = str(uuid.uuid4())
+        
+        if self._attachments is not None:
+            for attachment in self._attachments:
+                attachment.save()
+        if self._custom_fields is not None:
+            for cf in self._custom_fields:
+                cf.save()
         super(Base, self).save(*args, **kwargs)
+        
         
     def get_custom_fields(self):
         """
         Returns any CustomField objects that are related to the object.
         @return CustomField Returns any CustomField objects associated with the object as a list.
         """
-        return CustomField.objects.filter(object_uuid=self.uuid)
+        return CustomField.objects.filter(object_id=self.id)
     
     def set_custom_field(self, data_type, key, value):
         """
@@ -56,98 +88,17 @@ class Base(models.Model):
 ################################################################
 #Core System
 ################################################################
-
-class UserManager(BaseUserManager):
-    """
-    Extends Djangos BaseUserManager class. 
-    
-    Facilitates using Django authentication
-    whilst incorporating custom fields and methods without having to use relationships.
-    """
-    
-    def create_user(self, username, email_address, forename, surname, password=None):
-        """
-        Factory method returning a new instance of the User class with the supplied details.
-        
-        @param username The username of the new user.
-        @param email_address The email address of the new user.
-        @param forename The users forename.
-        @param surname The users forename.
-        @param password The users set password, before hashing.
-        
-        @return User Returns the newly created User object.    
-        """
-        if (not username or not email_address):
-            raise ValueError('User must have username and email_address. %s, %s'
-                             ) % (username. email_address)
-                             
-        user = self.model(username=username,
-                          email_address=email_address,
-                          forename=forename,
-                          surname=surname
-                          )
-        user.uuid = str(uuid.uuid4())
-        user.set_password(password)
-        user.save()
-        return user
-    
-    def create_superuser(self, username, email_address, forename, surname, password):
-        """
-        Factory method returning a new instance of the User class 
-        with the supplied details as a superuser.
-        
-        @param username The username of the new user.
-        @param email_address The email address of the new user.
-        @param forename The users forename.
-        @param surname The users forename.
-        @param password The users set password, before hashing.
-        
-        @return User Returns the newly created User object.  
-        """  
-        
-        if (not username or not email_address):
-            raise ValueError('User must have username and email_address. %s, %s'
-                             ) % (username. email_address)
-                             
-        user = self.model(username=username,
-                          email_address=email_address,
-                          forename=forename,
-                          surname=surname
-                          )
-        user.set_password(password)
-        user.uuid = str(uuid.uuid4())
-        user.is_superuser = True
-        user.save()
-        
-        return user
              
         
-class User(AbstractBaseUser, Base):
+class User(AbstractUser, Base):
     """
     Represents a user of the system. 
     
     A User contains attributes that are common for any user of the system.
     Other attributes can be linked with a user using the UserField class
     """
-    ##The username of the User
-    username = models.CharField(max_length=50, unique=True)
-    ##Forename of the User
-    forename = models.CharField(max_length=50)
-    ##Surname of the User
-    surname = models.CharField(max_length=50)
-    ##Email address registered with the User
-    email_address = models.EmailField(max_length=75)
     ##Phone number for the User
     phone = models.CharField(max_length=20)
-    ##Whether the user account is active
-    is_active = models.BooleanField(default=True)
-    ##Whether the user has super user rights
-    is_superuser = models.BooleanField(default=False)
-    
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email_address', 'forename', 'surname']
-    
-    objects = UserManager()
     
     def add_user_field(self, UserField):
         """
@@ -159,31 +110,6 @@ class User(AbstractBaseUser, Base):
         """
         return
     
-    def get_full_name(self):
-        """
-        Returns the full users name, e.g. 'Charlie Mills'
-        """
-        return self.forename + ' ' + self.surname
-    
-    def get_short_name(self):
-        """
-        Returns the users name in an abbreviated form. e.g 'C. Mills'
-        """
-        return self.forename[0].upper() + '. ' + self.surname
-    
-    def has_perm(self, perm, obj=None):
-        # Handle whether the user has a specific permission?"
-        return True
- 
-    def has_module_perms(self, app_label):
-        # Handle whether the user has permissions to view the app `app_label`?"
-        return True
-    
-    @property
-    def is_staff(self):
-        # Handle whether the user is a member of staff?"
-        return self.is_superuser
-    
 class CustomField(Base):
     """
     A CustomField is a value attached to another object.
@@ -192,7 +118,7 @@ class CustomField(Base):
     Objects can have multiple CustomField allowing for an extensiable Schema
     """
     ##The object uuid the datafield belongs to
-    object_uuid = models.CharField(max_length=36)
+    object_id = models.CharField(max_length=36)
     ##The datatype of the field, it will be converted back.
     data_type = models.CharField(max_length=15)
     ##The field key
@@ -211,7 +137,8 @@ class Attachment(Base):
     Attachment objects can be used to derive a full file revision history, 
     and retrieve the original version of the file
     """
-    
+    ##Object UUID - The UUID of the owning object.
+    object_id = models.CharField(max_length=36)
     ##The title of the Attachment
     title = models.CharField(max_length=50)
     ##The file name e.g file.pdf
@@ -688,7 +615,7 @@ class UserQuestion(Base):
     contact with the lecturers.
     """
     ##The UUID of the object the question is attached to.
-    object_uuid = models.CharField(max_length=36)
+    object_id = models.CharField(max_length=36)
     ##The title of the Question
     title = models.CharField(max_length=250)
     ##The question text.
