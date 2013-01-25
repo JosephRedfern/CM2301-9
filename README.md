@@ -11,3 +11,5 @@ Requirements
 ------------
 * [Django 1.5](https://www.djangoproject.com/download/)
 * [psutil](http://code.google.com/p/psutil/) (server only)
+* [ffmpeg](http://ffmpeg.mplayerhq.hu)
+* [Python Video Converter](https://github.com/senko/python-video-converter)
