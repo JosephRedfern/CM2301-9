@@ -240,11 +240,12 @@ class Video(Base):
     title = models.CharField(max_length=50)
     ##The description for the video
     description = models.TextField()
-    
+    ##The orginal uploaded video file
+    original_file = models.FileField(upload_to='video')
     def get_file_paths(self):
         """
         Returns a dictionary of filepaths for every availiable format
-        
+        lad
         @return Dict Returns a dictionary of format:filepath
         """
         return
@@ -256,6 +257,24 @@ class Video(Base):
         @return String A string of the Format filepath
         """
         return
+    
+class VideoThumbnail(models.Model):
+    """
+    Handles the storage of video thumbnails.
+    
+    Thumbnails will be generated upon video being uploaded.
+    """
+    
+    ##How many seconds into the video the thumbnail is.
+    time = models.FloatField()
+    ##The video the thumbnail belongs to.
+    video = models.ForeignKey(Video)
+    ##The thumbnail image.
+    thumbnail = models.FileField(upload_to='thumbnails')
+    
+    class Meta:
+        ordering = ['time']
+    
     
 class VideoFormat(Revision):
     """
