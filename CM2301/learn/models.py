@@ -47,9 +47,6 @@ class Base(models.Model):
         
         Also iterates through Attachments and CustomFields, persisting changes.
         """
-        if not self.id:
-            self.id = str(uuid.uuid4())
-        
         if self._attachments is not None:
             for attachment in self._attachments:
                 attachment.save()
@@ -57,6 +54,15 @@ class Base(models.Model):
             for cf in self._custom_fields:
                 cf.save()
         super(Base, self).save(*args, **kwargs)
+        
+        
+    def __init__(self, *args, **kwargs):
+        """
+        Overrides the contructer to set the uuid
+        """
+        super(Base, self).__init__(*args, **kwargs)
+        if not self.id:
+            self.id = str(uuid.uuid4())
         
         
     def get_custom_fields(self):
@@ -231,21 +237,14 @@ class Link(Base):
     link = models.URLField(max_length=250)
 
 class Video(Base):
-    """
-    Represents a video, can contain multiple VideoFormats.
     
-    Contains video title, keywords and description.
-    """
-    ##The title of the Video
-    title = models.CharField(max_length=50)
-    ##The description for the video
-    description = models.TextField()
-    ##The orginal uploaded video file
-    original_file = models.FileField(upload_to='video')
+    def save(self, *args, **kwargs):
+        super(Video, self).save(*args, **kwargs)
+    
+    uploaded_video = models.FileField(upload_to='videos')
     def get_file_paths(self):
         """
         Returns a dictionary of filepaths for every availiable format
-        lad
         @return Dict Returns a dictionary of format:filepath
         """
         return
@@ -260,7 +259,7 @@ class Video(Base):
     
 class VideoThumbnail(models.Model):
     """
-    Handles the storage of video thumbnails.
+    Handles the storage of video thumbnails. 
     
     Thumbnails will be generated upon video being uploaded.
     """
