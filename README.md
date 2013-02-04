@@ -13,6 +13,3 @@ Requirements
 * [psutil](http://code.google.com/p/psutil/) (server only)
 * [ffmpeg](http://ffmpeg.mplayerhq.hu)
 * [Python Video Converter](https://github.com/senko/python-video-converter)
-
-
-This is some example text
