@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Course Overview &middot; LCARS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Le styles -->
+        <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+        </style>
+        <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Fav and touch icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ STATIC_URL }}ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}ico/apple-touch-icon-57-precomposed.png">
+        <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.png">
+    </head>
+
+    <body>
+        {% block navbar %} {% endblock %}
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <ul class="breadcrumb">
+                        <li class="active">
+                            LCARS
+                        </li>
+                    </ul>
+                    <div class="row-fluid">
+                        <div class="span12 well">
+                            <h2>Welcome to LCARS</h2>
+                            <p>
+                                LCARS is a centralised online learning system. You can use LCARS to access Lecture Videos, take tests, ask questions and submit coursework.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span3 well" style="padding: 10px">
+                            <h3>Annoucements</h3>
+                            <ul>
+                                <li>
+                                    <i>09/01/2012</i>
+                                    <ul>
+                                        <li>
+                                            Latest coursework marks are up
+                                        </li>
+                                        <li>
+                                            Exam Timetable Published
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <i>09/01/2012</i>
+                                    <ul>
+                                        <li>
+                                            Latest coursework marks are up
+                                        </li>
+                                        <li>
+                                            Exam Timetable Published
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p>
+                                <a class="btn" href="module.html">View Announcements &raquo;</a>
+                            </p>
+                        </div><!--/span-->
+                        <div class="span3 well" style="padding: 10px">
+                            <h3>Coursework <a href="#"><span class="label label-info">iCal</span></a></h3>
+                            <p>
+                                <i>Upcoming Coursework</i>
+                            </p>
+                            <ul>
+                                <li>
+                                    <i>13/01/2012</i>
+                                    <ul>
+                                        <li>
+                                            <a href="courseworkitem.html">CM1101 PyGame Task</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <i>20/03/2012</i>
+                                    <ul>
+                                        <li>
+                                            <a href="courseworkitem.html">CM1102 Blog Task</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                            <p>
+                                <a class="btn" href="module.html">Coursework Summary &raquo;</a>
+                            </p>
+
+                        </div><!--/span-->
+                        <div class="span3 well" style="padding: 10px">
+                            <h3>Latest Marks</h3>
+                            <ul style="list-style-type: none;">
+                                <li>
+                                    <span class="badge badge-success">78%</span><a href="lecturetest.html">Introduction to Computer Science</a>
+                                </li>
+                                <li>
+                                    <span class="badge badge-warning">58%</span><a href="lecturetest.html">Computer Component Quiz</a>
+                                    2
+                                </li>
+                                <li>
+                                    <span class="badge badge-important">48%</span><a href="lecturetest.html">What is Python?</a>
+                                </li>
+                            </ul>
+                            <p>
+                                <a class="btn" href="module.html">Results Summary &raquo;</a>
+                            </p>
+                        </div><!--/span-->
+                        <div class="span3 well" style="padding: 10px">
+                            <h3>Latest Questions</h3>
+                            <ul>
+                                <li>
+                                    <a href="modulefaq.html">What is a computer?</a>
+                                </li>
+                                <li>
+                                    <a href="modulefaq.html">What is Python?</a>
+                                </li>
+                            </ul>
+                            <p>
+                                <a class="btn" href="module.html">View module &raquo;</a>
+                            </p>
+                        </div><!--/span-->
+                    </div><!--/row-->
+
+                </div>
+            </div><!--/row-->
+
+            <hr>
+
+            <footer>
+                <p>
+                    &copy; <a href="#">LCARS</a> 2013
+                </p>
+            </footer>
+
+        </div><!--/.fluid-container-->
+
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{{ STATIC_URL }}js/jquery.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-transition.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-scrollspy.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-button.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-carousel.js"></script>
+        <script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
+        <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+
+    </body>
+</html>
