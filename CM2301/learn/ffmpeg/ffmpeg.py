@@ -15,6 +15,7 @@ class Converter(object):
     _is_started = False
     _process = None
     _length = None
+    _dimensions = {}
 
     def __init__(self, input_path, output_path, ffmpeg_path=None):
         """
@@ -45,18 +46,37 @@ class Converter(object):
     def set_video_codec(self, video_codec):
         """
         Sets the output video codec.
+        
+        @param VideoCodec The constant codec 
         """
         self.video_codec = video_codec
 
     def set_audio_codec(self, audio_codec):
         """
         Set the output audio codec.
+        
+        @param VideoCodec The codec to be used.
         """
         self.audio_codec = audio_codec
+        
+    def set_dimensions(self, height=None, width=None):
+        """
+        Sets either the height, width or both for the encoding.
+        
+        If using certain VideoCodec then neither of these should be an odd number.
+        
+        @param height The height in pixels.
+        @param width The width in pixels.  
+        """
+        if height == None and width == None:
+             raise TypeError("No dimensions given")
+        else:
+             self._dimensions = {'width': width, 'height': height}
+         
 
     def start(self):
         """
-        Starts the current conversion task in a thread.
+        Starts the current conversion task the background.
         """
         print ' '.join(self._parse_options())
         thread = threading.Thread(target=self.__conversion)
@@ -102,6 +122,10 @@ class Converter(object):
         return self.__to_decimal(tmp[0])
 
     def __conversion(self):
+        """
+        This method is run by the thread, it executes the ffmpeg process
+        and captures the output.
+        """
         self._is_started = True
         self._length = self.get_duration()
         
@@ -133,6 +157,10 @@ class Converter(object):
                 
                 
     def _parse_options(self):
+        """
+        Checks the current config for the encoding and outputs the 
+        correct commands for ffmpeg.
+        """
         video = []
         if self.container is ContainerFormat.WEBM:
             video = ['-codec:v', VideoCodec.VP8, 
@@ -170,6 +198,11 @@ class Converter(object):
 
     @property
     def progress(self):
+        """
+        The current progress of the encoding, as a percentage.
+        
+        @return float The progress ffmpeg as a percentage.
+        """
         if (self._progress is None
             and self._is_started is False):
             raise FFMpegException("Conversion not started")
@@ -178,6 +211,10 @@ class Converter(object):
         
     @property
     def probe(self):
+        """
+        Returns information about the current file using ffprobe.
+        @return FFProbe Returns an ffprobe for the current file.
+        """
         return FFProbe(self.input_file)
 
 class ContainerFormat(object):
