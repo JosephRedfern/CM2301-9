@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 import uuid
 
@@ -291,8 +291,10 @@ class Video(Base):
     @property
     def url(self):
         """
+        Returns the video original video file url
         """
         return settings.MEDIA_ROOT + os.sep + self.uploaded_video.url
+        
     def convert(self):
         c.set_video_codec(VideoCodec.VP8)
         c.set_audio_codec('aac')
