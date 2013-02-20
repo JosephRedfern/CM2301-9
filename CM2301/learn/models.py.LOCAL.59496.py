@@ -287,20 +287,6 @@ class Video(Base):
         videoFormat = VideoFormat.objects.get(video=self, encoding=format)
         return videoFormat.name
 
-    
-    @property
-    def url(self):
-        """
-        """
-        return settings.MEDIA_ROOT + os.sep + self.uploaded_video.url
-    def convert(self):
-        c.set_video_codec(VideoCodec.VP8)
-        c.set_audio_codec('aac')
-        c.set_container(ContainerFormat.MP4)
-        c.set_dimensions(height=480)
-        c.start()
-        return c
-    
 class VideoThumbnail(models.Model):
     """
     Handles the storage of video thumbnails. 

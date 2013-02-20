@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser
 from django.conf import settings
 import uuid
 
@@ -48,6 +48,7 @@ class Base(models.Model):
         if (self._links is None):
             self._links = list(Links.objects.filter(object_id = self.id))
         return self._links
+
     
     def save(self, *args, **kwargs):
         """
@@ -169,14 +170,8 @@ class Attachment(Base):
         
         @return: Float A float of the total size in Kb
         """
-        revisions = Revision.objects.get(Attachment=self)
-
-        totalSize = 0
-        for revision in revisions:
-            totalSize += revision.size
-
-        return totalSize
-
+        return
+    
     def remove_revision(self, revision_uuid):
         """
         Removes the revision from the attachment with the 
@@ -185,9 +180,7 @@ class Attachment(Base):
         @param UUID The uuid of the revision to be purged.
         @return Revision The Revision object removed.
         """
-        revision = Revision.objects.get(uuid = revision_uuid)
-        revision.delete()
-        return revision #this might cause issues... we'll see. not sure if .delete() also deletes the object from memory. 
+        return
     
     def purge_revisions(self):
         """
@@ -201,7 +194,6 @@ class Attachment(Base):
         
         @return List Returns a list of all Revisions sorted descending order.
         """
-        return Revision.objects.order_by('time_uploaded')
         
     def add_revision(self, revision):
         """
@@ -211,7 +203,6 @@ class Attachment(Base):
         @throws AttachmentException If Revision file type is invalid.
         """
         
-
 class Revision(Base):
     """
     A revision object represents a single file that belongs to an Attachment.
@@ -236,10 +227,7 @@ class Revision(Base):
         Returns the File object for the current Revision.
         @return File Returns the File handler for the Revision
         """
-        return self.file.file
-    
-    class Meta:
-        get_latest_by = "time_uploaded"
+        return
     
 ################################################################
 #Lecturing Classes
@@ -267,26 +255,17 @@ class Video(Base):
     def get_file_paths(self):
         """
         Returns a dictionary of filepaths for every availiable format
-
         @return Dict Returns a dictionary of format:filepath
         """
-        
-        videoFormats = VideoFormat.objects.get(video=self)
-        filePaths = {}
-        for videoFormat in videoFormats:
-            filePaths[videoFormat.encoding] = videoFormat.name #RELATIVE path.
-        
-        return filePaths
+        return
     
     def get_file_path(self, format):
         """
         Returns the video file path for the specified format
         
-        @return String A string of the VideoFormat filepath
+        @return String A string of the Format filepath
         """
-        videoFormat = VideoFormat.objects.get(video=self, encoding=format)
-        return videoFormat.name
-
+        return
     
     @property
     def url(self):
@@ -667,6 +646,7 @@ class QueueItem(Base):
     ##The time of job completion
     completion_time = models.DateTimeField()
     
+    
 class UserQuestion(Base):
     """
     Handles the User questioning system for an Object.
@@ -703,8 +683,7 @@ class UserQuestion(Base):
         Sets the QuestionReponse object as being approved by a lecturer.
         """
         return
-
-
+    
 class QuestionResponse(Base):
     """
     QuestionReponse class handles the answering of UserQuestion objects.
@@ -742,3 +721,5 @@ class Search(object):
         Runs the search with supplied queries.
         @returns Dictionary Retuns a dictionary of matching object types.
         """
+    
+
