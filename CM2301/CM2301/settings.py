@@ -1,5 +1,8 @@
 # Django settings for CM2301 project.
 
+import os
+import django
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -23,6 +26,9 @@ DATABASES = {
     }
 }
 
+DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
+SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -31,7 +37,7 @@ TIME_ZONE = 'Europe/London'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-gb'
 
 SITE_ID = 1
 
@@ -48,7 +54,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/Users/Charlie/Documents/media'
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'assets')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -70,7 +76,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/josephredfern/Development/Django/CM2301/CM2301/CM2301/static',
+    os.path.join(SITE_ROOT, 'CM2301/static'),
 )
 
 # List of finder classes that know how to find static files in
