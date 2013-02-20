@@ -39,7 +39,6 @@ class Base(models.Model):
         if (self._custom_fields is None):
             self._custom_fields = list(CustomField.objects.filter(object_id = self.id))
         return self._custom_fields
-<<<<<<< HEAD
     
     @property
     def links(self):
@@ -49,9 +48,6 @@ class Base(models.Model):
         if (self._links is None):
             self._links = list(Links.objects.filter(object_id = self.id))
         return self._links
-
-=======
->>>>>>> origin/joe
     
     def save(self, *args, **kwargs):
         """
@@ -271,10 +267,7 @@ class Video(Base):
     def get_file_paths(self):
         """
         Returns a dictionary of filepaths for every availiable format
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/joe
         @return Dict Returns a dictionary of format:filepath
         """
         
