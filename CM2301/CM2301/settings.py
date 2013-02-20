@@ -27,7 +27,11 @@ DATABASES = {
 }
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
+<<<<<<< HEAD
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+=======
+SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
+>>>>>>> origin/joe
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -37,7 +41,7 @@ TIME_ZONE = 'Europe/London'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-gb'
 
 SITE_ID = 1
 
@@ -76,6 +80,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(SITE_ROOT, 'CM2301/static'),
 )
 
 # List of finder classes that know how to find static files in
