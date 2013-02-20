@@ -27,11 +27,7 @@ DATABASES = {
 }
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
-<<<<<<< HEAD
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-=======
 SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
->>>>>>> origin/joe
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
