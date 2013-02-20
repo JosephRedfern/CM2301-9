@@ -34,7 +34,7 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -45,16 +45,18 @@
           <a class="brand" href="#">LCARS</a>
           <div class="nav-collapse collapse">
             <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link">Joe</a>
+              Logged in as <a href="userprofile.html" class="navbar-link">Joe</a>
             </p>
             <ul class="nav">
-              <li><a href="#about">Overview</a></li>
+              <li><a href="index.html">Overview</a></li>
               <li class="dropdown" id="menu1">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                   Modules
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
+                  <li><a href="modules.html"><b>Module Overview</b></a></li>
+                  <li class="divider"></li>
                   <li><a href="module.html"><b>CM1101</b> - <i>Computational Thinking</i></a></li>
                   <li><a href="module.html"><b>CM1102</b> - <i>Web Applications</i></a></li>
                   <li><a href="module.html"><b>CM1103</b> - <i>Problem Solving with Python</i></a></li>
@@ -64,9 +66,9 @@
                   <li><a href="module.html"><b>CM1205</b> - <i>Architecture and Operating Systems</i></a></li>
                 </ul>
               </li>
-              <li><a href="#contact">Coursework</a></li>
+              <li><a href="coursework.html">Coursework</a></li>
               <li class="active"><a href="alltests.html">Tests</a></li>
-              <li><a href="#contact">Progress</a></li>
+              <li><a href="progress.html">Progress</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -76,33 +78,7 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Introduction</li>
-              <li><a href="lecture.html">Introduction to Computer Science <span class="label">Viewed</span></a></li>
-              <li><a href="lecture.html">History of Computing <span class="label label-success">Passed</span></a></li>
-              <li><a href="lecture.html">Internal Workings of a Computer <span class="label label-success">Passed</span></a></li>
-              <li class="nav-header">Python</li>
-              <li><a href="lecture.html">Introduction to Python <span class="label label-important">Failed</span></a></li>
-              <li><a href="lecture.html">Installing Python <span class="label">Viewed</span></a></li>
-              <li><a href="lecture.html">Your First Program (Hello world)</a></li>
-              <li><a href="lecture.html">Logic in Python</a></li>
-              <li><a href="lecture.html">User Input</a></li>
-              <li class="nav-header">Excel</li>
-              <li><a href="lecture.html">Introduction to Excel (lol)</a></li>
-              <li><a href="lecture.html">Plotting Data</a></li>
-              <li><a href="lecture.html">Statistical Methods</a></li>
-              <li class="nav-header">Real World Problems</li>
-              <li><a href="lecture.html">Example Problem #1</a></li>
-              <li><a href="lecture.html">Example Problem #2</a></li>
-              <li><a href="lecture.html">Example Problem #3</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-
-        <div class="span9">
+        <div class="span12">
           <ul class="breadcrumb">
   <li><a href="index.html">LCARS</a> <span class="divider">/</span></li>
   <li class="active">Tests</li>
@@ -111,25 +87,25 @@
             <div class="span4">
               <h3>Due Tests</h3>
               <ul>
-                <li><a href="test.html">Introduction to Computer Science</a></li>
-                <li><a href="test.html">Installing Python</a></li>
+                <li><a href="lecturetest.html">Introduction to Computer Science</a></li>
+                <li><a href="lecturetest.html">Installing Python</a></li>
               </ul>
             </div><!--/span-->
             <div class="span4">
               <h3>Top 5 Results</h3>
               <ul style="list-style-type: none;">
-                <li><span class="badge badge-success">78%</span> <a href="test.html">Introduction to Computer Science</a></li>
-                <li><span class="badge badge-warning">58%</span> <a href="test.html">Computer Component Quiz</a></li>
-                <li><span class="badge badge-important">48%</span> <a href="test.html">What is Python?</a></li>
+                <li><span class="badge badge-success">78%</span> <a href="lecturetest.html">Introduction to Computer Science</a></li>
+                <li><span class="badge badge-warning">58%</span> <a href="lecturetest.html">Computer Component Quiz</a></li>
+                <li><span class="badge badge-important">48%</span> <a href="lecturetest.html">What is Python?</a></li>
               </ul>
             </div><!--/span-->
             <div class="span4">
               <h3>Bottom 5 Results</h3>
               <ul>
                 <ul style="list-style-type: none; margin-left: 0px;">
-                <li><span class="badge badge-important">48%</span> <a href="test.html">What is Python?</a></li>
-                <li><span class="badge badge-warning">58%</span> <a href="test.html">Computer Component Quiz</a></li>
-                <li><span class="badge badge-success">78%</span> <a href="test.html">Introduction to Computer Science</a></li>
+                <li><span class="badge badge-important">48%</span> <a href="lecturetest.html">What is Python?</a></li>
+                <li><span class="badge badge-warning">58%</span> <a href="lecturetest.html">Computer Component Quiz</a></li>
+                <li><span class="badge badge-success">78%</span> <a href="lecturetest.html">Introduction to Computer Science</a></li>
               </ul>
               </ul>
             </div><!--/span-->
@@ -149,25 +125,25 @@
                 <tr>
                   <td><a href="module.html">CM1101</a></td>
                   <td><a href="lecture.html">Introduction</a></td>
-                  <td><a href="test.html">Introduction Lecture Test</a></td>
+                  <td><a href="lecturetest.html">Introduction Lecture Test</a></td>
                   <td><span class="badge badge-success">78%</span></td>
-                  <td><a href="#" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
+                  <td><a href="lecturetest.html" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
                   <td>
                 </tr>
                 <tr>
                   <td><a href="module.html">CM1101</a></td>
                   <td><a href="lecture.html">Internal Workings of a Computer</a></td>
-                  <td><a href="test.html">Computer Component Quiz</a></td>
+                  <td><a href="lecturetest.html">Computer Component Quiz</a></td>
                   <td><span class="badge badge-warning">58%</span></td>
-                  <td><a href="#" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
+                  <td><a href="lecturetest.html" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
                   <td>
                 </tr>
                 <tr>
                   <td><a href="module.html">CM1101</a></td>
                   <td><a href="lecture.html">Introduction to Python</a></td>
-                  <td><a href="test.html">What is Python?</a></td>
+                  <td><a href="lecturetest.html">What is Python?</a></td>
                   <td><span class="badge badge-important">48%</span></td>
-                  <td><a href="#" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
+                  <td><a href="lecturetest.html" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
                   <td>
                 </tr>
               </table>
