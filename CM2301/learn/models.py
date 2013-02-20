@@ -14,6 +14,7 @@ class Base(models.Model):
     id = models.CharField(max_length=36, primary_key=True)
     _attachments = None
     _custom_fields = None
+    _links = None
     
     class Meta:
         app_label = "learn"
@@ -38,6 +39,15 @@ class Base(models.Model):
         if (self._custom_fields is None):
             self._custom_fields = list(CustomField.objects.filter(object_id = self.id))
         return self._custom_fields
+    
+    @property
+    def links(self):
+        """
+        Returns all links associated with the current CustomField
+        """
+        if (self._links is None):
+            self._links = list(Links.objects.filter(object_id = self.id))
+        return self._links
 
     
     def save(self, *args, **kwargs):
