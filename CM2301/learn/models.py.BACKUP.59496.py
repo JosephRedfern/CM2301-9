@@ -284,9 +284,12 @@ class Video(Base):
         
         @return String A string of the VideoFormat filepath
         """
+<<<<<<< HEAD
         videoFormat = VideoFormat.objects.get(video=self, encoding=format)
         return videoFormat.name
 
+=======
+        return
     
     @property
     def url(self):
@@ -301,6 +304,7 @@ class Video(Base):
         c.start()
         return c
     
+>>>>>>> charlie
 class VideoThumbnail(models.Model):
     """
     Handles the storage of video thumbnails. 
