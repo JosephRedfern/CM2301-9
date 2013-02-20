@@ -1,6 +1,7 @@
 .project
 .pydevproject
 *.pyc
+*.swp
 *.7z
 *.dmg
 *.gz
