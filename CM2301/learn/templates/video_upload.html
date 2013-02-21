@@ -1,3 +1,6 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
 <ul>
 {% for video in videos %}
 	<li>{{video.id}}</li>
@@ -5,5 +8,6 @@
 </ul>
 <form enctype="multipart/form-data" action="/videos/submit/" method="POST">{% csrf_token %}
 	{{form.as_p}}
-	<input type="submit" value="Submit" />
+	<input type="submit" value="Submit" class="btn"/>
 </form>
+{% endblock %}
