@@ -11,6 +11,6 @@ class LectureCreateForm(ModelForm):
         model = Lecture
         exclude = ('id', 'visible')
         widgets = {
-            'validFrom': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
-            'validTo': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
+            'valid_to': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
+            'valid_from': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
         }
