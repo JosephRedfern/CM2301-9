@@ -370,6 +370,12 @@ class Module(Base):
     ##The lectures used in the module
     lectures = models.ManyToManyField(Lecture)
 
+    def get_modules(self):
+	"""
+	Returns a list of all Module objects in the course
+	@return List Returns a list of Lecture objects
+	"""
+
 class Course(Base):
     """
     A course represents a top level definition of a degree. 
