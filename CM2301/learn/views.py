@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from learn.models import Video
+from learn.models import *
 from learn.forms import *
 
 def home(request):
@@ -19,3 +19,7 @@ def video_submit(request):
         if form.is_valid():
             form.save()
             return HttpResponse("MOTHER FUCKER IT UPLOADED")
+        
+def lecture_create(request):
+    form = LectureCreateForm()
+    return render(request, 'lecture_create.html', {'form': form})

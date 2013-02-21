@@ -126,8 +126,8 @@ class User(AbstractUser, Base):
         """
         return
     
-    def __unicode__():
-        return self.name
+    def __unicode__(self):
+        return self.username
     
 class CustomField(Base):
     """
