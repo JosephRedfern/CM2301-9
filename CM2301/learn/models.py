@@ -373,9 +373,9 @@ class Lecture(Base):
     ##Attachments to be presented with the lecture
     attachments = models.ManyToManyField(Attachment)
     ##The date the Lecture becomes valid.
-    validFrom = models.DateField()
+    valid_from = models.DateField()
     ##The date the lecture expires.
-    validTo = models.DateField()
+    valid_to = models.DateField()
     ##Whether the lecture is visible
     visible = models.BooleanField(default=True)
     ##Links that may be useful.
