@@ -1,22 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import datetime
-from learn.models import module
 
 
 
 def home(request):
     return render(request, 'base_navbar.html')
 
-def current_datetime(request):
-    now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
+def videos(request):
+    form = VideUploadForm()
+    videos = Video.objects.all()
+    return render(request, 'video_upload.html', {'videos': videos, 'form': form})
 
-def get_modules(request):
+def video_submit(request):
+    if request.method == 'POST':
+        form = VideUploadForm(data=request.POST, files=request.FILES)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponse("MOTHER FUCKER IT UPLOADED YOU PRICK ")
     
-    module_list = 
-    
-
-    return modules_list
 
