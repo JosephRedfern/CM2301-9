@@ -30,6 +30,7 @@ class Base(models.Model):
             self._attachments = list(Attachment.objects.filter(object_id = self.id))
         return self._attachments
     
+    
     @property
     def custom_fields(self):
         """
@@ -124,6 +125,9 @@ class User(AbstractUser, Base):
         @throws UserDataException
         """
         return
+    
+    def __unicode__():
+        return self.name
     
 class CustomField(Base):
     """
@@ -286,7 +290,26 @@ class Video(Base):
         """
         videoFormat = VideoFormat.objects.get(video=self, encoding=format)
         return videoFormat.name
+    
+    def __unicode__(self):
+        return self.title
 
+    
+    @property
+    def url(self):
+        """
+        Returns the video original video file url
+        """
+        return settings.MEDIA_ROOT + os.sep + self.uploaded_video.url
+        
+    def convert(self):
+        c.set_video_codec(VideoCodec.VP8)
+        c.set_audio_codec('aac')
+        c.set_container(ContainerFormat.MP4)
+        c.set_dimensions(height=480)
+        c.start()
+        return c
+    
 class VideoThumbnail(models.Model):
     """
     Handles the storage of video thumbnails. 
@@ -301,6 +324,9 @@ class VideoThumbnail(models.Model):
     ##The thumbnail image.
     thumbnail = models.FileField(upload_to='thumbnails')
     
+    def __unicode__(self):
+        return "Thumbnail for " + self.video.__unicode__() + " at " + str(self.time) + "s"
+
     class Meta:
         ordering = ['time']
     
@@ -319,7 +345,7 @@ class VideoFormat(Revision):
     bitrate = models.CharField(max_length=10)
     ##The Video object the format belongs to.
     video = models.ForeignKey(Video)
-    
+
     def probe(self):
         """
         Return ffprobe class from video.
@@ -329,6 +355,9 @@ class VideoFormat(Revision):
         @return: ffprobe 
         """
         return
+
+    def __unicode__(self):
+        return self.video.__unicode__() + " in " + self.encoding
     
 class Lecture(Base):
     """
@@ -353,6 +382,9 @@ class Lecture(Base):
     links = models.ManyToManyField(Link)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
+
+    def __unicode__(self):
+        return self.title
     
 class Module(Base):
     """
@@ -370,11 +402,8 @@ class Module(Base):
     ##The lectures used in the module
     lectures = models.ManyToManyField(Lecture)
 
-    def get_modules(self):
-	"""
-	Returns a list of all Module objects in the course
-	@return List Returns a list of Lecture objects
-	"""
+    def __unicode__(self):
+        return self.title + " (" + self.module_code + ")"
 
 class Course(Base):
     """
@@ -398,6 +427,9 @@ class Course(Base):
         Returns a list of all Lecture objects in this course.
         @return List Returns a list of Lecture objects.
         """
+
+    def __unicode__(self):
+        return self.title + " (" + self.code + ")"
     
     
 ################################################################
@@ -427,6 +459,9 @@ class Question(Base):
         @return Answer Returns the correct Answer object
         @throws TestException If no correct Answer found.
         """
+
+    def __unicode__(self):
+        return self.content[:97]+"..."
         
         
 class Test(Base):
@@ -456,6 +491,9 @@ class Test(Base):
         @throws TestException
         """
         return
+
+    def __unicode__(self):
+        return self.title
         
         
 class Answer(Base):
@@ -468,9 +506,12 @@ class Answer(Base):
     content = models.CharField(max_length=250)
     ##Whether or not the question is correct
     correct = models.BooleanField()
-    ##The question the 
+    ##The question the answer is associated with
     question = models.ForeignKey(Question)
     
+    def __unicode__(self):
+        return self.content[:100]+"..."
+
 class TestInstance(Base):
     """
     A TestInstance object contains a reference to related Test,
@@ -491,6 +532,9 @@ class TestInstance(Base):
         """
         return
     
+    def __unicode__(self):
+        return "Instance of "+self.test.__unicode__()+" for user "+self.student.__unicode__()
+
 class Result(Base):
     """
     The result class stores a reference to the answer selected 
@@ -502,6 +546,10 @@ class Result(Base):
     question = models.ForeignKey(Question)
     ##The answer chosen
     answer = models.ForeignKey(Answer)
+
+    def __unicode__(self):
+        return "Answer to "+self.question
+
 
 ################################################################
 #Coursework Setting/Marking Classes
@@ -525,6 +573,9 @@ class CourseworkTask(Base):
     start_date = models.DateTimeField()
     ##The coursework submission date
     due_date = models.DateTimeField()
+
+    def __unicode__(self):
+        return "Coursework Task: "+self.title
     
 class ProgrammingTask(CourseworkTask):
     """
@@ -561,13 +612,20 @@ class CourseworkSubmission(Base):
         """
         Sets the marked attribute to be True
         """
-        return
+        self.marked = True
+        self.save()
+        return True
     
     def set_unmarked(self):
         """
         Sets the marked attribute to be False
         """
-        return
+        self.marked = False
+        self.save()
+        return True
+
+    def __unicode__(self):
+        return 
 
 class ProgrammingSubmission(CourseworkSubmission):
     """
