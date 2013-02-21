@@ -1,0 +1,26 @@
+{% extends "bootstrap_base.html" %}
+
+{% block body %}
+<form method="post" action="" class="form-signin">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    {% if form.errors %}
+    <p><i>Your username and password didn't match. Please try again.</i></p>
+    {% endif %}
+
+
+{% csrf_token %}
+<table>
+<tr>
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+
+<input type="submit" value="login" class="btn-large btn-primary" />
+<input type="hidden" name="next" value="/" />
+</form>
+{% endblock %}
