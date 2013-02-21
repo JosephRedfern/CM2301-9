@@ -26,3 +26,4 @@ CM2301/.DS_Store
 .settings
 *.db
 *.sqlite
+CM2301/assets*
