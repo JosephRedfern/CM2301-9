@@ -27,3 +27,9 @@ def video_submit(request):
 def login(request):
     form = LoginForm()
     return render(request, 'login.html', {'form': form})
+
+        
+def lecture_create(request):
+    form = LectureCreateForm()
+    print form.as_p()
+    return render(request, 'lecture_create.html', {'form': form})

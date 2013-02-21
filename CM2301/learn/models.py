@@ -126,8 +126,8 @@ class User(AbstractUser, Base):
         """
         return
     
-    def __unicode__():
-        return self.name
+    def __unicode__(self):
+        return self.username
     
 class CustomField(Base):
     """
@@ -368,18 +368,20 @@ class Lecture(Base):
     """
     ##The title of the lecture
     title = models.CharField(max_length=50)
+    ##The description of the lecture
+    description = models.TextField()
     ##The videos used in the lecture
-    videos = models.ManyToManyField(Video)
+    videos = models.ManyToManyField(Video, null=True)
     ##Attachments to be presented with the lecture
-    attachments = models.ManyToManyField(Attachment)
+    attachments = models.ManyToManyField(Attachment, null=True)
     ##The date the Lecture becomes valid.
-    validFrom = models.DateField()
+    valid_from = models.DateField()
     ##The date the lecture expires.
-    validTo = models.DateField()
+    valid_to = models.DateField()
     ##Whether the lecture is visible
     visible = models.BooleanField(default=True)
     ##Links that may be useful.
-    links = models.ManyToManyField(Link)
+    links = models.ManyToManyField(Link, null=True)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
