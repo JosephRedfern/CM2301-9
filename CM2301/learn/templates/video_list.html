@@ -1,0 +1,9 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+<ul>
+{% for video in videos %}
+	<li>{{video.id}}</li>
+{% endfor %}
+</ul>
+{% endblock %}
