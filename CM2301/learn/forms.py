@@ -14,3 +14,4 @@ class LectureCreateForm(ModelForm):
             'valid_to': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
             'valid_from': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
         }
+        
