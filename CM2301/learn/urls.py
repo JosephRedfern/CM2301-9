@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^$', 'learn.views.misc.home', name='home'),
     #url(r'^videos/$', 'learn.views.videos'),
     url(r'^videos/submit/$', 'learn.views.video.submit'),
-    url(r'^login/$', 'django.contrib.auth.views.login',{'template_name': 'login.html'}),
+    url(r'^login/$', 'learn.views.misc.custom_login'),
     
     #Video URL's
     url(r'^videos/$', 'learn.views.video.all'),
