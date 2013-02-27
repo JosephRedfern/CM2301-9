@@ -793,4 +793,4 @@ class Search(object):
         """
         Runs the search with supplied queries.
         @returns Dictionary Retuns a dictionary of matching object types.
-        """
+       """
