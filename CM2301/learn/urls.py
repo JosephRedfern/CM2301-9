@@ -7,12 +7,12 @@ urlpatterns = patterns('',
     url(r'^$', 'learn.views.misc.home', name='home'),
     #url(r'^videos/$', 'learn.views.videos'),
     url(r'^videos/submit/$', 'learn.views.video.submit'),
-    url(r'^login/$', 'django.contrib.auth.views.login',{'template_name': 'login.html'}),
+    url(r'^login/$', 'learn.views.misc.custom_login'),
     
     #Video URL's
     url(r'^videos/$', 'learn.views.video.all'),
     url(r'^videos/(?P<video_id>%s)/$' % (uuid), 'learn.views.video.video'),
-    url(r'^videos/(?P<video_id>%s)/serve/(.+)$' % (uuid), 'learn.views.serve'),
+    url(r'^videos/(?P<video_id>%s)/serve/(.+)$' % (uuid), 'learn.views.video.serve'),
     url(r'^videos/create/$', 'learn.views.video.create'),
     
     #Lecture URL's
