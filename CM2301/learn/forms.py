@@ -2,6 +2,10 @@ from django.forms import ModelForm
 from learn.models import *
 from django.forms import ModelForm, DateInput
 
+class AttachmentForm(ModelForm):
+    class Meta:
+	model = Attachment
+
 class VideoUploadForm(ModelForm):
     class Meta:
         model = Video

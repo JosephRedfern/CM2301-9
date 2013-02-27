@@ -17,4 +17,7 @@ urlpatterns = patterns('',
     
     #Lecture URL's
     url(r'^lectures/create/$', 'learn.views.lecture.create'),
+    
+    #Module URL's
+    url(r'^attachments/$', 'learn.views.module.create'),
 )
