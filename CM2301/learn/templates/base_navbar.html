@@ -25,27 +25,11 @@
 								<a href="/modules/"><b>Module Overview</b></a>
 							</li>
 							<li class="divider"></li>
+                            {% for module in modules %}
 							<li>
-								<a href="/modules/cm1101"><b>CM1101</b> - <i>Computational Thinking</i></a>
+								<a href="/modules/cm1101"><b>{{ module.module_code }}</b> - <i>{{ module.title }}</i></a>
 							</li>
-							<li>
-								<a href="/modules/cm1102"l><b>CM1102</b> - <i>Web Applications</i></a>
-							</li>
-							<li>
-								<a href="/modules/cm1103"><b>CM1103</b> - <i>Problem Solving with Python</i></a>
-							</li>
-							<li>
-								<a href="/modules/cm1201"><b>CM1201</b> - <i>Professional Skills</i></a>
-							</li>
-							<li>
-								<a href="/modules/cm1202"><b>CM1202</b> - <i>Developing Quality Software</i></a>
-							</li>
-							<li>
-								<a href="/modules/cm1203"><b>CM1203</b> - <i>Fundementals of Computing with Java</i></a>
-							</li>
-							<li>
-								<a href="/modules/cm1205"><b>CM1205</b> - <i>Architecture and Operating Systems</i></a>
-							</li>
+                            {% endfor %}
 						</ul>
 					</li>
 					<li>
