@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     #Video URL's
     url(r'^videos/$', 'learn.views.video.all'),
     url(r'^videos/(?P<video_id>%s)/$' % (uuid), 'learn.views.video.video'),
-    url(r'^videos/(?P<video_id>%s)/serve/(.+)$' % (uuid), 'learn.views.serve'),
+    url(r'^videos/(?P<video_id>%s)/serve/(.+)$' % (uuid), 'learn.views.video.serve'),
     url(r'^videos/create/$', 'learn.views.video.create'),
     
     #Lecture URL's
