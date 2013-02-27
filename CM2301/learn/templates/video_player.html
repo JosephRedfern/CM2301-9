@@ -1,0 +1,15 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+
+<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/c/video.js"></script>
+
+<video id="my_video_1" class="video-js vjs-default-skin" controls
+  preload="auto" width="624" height="352"
+  data-setup="{}">
+  <source src="http://localhost:8000/videos/5d62f990-7de0-11e2-9e96-0800200c9a66/serve/peep.show.s07e04.mp4" type='video/mp4'>
+</video>
+
+{% endblock %}
+
