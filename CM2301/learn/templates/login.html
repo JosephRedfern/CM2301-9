@@ -2,7 +2,8 @@
 
 {% block body %}
 <form method="post" action="" class="form-signin">
-	<h2 class="form-signin-heading">Please sign in</h2>
+    <img src= "{{ STATIC_URL }}img/cardifflogo.png" alt="Hi!" />
+	<h2 class="form-signin-heading">Welcome to LCARS</h2>
 	{% csrf_token %}
 	<table>
 		<tr>
