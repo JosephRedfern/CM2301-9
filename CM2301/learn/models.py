@@ -291,10 +291,6 @@ class Video(Base):
         videoFormat = VideoFormat.objects.get(video=self, encoding=format)
         return videoFormat.name
     
-    def __unicode__(self):
-        return self.title
-
-    
     @property
     def url(self):
         """
@@ -373,7 +369,7 @@ class Lecture(Base):
     ##The videos used in the lecture
     videos = models.ManyToManyField(Video, null=True)
     ##Attachments to be presented with the lecture
-    attachments = models.ManyToManyField(Attachment, null=True)
+    attachments = models.ManyToManyField(Attachment, null=True, blank=True)
     ##The date the Lecture becomes valid.
     valid_from = models.DateField()
     ##The date the lecture expires.
@@ -381,7 +377,7 @@ class Lecture(Base):
     ##Whether the lecture is visible
     visible = models.BooleanField(default=True)
     ##Links that may be useful.
-    links = models.ManyToManyField(Link, null=True)
+    links = models.ManyToManyField(Link, null=True, blank=True)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
@@ -400,9 +396,11 @@ class Module(Base):
     ##The module code - CM2103
     module_code = models.CharField(max_length=100)
     ##Attachments linked to the module obejct
-    attachments = models.ManyToManyField(Attachment)
+    attachments = models.ManyToManyField(Attachment, blank=True, null=True)
     ##The lectures used in the module
     lectures = models.ManyToManyField(Lecture)
+
+    description = models.CharField(max_length=8192)
 
     def __unicode__(self):
         return self.title + " (" + self.module_code + ")"
