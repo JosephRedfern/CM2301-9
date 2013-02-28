@@ -36,11 +36,12 @@ def submit(request, video_id):
 
 @login_required
 def serve(request, video_id):
+    """
+    Serves a video media stream to the client, this view is used
+    by the VideoJS player.
+    """
     video = Video.objects.get(pk=video_id)
-    print video.uploaded_video.url
     filename = video.uploaded_video.name.split('/')[-1]
     response = StreamingHttpResponse(video.uploaded_video, content_type='video/mp4')
-    print video.uploaded_video.file.size
     response['Content-length'] = video.uploaded_video.file.size
-    
     return response
