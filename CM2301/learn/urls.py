@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     #url(r'^videos/$', 'learn.views.videos'),
     url(r'^videos/submit/$', 'learn.views.video.submit'),
     url(r'^login/$', 'learn.views.misc.custom_login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     
     #Video URL's
     url(r'^videos/$', 'learn.views.video.all'),
