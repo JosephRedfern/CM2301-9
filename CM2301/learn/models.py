@@ -400,6 +400,8 @@ class Module(Base):
     ##The lectures used in the module
     lectures = models.ManyToManyField(Lecture)
 
+    description = models.CharField(max_length=8192)
+
     def __unicode__(self):
         return self.title + " (" + self.module_code + ")"
 
