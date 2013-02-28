@@ -12,8 +12,7 @@ def module(request, module_id):
 
 def modules(request):
     values = {}
-    values['title'] = "Modules"
-    values['modules'] = Modules.objects.all()
-    values['lectures'] = Lecture.objects.all()
+    values['title'] =  "Module Overview"
+    values['modules'] = Module.objects.all()
 
-    return render(request, 'module_list.html', values)
+    return render(request, 'modules_overview.html', values)
