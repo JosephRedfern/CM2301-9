@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-import uuid
+from uuidfield import UUIDField
 
 class Base(models.Model):
     """
@@ -11,7 +11,7 @@ class Base(models.Model):
     """
     
     """UUID of the object, as String"""
-    id = models.CharField(max_length=36, primary_key=True)
+    id = UUIDField(auto=True, primary_key=True)
     _attachments = None
     _custom_fields = None
     _links = None
@@ -64,15 +64,6 @@ class Base(models.Model):
             for cf in self._custom_fields:
                 cf.save()
         super(Base, self).save(*args, **kwargs)
-        
-        
-    def __init__(self, *args, **kwargs):
-        """
-        Overrides the contructer to set the uuid
-        """
-        super(Base, self).__init__(*args, **kwargs)
-        if not self.id:
-            self.id = str(uuid.uuid4())
         
         
     def get_custom_fields(self):

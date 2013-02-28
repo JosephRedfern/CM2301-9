@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-uuid = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
+uuid = '[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}'
 
 urlpatterns = patterns('',
     # /
