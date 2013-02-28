@@ -129,7 +129,7 @@ class CustomField(Base):
     Objects can have multiple CustomField allowing for an extensiable Schema
     """
     ##The object uuid the datafield belongs to
-    object_id = models.CharField(max_length=36)
+    object_id = UUIDField()
     ##The datatype of the field, it will be converted back.
     data_type = models.CharField(max_length=15)
     ##The field key
@@ -149,7 +149,7 @@ class Attachment(Base):
     and retrieve the original version of the file
     """
     ##Object UUID - The UUID of the owning object.
-    object_id = models.CharField(max_length=36)
+    object_id = UUIDField()
     ##The file name e.g file.pdf
     file_name = models.CharField(max_length=50)
     ##The description of the Attachment
@@ -724,7 +724,7 @@ class UserQuestion(Base):
     contact with the lecturers.
     """
     ##The UUID of the object the question is attached to.
-    object_id = models.CharField(max_length=36)
+    object_id = UUIDField()
     ##The title of the Question
     title = models.CharField(max_length=250)
     ##The question text.
