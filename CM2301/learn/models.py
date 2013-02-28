@@ -128,7 +128,7 @@ class CustomField(Base):
     Objects can have multiple CustomField allowing for an extensiable Schema
     """
     ##The object uuid the datafield belongs to
-    object_id = models.CharField(max_length=36)
+    object_id = UUIDField()
     ##The datatype of the field, it will be converted back.
     data_type = models.CharField(max_length=15)
     ##The field key
@@ -148,7 +148,7 @@ class Attachment(Base):
     and retrieve the original version of the file
     """
     ##Object UUID - The UUID of the owning object.
-    object_id = models.CharField(max_length=36)
+    object_id = UUIDField()
     ##The title of the Attachment
     title = models.CharField(max_length=50)
     ##The file name e.g file.pdf
@@ -205,6 +205,9 @@ class Attachment(Base):
         @param Revision The Revision object to add to the Attachment
         @throws AttachmentException If Revision file type is invalid.
         """
+
+    def __unicode__(self):
+        return self.file_name
         
 
 class Revision(Base):
@@ -346,6 +349,26 @@ class VideoFormat(Revision):
     def __unicode__(self):
         return self.video.__unicode__() + " in " + self.encoding
     
+    
+class Module(Base):
+    """
+    A module is a set of lectures belonging to multiple courses.
+    
+    Modules can share Lecture objects, Module objects can belong
+    to multiple Course objects.
+    """
+    ##The title of the Module. E.g Python
+    title = models.CharField(max_length=100)
+    ##The module code - CM2103
+    module_code = models.CharField(max_length=100)
+    ##Attachments linked to the module obejct
+    attachments = models.ManyToManyField(Attachment, blank=True, null=True)
+
+    description = models.CharField(max_length=8192)
+
+    def __unicode__(self):
+        return self.title + " (" + self.module_code + ")"
+
 class Lecture(Base):
     """
     Represents a lecture in the system.
@@ -371,30 +394,11 @@ class Lecture(Base):
     links = models.ManyToManyField(Link, null=True, blank=True)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    ##Module that this lecture is associated with
+    module = models.ForeignKey(Module)
 
     def __unicode__(self):
         return self.title
-    
-class Module(Base):
-    """
-    A module is a set of lectures belonging to multiple courses.
-    
-    Modules can share Lecture objects, Module objects can belong
-    to multiple Course objects.
-    """
-    ##The title of the Module. E.g Python
-    title = models.CharField(max_length=100)
-    ##The module code - CM2103
-    module_code = models.CharField(max_length=100)
-    ##Attachments linked to the module obejct
-    attachments = models.ManyToManyField(Attachment, blank=True, null=True)
-    ##The lectures used in the module
-    lectures = models.ManyToManyField(Lecture)
-
-    description = models.CharField(max_length=8192)
-
-    def __unicode__(self):
-        return self.title + " (" + self.module_code + ")"
 
 class Course(Base):
     """
@@ -717,7 +721,7 @@ class UserQuestion(Base):
     contact with the lecturers.
     """
     ##The UUID of the object the question is attached to.
-    object_id = models.CharField(max_length=36)
+    object_id = UUIDField()
     ##The title of the Question
     title = models.CharField(max_length=250)
     ##The question text.
