@@ -23,5 +23,5 @@ urlpatterns = patterns('',
 
     #Lecture URL's
     url(r'^lectures/create/$', 'learn.views.lecture.create'),
-    
+    url(r'^lectures/(?P<lecture_id>%s)/$' % (uuid), 'learn.views.lecture.view'),    
 )
