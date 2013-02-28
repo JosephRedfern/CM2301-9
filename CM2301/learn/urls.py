@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     
 
     #Module URL's
-    url(r'^modules/%', 'learn.views.module.modules'),
+    url(r'^modules/$', 'learn.views.module.modules'),
     url(r'^modules/(?P<module_id>%s)/$' % (uuid), 'learn.views.module.module'),
 
     #Lecture URL's
