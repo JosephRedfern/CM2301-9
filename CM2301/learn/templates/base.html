@@ -38,7 +38,21 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
+
+                {% if lectures %}
+                <div class="span3">
+                    <div class="well sidebar-nav">
+                        <ul class="nav nav-list">
+                            {% for lecture in lectures %}
+                            <li><a href="/lectures/{{lecture.id}}">{{lecture.title}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="span9">
+                {% else %}
                 <div class="span12">
+                {% endif %}
                     <ul class="breadcrumb">
                         <li class="active">
                             LCARS
