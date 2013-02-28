@@ -4,17 +4,18 @@ from django.contrib.auth.decorators import login_required
 from learn.models import Video
 from learn.forms import *
 
-
+@login_required
 def create(request):
     form = VideoUploadForm()
     videos = Video.objects.all()
     return render(request, 'video_upload.html', {'videos': videos, 'form': form})
 
+@login_required
 def all(request):
     videos = Video.objects.all()
     return render(request, 'video_list.html', {'videos': videos})
 
-
+@login_required
 def video(request, video_id):
     print video_id
     try:
@@ -24,7 +25,7 @@ def video(request, video_id):
     print video.uploaded_video
     return render(request, 'video_player.html', {'video': video})
             
-
+@login_required
 def submit(request, video_id):
     if request.method == 'POST':
         form = VideoUploadForm(data=request.POST, files=request.FILES)
@@ -32,7 +33,8 @@ def submit(request, video_id):
         if form.is_valid():
             form.save()
             return HttpResponse("MOTHER FUCKER IT UPLOADED")
-        
+
+@login_required
 def serve(request, video_id):
     video = Video.objects.get(pk=video_id)
     print video.uploaded_video.url
