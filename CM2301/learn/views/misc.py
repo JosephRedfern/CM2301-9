@@ -8,6 +8,7 @@ from learn.forms import *
 def home(request):
     values = {}
     values['title'] = 'Home'
+    values['modules'] = Module.objects.all()
     return render(request, 'base_navbar.html', values)
 
 
