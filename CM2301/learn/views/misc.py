@@ -9,7 +9,6 @@ def home(request):
     values = {}
     values['title'] = 'Home'
     values['modules'] = Module.objects.all()
-    values['announcements'] = Announcements.objects.all()
     return render(request, 'overview.html', values)
 
 
