@@ -9,7 +9,7 @@
 			<div class="nav-collapse collapse">
 				<p class="navbar-text pull-right">
                 {% if user.is_authenticated %}
-                Logged in as <a href="userprofile.html" class="navbar-link">{{ user.username }}</a>
+                Logged in as <a href="/logout/" class="navbar-link">{{ user.username }}</a>
                 {% else %}
                     <a href="/login/">Log In</a>
                 {% endif %}
