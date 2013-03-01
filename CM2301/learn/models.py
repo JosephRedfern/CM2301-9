@@ -150,8 +150,6 @@ class Attachment(Base):
     """
     ##Object UUID - The UUID of the owning object.
     object_id = UUIDField()
-    ##The title of the Attachment
-    title = models.CharField(max_length=50)
     ##The file name e.g file.pdf
     file_name = models.CharField(max_length=50)
     ##The description of the Attachment
