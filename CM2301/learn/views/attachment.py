@@ -19,10 +19,11 @@ def attachment(request, attachment_id):
 def revision_delete(request, revision_id):
     revision = Revision.objects.get(pk=revision_id)
     if len(revision.attachment.revision_set.all()) < 2:
+        messages.warning(request, 'Revision not deleted')
         return redirect(revision.attachment.get_absolute_url())
     
     revision.delete()
-    messages.success(request, 'Attachment Deleted')
+    messages.success(request, 'Revision Deleted')
     return redirect(revision.attachment.get_absolute_url())
     
 def revision(request, revision_id):
