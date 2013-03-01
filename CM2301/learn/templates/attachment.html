@@ -1,22 +1,33 @@
 {% extends "base_navbar.html" %}
 
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>
+
+
 {% block content %}
 <h2>Revisions</h2>
-
+<div class="alert alert-success">
+Revision Deleted
+</div>
 <table class="table">
 	<tr>
 		<th>Version</th>
-		<th>Filename</th>
 		<th>Time Uploaded</th>
 		<th>File Size</th>
+		<th></th>
 	</tr>
 	{% for revision in attachment.revision_set.all %}
 	<tr>
-		<td>{{ revsion.version }}</td>
-		<td>{{ revision.file }}</td>
+		<td>{{ revision.version }}</td>
 		<td>{{ revision.time_uploaded }}</td>
 		<td>{{ revision.file_size|filesizeformat }}</td>
 		<td>
+			<a class="btn btn-small" href="{{ revision.get_absolute_url }}download">
+				<i class="icon-download-alt"></i>
+			</a>
 			<a class="btn btn-small" href="{{ revision.get_absolute_url }}delete">
 				<i class="icon-remove"></i>
 			</a>
@@ -24,5 +35,13 @@
 	</tr>
 	{% endfor %}
 </table>
+<a class="btn" href="{{ revision.attachment.get_absolute_url }}">
+	Add Revision
+	<i class="icon-plus">
+	</i>
+</a>
 
 {% endblock %}
+
+icon-plus
+

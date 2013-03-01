@@ -29,4 +29,5 @@ urlpatterns = patterns('',
     url(r'^attachments/(?P<attachment_id>%s)/$' % (uuid), 'learn.views.attachment.attachment'),
     url(r'^revisions/(?P<revision_id>%s)/$' % (uuid), 'learn.views.attachment.revision'),
     url(r'^revisions/(?P<revision_id>%s)/delete$' % (uuid), 'learn.views.attachment.revision_delete'),
+    url(r'^revisions/(?P<revision_id>%s)/download' % (uuid), 'learn.views.attachment.revision_download'),
 )
