@@ -803,3 +803,15 @@ class Search(object):
         Runs the search with supplied queries.
         @returns Dictionary Retuns a dictionary of matching object types.
        """
+
+class Announcement(Base):
+    """
+    The announcements class handles the storing of Announcements.
+
+    Title, Body, Valid From, Valid Until and Owner can all be specified.
+    """
+    title = models.CharField(max_length=256)
+    body = models.TextField(max_length=4096)
+    valid_from = models.DateTimeField(auto_now_add=True)
+    valid_until = models.DateTimeField()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
