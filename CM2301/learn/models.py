@@ -204,6 +204,9 @@ class Attachment(Base):
         @param Revision The Revision object to add to the Attachment
         @throws AttachmentException If Revision file type is invalid.
         """
+        
+    def get_absolute_url(self):
+        return reverse('learn.views.attachment.attachment', args=[str(self.id)])
 
     def __unicode__(self):
         return self.file_name
@@ -228,7 +231,7 @@ class Revision(Base):
     ##The file size of the Revision file.
     file_size = models.FloatField(null=True, blank=True)
     ##The version number of the revision
-    version = models.IntegerField(null=True, blank=False)
+    version = models.IntegerField(null=True, blank=True)
     
     def get_file(self):
         """
@@ -250,6 +253,7 @@ class Revision(Base):
     
     class Meta:
         get_latest_by = "time_uploaded"
+        ordering = ['-version']
     
 ################################################################
 #Lecturing Classes
