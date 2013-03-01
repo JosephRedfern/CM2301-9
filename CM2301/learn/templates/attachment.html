@@ -22,6 +22,7 @@ Revision Deleted
 	{% for revision in attachment.revision_set.all %}
 	<tr>
 		<td>{{ revision.version }}</td>
+		<td>{{ revision.file }}</td>
 		<td>{{ revision.time_uploaded }}</td>
 		<td>{{ revision.file_size|filesizeformat }}</td>
 		<td>
