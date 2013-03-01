@@ -12,7 +12,7 @@ test_title = raw_input('Test Title: ')
 #number of questions in the test
 number_questions = input('How many questions would you like in the test? ')
 #number of multiple choice answers in the test
-number_ans = input('Enter a number of possible answers between 2 and 4')
+number_ans = int(4)
 
 
 #ERROR:- if number >2 or <4 chosen display error
