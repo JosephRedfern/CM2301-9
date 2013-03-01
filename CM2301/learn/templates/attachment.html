@@ -9,10 +9,11 @@
 		<th>Filename</th>
 		<th>Time Uploaded</th>
 		<th>File Size</th>
+		<th></th>
 	</tr>
 	{% for revision in attachment.revision_set.all %}
 	<tr>
-		<td>{{ revsion.version }}</td>
+		<td>{{ revision.version }}</td>
 		<td>{{ revision.file }}</td>
 		<td>{{ revision.time_uploaded }}</td>
 		<td>{{ revision.file_size|filesizeformat }}</td>
