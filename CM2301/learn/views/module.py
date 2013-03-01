@@ -6,8 +6,8 @@ def module(request, module_id):
     values['module'] =  Module.objects.get(pk=module_id)
     values['modules'] = Module.objects.all()
     values['title'] = "Module %s"%(values['module'].title)
-    values['lectures'] = Lecture.objects.all()
-    values['attachments'] = Attachment.objects.get(object_id=module_id)
+    values['lectures'] = Lecture.objects.filter(module=module_id)
+    values['attachments'] = Attachment.objects.filter(object_id=module_id)
     return render(request, 'module_detail.html', values) 
 
 
