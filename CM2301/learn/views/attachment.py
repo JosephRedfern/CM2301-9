@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
@@ -8,9 +9,10 @@ import mimetypes
 
 
 def attachment(request, attachment_id):
-    print attachment_id
-    attachment = Attachment.objects.get(id=attachment_id)
-    return render(request, 'attachment.html', {'attachment': attachment})
+    values = {}
+    values['attachment'] = Attachment.objects.get(id=attachment_id)
+    values['title'] = "Attachment %s"%(values['attachment'].file_name)
+    return render(request, 'attachment.html', values)
 
 @require_http_methods(["GET"])
 @login_required
@@ -20,6 +22,7 @@ def revision_delete(request, revision_id):
         return redirect(revision.attachment.get_absolute_url())
     
     revision.delete()
+    messages.success(request, 'Attachment Deleted')
     return redirect(revision.attachment.get_absolute_url())
     
 def revision(request, revision_id):
