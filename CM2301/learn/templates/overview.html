@@ -11,11 +11,26 @@
         <h2>Announcements</h2>
         {% if announcements %}
         <ul>
-        {% for announcement in annoncements %}
-            <li>{{announement.title}}</li>
+        {% for announcement in announcements  %}
+            <li><a href="#{{announcement.id}}" role="button" data-toggle="modal">{{ announcement.title }}</a></li>
+                <div id="{{announcement.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{{announcement.id}}Label" aria-hidden="true">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="{{announcement.id}}Label">{{announcement.title}}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ announcement.body }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    </div>
+                </div>
         {% endfor %}
         </ul>
         {% endif %}
     </div>
 </div>
+
 {% endblock %}
+
+
