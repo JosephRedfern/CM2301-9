@@ -229,6 +229,8 @@ class Revision(Base):
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The file size of the Revision file.
     file_size = models.FloatField(null=True, blank=True)
+    ##The version number of the revision
+    version = models.IntegerField(null=True, blank=False)
     
     def get_file(self):
         """
@@ -240,6 +242,9 @@ class Revision(Base):
     def save(self, *args, **kwargs):
         if self.file_size is None:
             self.file_size = self.file.size
+            
+        if self.version is None:
+            self.version = len(self.attachment.revision_set.all()) + 1
         super(Revision, self).save(*args, **kwargs)
     
     def get_absolute_url(self):
