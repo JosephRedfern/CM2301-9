@@ -9,7 +9,8 @@ def home(request):
     values = {}
     values['title'] = 'Home'
     values['modules'] = Module.objects.all()
-    return render(request, 'base_navbar.html', values)
+    values['announcements'] = Announcements.objects.all()
+    return render(request, 'overview.html', values)
 
 
 def custom_login(request, **kwargs):

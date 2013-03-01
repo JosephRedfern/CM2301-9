@@ -17,4 +17,5 @@ def view(request, lecture_id):
     values['lectures'] = values['lecture'].module.lecture_set.all()
     values['modules'] = Module.objects.all()
     values['title'] = values['lecture'].title
+    values['attachments'] = Attachment.objects.filter(object_id=lecture_id)
     return render(request, 'lecture.html', values)

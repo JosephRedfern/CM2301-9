@@ -5,4 +5,17 @@
 <h2>{{lecture.title}}</h2>
 <p>{{lecture.description}}</p>
 </div>
+
+<div class="row-fluid">
+    <div class="span4">
+        <h3>Lecture Materials <a href="/module/{{lecture.module.id}}/attachment/all"><span class="label label-info">Download All</span></a></h2>
+            {% if attachments %}
+                <ul>
+                {% for attachment in attachments %}
+                <li><a href="/module/{{lecture.module.id}}/attachment/{{attachment.id}}">{{attachment.title}}</a></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+    </div>
+</div>
 {% endblock %}
