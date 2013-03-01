@@ -7,7 +7,8 @@ from learn.forms import *
 
 
 def attachment(request, attachment_id):
-    attachment = Attachment.objects.get(pk=attachment_id)
+    print attachment_id
+    attachment = Attachment.objects.get(id=attachment_id)
     return render(request, 'attachment.html', {'attachment': attachment})
 
 @require_http_methods(["GET"])
