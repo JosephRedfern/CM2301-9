@@ -12,7 +12,7 @@
             {% if attachments %}
                 <ul>
                 {% for attachment in attachments %}
-                <li><a href="/module/{{lecture.module.id}}/attachment/{{attachment.id}}">{{attachment.title}}</a></li>
+                <li><a href="/attachments/{{attachment.id}}">{{attachment.file_name}}</a></li>
                 {% endfor %}
                 </ul>
             {% endif %}
