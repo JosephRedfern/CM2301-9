@@ -24,4 +24,9 @@ urlpatterns = patterns('',
     #Lecture URL's
     url(r'^lectures/create/$', 'learn.views.lecture.create'),
     url(r'^lectures/(?P<lecture_id>%s)/$' % (uuid), 'learn.views.lecture.view'),    
+    
+    #Attachment URL's
+    url(r'^attachments/(?P<attachment_id>%s)/$' % (uuid), 'learn.views.attachment.attachment'),
+    url(r'^revisions/(?P<revision_id>%s)/$' % (uuid), 'learn.views.attachment.revision'),
+    url(r'^revisions/(?P<revision_id>%s)/delete$' % (uuid), 'learn.views.attachment.revision_delete'),
 )

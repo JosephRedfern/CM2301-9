@@ -1,0 +1,26 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+<h2>Revisions</h2>
+
+<table class="table">
+	<tr>
+		<th>Filename</th>
+		<th>Time Uploaded</th>
+		<th>File Size</th>
+	</tr>
+	{% for revision in attachment.revision_set.all %}
+	<tr>
+		<td>{{ revision.file }}</td>
+		<td>{{ revision.time_uploaded }}</td>
+		<td>{{ revision.file_size|filesizeformat }}</td>
+		<td>
+			<a class="btn btn-small" href="{{ revision.get_absolute_url }}delete">
+				<i class="icon-remove"></i>
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

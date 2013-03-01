@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from learn.models import Video
 from learn.forms import *
@@ -36,11 +36,12 @@ def submit(request, video_id):
 
 @login_required
 def serve(request, video_id):
+    """
+    Serves a video media stream to the client, this view is used
+    by the VideoJS player.
+    """
     video = Video.objects.get(pk=video_id)
-    print video.uploaded_video.url
     filename = video.uploaded_video.name.split('/')[-1]
-    response = HttpResponse(video.uploaded_video, content_type='video/mp4')
-    print video.uploaded_video.file.size
+    response = StreamingHttpResponse(video.uploaded_video, content_type='video/mp4')
     response['Content-length'] = video.uploaded_video.file.size
-    
     return response

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from uuidfield import UUIDField
+from django.core.urlresolvers import reverse
 
 class Base(models.Model):
     """
@@ -164,13 +165,13 @@ class Attachment(Base):
         
         @return: Float A float of the total size in Kb
         """
-        revisions = Revision.objects.get(Attachment=self)
+        revisions = self.revision_set.all()
 
-        totalSize = 0
+        total_size = 0
         for revision in revisions:
-            totalSize += revision.size
+            total_size += revision.file_size
 
-        return totalSize
+        return total_size
 
     def remove_revision(self, revision_uuid):
         """
@@ -221,13 +222,13 @@ class Revision(Base):
     ##The Attachment object the Revision belongs to.
     attachment = models.ForeignKey(Attachment)
     ###The File Object
-    file = models.FileField(upload_to='/')
+    file = models.FileField(upload_to='attachments')
     ##Whether or not the Revision has been approved
     approved = models.BooleanField()
     ##The User whom owns the Revision - Usually the uploader.
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The file size of the Revision file.
-    file_size = models.FloatField()
+    file_size = models.FloatField(null=True, blank=True)
     
     def get_file(self):
         """
@@ -235,6 +236,14 @@ class Revision(Base):
         @return File Returns the File handler for the Revision
         """
         return self.file.file
+    
+    def save(self, *args, **kwargs):
+        if self.file_size is None:
+            self.file_size = self.file.size
+        super(Revision, self).save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse('learn.views.attachment.revision', args=[str(self.id)])
     
     class Meta:
         get_latest_by = "time_uploaded"
