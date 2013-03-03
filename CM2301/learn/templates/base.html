@@ -53,11 +53,14 @@
                 {% else %}
                 <div class="span12">
                 {% endif %}
+
+                    {% if breadcrumb %}
                     <ul class="breadcrumb">
-                        <li class="active">
-                            LCARS
-                        </li>
+                        {% for crumb in breadcrumb %}
+                        <li {%if forloop.last %} class="active" {% endif %}>{{crumb}} {% if not forloop.last %}<span class="divider">/</span>{% endif %}</li>
+                        {% endfor %}
                     </ul>
+                    {% endif %}
 
                 {% if messages %}
                     {% for message in messages %}
@@ -71,6 +74,7 @@
 			    {% block content %} {% endblock %}
 
             <hr>
+        </div>
 
             <footer>
                 <p>
