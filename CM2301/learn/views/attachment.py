@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from learn.models import Attachment, Revision
+from learn.models import Attachment, Revision, Module
 from learn.forms import *
 import mimetypes
 
@@ -12,6 +12,7 @@ def attachment(request, attachment_id):
     values = {}
     values['attachment'] = Attachment.objects.get(id=attachment_id)
     values['title'] = "Attachment %s"%(values['attachment'].file_name)
+    values['modules'] = Module.objects.all()
     return render(request, 'attachment.html', values)
 
 @require_http_methods(["GET"])
