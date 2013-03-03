@@ -43,7 +43,12 @@
 					<li>
 						<a href="/progress">Progress</a>
 					</li>
--->                    
+                    -->
+                    {% if user.is_staff %}
+                    <li>
+                        <a href="/admin">Admin</a>
+                    </li>
+                    {% endif %}
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
