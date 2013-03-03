@@ -10,7 +10,7 @@ def home(request):
     values['title'] = 'Home'
     values['modules'] = Module.objects.all()
     values['announcements'] = Announcement.objects.all()
-
+    values['breadcrumb'] = ("LCARS", "Overview")
     return render(request, 'overview.html', values)
 
 
