@@ -10,7 +10,8 @@ ADMINS = (
     ('Charlie Mills', 'charlie@computerbacon.com'),
     ('Joseph Redern', 'joseph@redfern.me'),
     ('Geraint Harries', 'geraint@geraintharries.co.uk'),
-    ('Girish', 'girishkumarkh@gmail.com')
+    ('Girish', 'girishkumarkh@gmail.com'),
+    ('Lauren Welsh', 'lauren.welsh@live.co.uk')
 )
 
 MANAGERS = ADMINS
