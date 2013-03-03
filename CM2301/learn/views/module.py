@@ -15,6 +15,6 @@ def modules(request):
     values = {}
     values['title'] =  "Module Overview"
     values['modules'] = Module.objects.all()
-
+    values['breadcrumb'] = ("LCARS","Module Overview")
     return render(request, 'modules_overview.html', values)
 
