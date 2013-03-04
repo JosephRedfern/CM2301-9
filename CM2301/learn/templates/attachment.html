@@ -1,12 +1,36 @@
 {% extends "base_navbar.html" %}
 
 {% block content %}
-<h2>Revisions</h2>
+<h3>{{ attachment.file_name }}</h3>
+<div class="row-fluid">
+	<div class="span2">
+		<img src="{{ STATIC_URL }}img/filetype/fileicon_bg.png" />
+	</div>
+	<div class="span10">
+		<dl class="dl-horizontal">
+			<dt>Filename</dt>
+			<dd>{{ attachment.file_name }}</dd>
+			<dt>Size</dt>
+			<dd>{{ attachment.get_latest_revision.file_size|filesizeformat }}</dd>
+			<dt>Total Size</dt>
+			<dd>{{ attachment.get_total_size|filesizeformat }}</dd>
+			<dt>Owner</dt>
+			<dd>
+				<a href="{{ attachment.owner.get_absolute_url }}">
+					{{ attachment.owner }}
+				</a>
+			</dd>
+		</dl>
+	</div>
+</div>
+
+<h3>Revisions</h3>
 <table class="table">
 	<tr>
 		<th>Version</th>
 		<th>Time Uploaded</th>
 		<th>File Size</th>
+		<th>Uploaded By</th>
 		<th></th>
 	</tr>
 	{% for revision in attachment.revision_set.all %}
@@ -14,6 +38,11 @@
 		<td>{{ revision.version }}</td>
 		<td>{{ revision.time_uploaded }}</td>
 		<td>{{ revision.file_size|filesizeformat }}</td>
+		<td>
+			<a href="/users/{{ revision.uploaded_by.id }}">
+				{{ revision.uploaded_by }}
+			</a>
+		</td>
 		<td>
 			<a class="btn btn-small" href="{{ revision.get_absolute_url }}download">
 				<i class="icon-download-alt"></i>
