@@ -1,0 +1,17 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+    <div class="well" style="padding:10px">
+        <h3>{{module.title}} ({{module.module_code}})</h3>
+        <p>{{module.description}}</p>
+    </div>
+    {% for lecture in lectures %}
+    {% cycle '<div class="row-fluid">' '' '' '' '' '' %}
+        <div class="span2">
+            <a href="/lectures/{{lecture.id}}"><img src="http://placehold.it/200x200"/></a>
+            <h4><a href="/lectures/{{lecture.id}}">{{lecture.title}}</a></h4>
+        </div>
+        {% cycle '' '' '' '' '' '</div>' %}
+    {% endfor %}
+
+{% endblock %}

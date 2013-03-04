@@ -50,9 +50,17 @@ def revision_download(request, revision_id):
     return response
 
 def revision_add(request, attachment_id):
-    attachment = Attachment.objects.get(pk=attachment_id)
+    values = {}
+    values['attachment'] = Attachment.objects.get(pk=attachment_id)
     form = RevisionCreateForm(initial={'attachment': attachment})
-    return render(request, 'revision.html', {'form': form})
+    values['form'] = form
+    values['title'] = "Add new revision"
+    try:
+        values['lectures'] = Lecture.objects.get(id=values['attachment'].object_id).module.lecture_set.all()
+    except:
+        pass
+
+    return render(request, 'revision.html', values) 
 
 @login_required
 def revision_submit(request):
