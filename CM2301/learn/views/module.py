@@ -25,5 +25,16 @@ def lectures(request, module_id):
     values['title'] = "Lecture Overview"
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['module'] = Module.objects.get(pk=module_id)
+    values['modules'] = Module.objects.all()
     values['breadcrumb'] = ("LCARS", "%s (%s)" % (values['module'].title, values['module'].module_code), "Lectures")
     return render(request, 'lectures.html', values)
+
+def attachments(request, module_id):
+    values = {}
+    values['attachments'] = Attachment.objects.filter(object_id=module_id)
+    values['modules'] = Module.objects.all()
+    values['module'] = Module.objects.get(pk=module_id)
+    values['lectures'] = Lecture.objects.filter(module=module_id)
+    values['breadcrumb'] = ("LCARS", values['module'].title, "Attachments")
+
+    return render(request, 'module_attachments.html', values)

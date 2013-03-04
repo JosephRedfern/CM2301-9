@@ -18,15 +18,15 @@
 </div>
 
 <div class="row-fluid">
+    {% if attachments %}
     <div class="span4">
         <h3>Lecture Materials <a href="/module/{{lecture.module.id}}/attachment/all"><span class="label label-info">Download All</span></a></h2>
-            {% if attachments %}
                 <ul>
                 {% for attachment in attachments %}
                 <li><a href="/attachments/{{attachment.id}}">{{attachment.file_name}}</a></li>
                 {% endfor %}
                 </ul>
-            {% endif %}
     </div>
+{% endif %}
 </div>
 {% endblock %}
