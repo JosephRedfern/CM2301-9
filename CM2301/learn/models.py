@@ -234,6 +234,9 @@ class Attachment(Base):
             
         tmp.seek(0)
         return tmp
+    
+    def get_latest_revision(self):
+        return self.revision_set.all()[0]
         
         
 
