@@ -26,11 +26,10 @@ def attachment(request, attachment_id):
 def revision_delete(request, revision_id):
     revision = Revision.objects.get(pk=revision_id)
     if len(revision.attachment.revision_set.all()) < 2:
-        messages.warning(request, 'Revision not deleted')
         return redirect(revision.attachment.get_absolute_url())
     
     revision.delete()
-    messages.success(request, 'Revision Deleted')
+    messages.success(request, 'Attachment Deleted')
     return redirect(revision.attachment.get_absolute_url())
     
 def revision(request, revision_id):
@@ -48,26 +47,3 @@ def revision_download(request, revision_id):
     response['Content-Disposition'] = 'attachment; filename="%s"' % (revision.file.name.split('/')[-1])
     
     return response
-
-def revision_add(request, attachment_id):
-    values = {}
-    values['attachment'] = Attachment.objects.get(pk=attachment_id)
-    form = RevisionCreateForm(initial={'attachment': attachment})
-    values['form'] = form
-    values['title'] = "Add new revision"
-    try:
-        values['lectures'] = Lecture.objects.get(id=values['attachment'].object_id).module.lecture_set.all()
-    except:
-        pass
-
-    return render(request, 'revision.html', values) 
-
-@login_required
-def revision_submit(request):
-    if request.method == 'POST':
-        form = RevisionCreateForm(request.POST, request.FILES)
-        form.cleaned_data['uploaded_by'] = request.user
-        if not form.is_valid():
-            print form.errors
-        revision = form.save()
-        return redirect(revision.attachment.get_absolute_url())
