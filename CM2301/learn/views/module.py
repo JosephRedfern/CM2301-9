@@ -24,5 +24,6 @@ def lectures(request, module_id):
     values = {}
     values['title'] = "Lecture Overview"
     values['lectures'] = Lecture.objects.filter(module=module_id)
-    
+    values['module'] = Module.objects.get(pk=module_id)
+    values['breadcrumb'] = ("LCARS", "%s (%s)" % (values['module'].title, values['module'].module_code), "Lectures")
     return render(request, 'lectures.html', values)
