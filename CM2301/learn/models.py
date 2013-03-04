@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
+import tempfile, zipfile, os, tarfile, StringIO
+from django.core.exceptions import ValidationError
 
 class Base(models.Model):
     """
@@ -210,6 +212,33 @@ class Attachment(Base):
 
     def __unicode__(self):
         return self.file_name
+    
+    def compress_revisions(self, method='zip'):
+        """
+        Returns a temporary file object of a zip file containing every revision
+        belonging to the attachment. Directory can be found using tmp.name
+        
+        @return NamedTemporaryFile Temp file of the zip. 
+        """
+        
+        tmp = tempfile.NamedTemporaryFile(delete=False)
+        if method is 'zip':
+            z = zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED)
+            for revision in self.revision_set.all():
+                z.write(revision.file.file.name, revision.get_version_filename())
+            z.close()
+        elif method is 'gz':
+            tar = tarfile.open(tmp.name, "w:gz")
+            for revision in self.revision_set.all():
+                tar.add(revision.file.file.name, arcname=revision.get_version_filename())
+            tar.close()
+            
+        tmp.seek(0)
+        return tmp
+    
+    def get_latest_revision(self):
+        return self.revision_set.all()[0]
+        
         
 
 class Revision(Base):
@@ -233,6 +262,13 @@ class Revision(Base):
     ##The version number of the revision
     version = models.IntegerField(null=True, blank=True)
     
+    @property
+    def filename(self):
+        """
+        Returns the actual filename of the file, as opposed to the relative path
+        """
+        return os.path.basename(self.file.name)
+    
     def get_file(self):
         """
         Returns the File object for the current Revision.
@@ -250,6 +286,29 @@ class Revision(Base):
     
     def get_absolute_url(self):
         return reverse('learn.views.attachment.revision', args=[str(self.id)])
+    
+    
+    def get_version_filename(self):
+        """
+        Returns the filename prefixed with the version number,
+        Useful for when displaying revision history or downloading
+        multiple revisions.
+        
+        e.g.  1_revision.pdf, 2_reivision.pdf
+        @return String Returns a string of the filename
+        """
+        return str(self.version) + "_" + os.path.basename(self.file.name)
+    
+    def clean(self):
+        """
+        Ensures all validation passes before the object is saved
+        """
+        print self.filename
+        print self.attachment.file_name
+        if self.filename != self.attachment.file_name:
+            raise ValidationError('Revisions must have the same filename as the attachment')
+        
+        
     
     class Meta:
         get_latest_by = "time_uploaded"
