@@ -4,6 +4,7 @@ from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
 import tempfile, zipfile, os, tarfile, StringIO
+from django.core.exceptions import ValidationError
 
 class Base(models.Model):
     """
@@ -261,6 +262,13 @@ class Revision(Base):
     ##The version number of the revision
     version = models.IntegerField(null=True, blank=True)
     
+    @property
+    def filename(self):
+        """
+        Returns the actual filename of the file, as opposed to the relative path
+        """
+        return os.path.basename(self.file.name)
+    
     def get_file(self):
         """
         Returns the File object for the current Revision.
@@ -279,6 +287,7 @@ class Revision(Base):
     def get_absolute_url(self):
         return reverse('learn.views.attachment.revision', args=[str(self.id)])
     
+    
     def get_version_filename(self):
         """
         Returns the filename prefixed with the version number,
@@ -289,6 +298,16 @@ class Revision(Base):
         @return String Returns a string of the filename
         """
         return str(self.version) + "_" + os.path.basename(self.file.name)
+    
+    def clean(self):
+        """
+        Ensures all validation passes before the object is saved
+        """
+        print self.filename
+        print self.attachment.file_name
+        if self.filename != self.attachment.file_name:
+            raise ValidationError('Revisions must have the same filename as the attachment')
+        
         
     
     class Meta:
