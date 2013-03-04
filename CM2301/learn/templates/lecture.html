@@ -7,6 +7,17 @@
 </div>
 
 <div class="row-fluid">
+    <div class="span8">
+        <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+        <script src="http://vjs.zencdn.net/c/video.js"></script>
+
+        <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" data-setup="{}">
+        <source src="/videos/{{lecture.video.id}}/serve/video.mp4" type='video/mp4'>
+        </video>
+    </div>
+</div>
+
+<div class="row-fluid">
     <div class="span4">
         <h3>Lecture Materials <a href="/module/{{lecture.module.id}}/attachment/all"><span class="label label-info">Download All</span></a></h2>
             {% if attachments %}
