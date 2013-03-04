@@ -396,8 +396,6 @@ class Lecture(Base):
     title = models.CharField(max_length=50)
     ##The description of the lecture
     description = models.TextField()
-    ##The videos used in the lecture
-    videos = models.ManyToManyField(Video, null=True)
     ##Attachments to be presented with the lecture
     attachments = models.ManyToManyField(Attachment, null=True, blank=True)
     ##The date the Lecture becomes valid.
@@ -412,6 +410,8 @@ class Lecture(Base):
     lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
     ##Module that this lecture is associated with
     module = models.ForeignKey(Module)
+    ##Video that this lecture is associated with.
+    video = models.ForeignKey(Video)
 
     def __unicode__(self):
         return self.title

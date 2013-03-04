@@ -27,3 +27,6 @@ CM2301/.DS_Store
 *.db
 *.sqlite
 CM2301/assets*
+*.swo
+*.swp
+*.swn
