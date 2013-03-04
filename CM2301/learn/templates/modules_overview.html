@@ -3,7 +3,7 @@
 {% block content %}
     {% for module in modules %}
     {% cycle '<div class="row-fluid">' '' '' '' %}
-        <div class="span3 well" style="padding: 10px">
+        <div class="span4 well" style="padding: 10px">
             <h2>{{ module.title  }}</h2>
             <p>{{ module.description }}</p>
             <p> <a class="btn" href="/modules/{{ module.id }}">View module &raquo;</a> </p>

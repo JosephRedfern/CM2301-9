@@ -51,7 +51,19 @@
                     </div>
                 </div>
                 <div class="span9">
-                {% else %}
+                {% elif modules %}
+                <div class="span3">
+                    <h4>Modules</h4>
+                    <div class="well sidebar-nav">
+                        <ul class="nav nav-list">
+                            {% for module in modules %}
+                            <li><a href="/modules/{{module.id}}">{{module.title}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="span9">
+                {{else}}
                 <div class="span12">
                 {% endif %}
 
