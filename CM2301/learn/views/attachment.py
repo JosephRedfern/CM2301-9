@@ -7,7 +7,7 @@ from learn.models import Attachment, Revision, Module, Lecture
 from learn.forms import *
 import mimetypes
 
-
+@login_required 
 def attachment(request, attachment_id):
     values = {}
     values['attachment'] = Attachment.objects.get(id=attachment_id)
@@ -26,16 +26,19 @@ def attachment(request, attachment_id):
 def revision_delete(request, revision_id):
     revision = Revision.objects.get(pk=revision_id)
     if len(revision.attachment.revision_set.all()) < 2:
+        messages.warning(request, 'Revision not deleted')
         return redirect(revision.attachment.get_absolute_url())
     
     revision.delete()
-    messages.success(request, 'Attachment Deleted')
+    messages.success(request, 'Revision Deleted')
     return redirect(revision.attachment.get_absolute_url())
-    
+
+@login_required  
 def revision(request, revision_id):
     revision = Revision.objects.get(pk=revision_id)
     revision.delete()
-    
+
+@login_required 
 def revision_download(request, revision_id):
     revision = Revision.objects.get(pk=revision_id)
     response = HttpResponse(revision.file)
@@ -47,3 +50,39 @@ def revision_download(request, revision_id):
     response['Content-Disposition'] = 'attachment; filename="%s"' % (revision.file.name.split('/')[-1])
     
     return response
+
+@login_required 
+def revision_add(request, attachment_id):
+    attachment = Attachment.objects.get(pk=attachment_id)
+    form = RevisionCreateForm(initial={'attachment': attachment})
+    return render(request, 'revision.html', {'form': form})
+
+@login_required
+def revision_submit(request):
+    """
+    Handles the POST submission of creating or editing and revision.
+    """
+    if request.method == 'POST':
+        form = RevisionCreateForm(request.POST, request.FILES)
+        form.cleaned_data['uploaded_by'] = request.user
+        if not form.is_valid():
+            print form.errors
+        revision = form.save()
+        return redirect(revision.attachment.get_absolute_url())
+
+@login_required 
+def download_all_revisions(request, attachment_id):
+    """
+    Sends a zip file of all revisions associated with the current 
+    attachment to the client. Prefixing filenames with the relevent 
+    version number.
+    
+    """
+    attachment = Attachment.objects.get(pk=attachment_id)
+    f = attachment.compress_revisions(method='zip')
+    response = HttpResponse(f)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (attachment.id)
+    return response
+    
+    
