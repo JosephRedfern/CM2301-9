@@ -4,7 +4,7 @@ from django.forms import ModelForm, DateInput
 
 class AttachmentForm(ModelForm):
     class Meta:
-	model = Attachment
+        model = Attachment
 
 class VideoUploadForm(ModelForm):
     class Meta:
@@ -18,4 +18,9 @@ class LectureCreateForm(ModelForm):
             'valid_to': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
             'valid_from': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
         }
+        
+class RevisionCreateForm(ModelForm):
+    class Meta:
+        model = Revision
+        #fields = ('file',)
         
