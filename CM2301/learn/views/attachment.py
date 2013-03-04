@@ -48,3 +48,18 @@ def revision_download(request, revision_id):
     response['Content-Disposition'] = 'attachment; filename="%s"' % (revision.file.name.split('/')[-1])
     
     return response
+
+def revision_add(request, attachment_id):
+    attachment = Attachment.objects.get(pk=attachment_id)
+    form = RevisionCreateForm(initial={'attachment': attachment})
+    return render(request, 'revision.html', {'form': form})
+
+@login_required
+def revision_submit(request):
+    if request.method == 'POST':
+        form = RevisionCreateForm(request.POST, request.FILES)
+        form.cleaned_data['uploaded_by'] = request.user
+        if not form.is_valid():
+            print form.errors
+        revision = form.save()
+        return redirect(revision.attachment.get_absolute_url())
