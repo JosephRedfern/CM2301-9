@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^modules/$', 'learn.views.module.modules'),
     url(r'^modules/(?P<module_id>%s)/$' % (uuid), 'learn.views.module.module'),
     url(r'^modules/(?P<module_id>%s)/lectures/$' % (uuid), 'learn.views.module.lectures'),
+    url(r'^modules/(?P<module_id>%s)/attachments/$' % (uuid), 'learn.views.module.attachments'),
 
     #Lecture URL's
     url(r'^lectures/create/$', 'learn.views.lecture.create'),
