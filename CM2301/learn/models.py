@@ -324,10 +324,14 @@ class Revision(Base):
         """
         type = mimetypes.guess_type(self.file.name)
         return type[0]
+
+    def __unicode__(self):
+        return "%s r%s" % (self.filename, self.version)
     
     class Meta:
         get_latest_by = "time_uploaded"
         ordering = ['-version']
+
     
 ################################################################
 #Lecturing Classes
@@ -345,6 +349,8 @@ class Link(Base):
     description = models.TextField()
     ##The Link URl in string form
     link = models.URLField(max_length=250)
+    ##The UUID of the Object this link is associated with
+    object_id = UUIDField()
 
 class Video(Base):
     
@@ -447,14 +453,12 @@ class Module(Base):
     Modules can share Lecture objects, Module objects can belong
     to multiple Course objects.
     """
+    ##The module code - e.g. CM2103
+    module_code = models.CharField(max_length=100)
     ##The title of the Module. E.g Python
     title = models.CharField(max_length=100)
-    ##The module code - CM2103
-    module_code = models.CharField(max_length=100)
-    ##Attachments linked to the module obejct
-    attachments = models.ManyToManyField(Attachment, blank=True, null=True)
-
-    description = models.CharField(max_length=8192)
+    ##The module description
+    description = models.TextField(max_length=8192)
 
     def __unicode__(self):
         return self.title + " (" + self.module_code + ")"
@@ -473,16 +477,12 @@ class Lecture(Base):
     title = models.CharField(max_length=50)
     ##The description of the lecture
     description = models.TextField()
-    ##Attachments to be presented with the lecture
-    attachments = models.ManyToManyField(Attachment, null=True, blank=True)
     ##The date the Lecture becomes valid.
     valid_from = models.DateField()
     ##The date the lecture expires.
     valid_to = models.DateField()
     ##Whether the lecture is visible
     visible = models.BooleanField(default=True)
-    ##Links that may be useful.
-    links = models.ManyToManyField(Link, null=True, blank=True)
     ##Lecturers who teach the lecture. - They should be in the module lecturers.
     lecturers = models.ManyToManyField(settings.AUTH_USER_MODEL)
     ##Module that this lecture is associated with
