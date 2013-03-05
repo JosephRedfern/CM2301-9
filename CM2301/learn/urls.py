@@ -34,7 +34,10 @@ urlpatterns = patterns('',
     url(r'^revisions/(?P<revision_id>%s)/$' % (uuid), 'learn.views.attachment.revision'),
     url(r'^revisions/submit/$', 'learn.views.attachment.revision_submit'),
     url(r'^revisions/(?P<revision_id>%s)/delete$' % (uuid), 'learn.views.attachment.revision_delete'),
-    url(r'^revisions/(?P<revision_id>%s)/download' % (uuid), 'learn.views.attachment.revision_download'),
+    url(r'^revisions/(?P<revision_id>%s)/download/$' % (uuid), 'learn.views.attachment.revision_download'),
+    url(r'^(.*)/(?P<object_id>%s)/attachments/download/$' % (uuid), 'learn.views.attachment.download_all_attachments'),
+    
+    
     
     
 )
