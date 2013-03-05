@@ -21,6 +21,16 @@
             <p><a class="btn" href="/modules/{{module.id}}/attachments">View Materials &raquo;</a></p>
         </div>
     {% endif %}
+    {% if links %}
+        <div class="span4">
+            <h2>Module Links</h2>
+            <ul>
+                {% for link in links %}
+                <li><a href="{{link.link}}">{{link.title}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}
