@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
-import tempfile, zipfile, os, tarfile, StringIO
+import tempfile, zipfile, os, tarfile, StringIO, mimetypes
 from django.core.exceptions import ValidationError
 
 class Base(models.Model):
@@ -238,6 +238,15 @@ class Attachment(Base):
     
     def get_latest_revision(self):
         return self.revision_set.all()[0]
+    
+    def mimetype(self):
+        """
+        Returns the mimetype of the attachment file as a string.
+        For example "video/mp4"
+        """
+        type = mimetypes.guess_type(self.file_name)
+        return type[0]
+        
         
         
 
@@ -305,10 +314,16 @@ class Revision(Base):
         """
         print self.filename
         print self.attachment.file_name
-        if self.filename != self.attachment.file_name:
+        if self.mimetype() != self.attachment.mimetype():
             raise ValidationError('Revisions must have the same filename as the attachment')
         
-        
+    def mimetype(self):
+        """
+        Returns the mimetype of the attachment file as a string.
+        For example "video/mp4"
+        """
+        type = mimetypes.guess_type(self.file.name)
+        return type[0]
     
     class Meta:
         get_latest_by = "time_uploaded"
