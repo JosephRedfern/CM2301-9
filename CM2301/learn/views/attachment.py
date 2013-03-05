@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from learn.models import Attachment, Revision, Module, Lecture
 from learn.forms import *
-import mimetypes
+import mimetypes, tempfile, zipfile
 
 @login_required 
 def attachment(request, attachment_id):
@@ -80,6 +80,21 @@ def download_all_revisions(request, attachment_id):
     attachment = Attachment.objects.get(pk=attachment_id)
     f = attachment.compress_revisions(method='zip')
     response = HttpResponse(f)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (attachment.id)
+    return response
+
+@login_required
+def download_all_attachments(request, object_id):
+    attachments = Attachment.objects.filter(object_id=object_id)
+    tmp = tempfile.NamedTemporaryFile(delete=False)
+    z = zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED)
+    for attachment in attachments:
+        print attachment.get_latest_revision().file.file.name
+        z.write(attachment.get_latest_revision().file.file.name, attachment.file_name)
+    z.close()
+    tmp.seek(0)
+    response = HttpResponse(tmp)
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (attachment.id)
     return response
