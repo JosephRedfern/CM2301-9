@@ -34,5 +34,15 @@
                 </ul>
     </div>
 {% endif %}
+{% if links %}
+    <div class="span4">
+        <h3>Relevant Links</h3>
+                <ul>
+                {% for link in links %}
+                <li><a href="{{link.link}}">{{link.title}}</a></li>
+                {% endfor %}
+                </ul>
+    </div>
+{% endif %}
 </div>
 {% endblock %}
