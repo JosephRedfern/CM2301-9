@@ -20,7 +20,13 @@
 <div class="row-fluid">
     {% if attachments %}
     <div class="span4">
-        <h3>Lecture Materials <a href="/module/{{lecture.module.id}}/attachment/all"><span class="label label-info">Download All</span></a></h2>
+        <h3>Lecture Materials 
+        	<a class="btn" href="{{ lecture.get_absolute_url }}attachments/download">
+				ZIP
+				<i class="icon-download-alt">
+				</i>
+			</a>
+        </h3>
                 <ul>
                 {% for attachment in attachments %}
                 <li><a href="/attachments/{{attachment.id}}">{{attachment.file_name}}</a></li>
