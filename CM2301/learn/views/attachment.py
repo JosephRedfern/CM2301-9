@@ -42,7 +42,7 @@ def revision(request, revision_id):
 def revision_download(request, revision_id):
     revision = Revision.objects.get(pk=revision_id)
     response = HttpResponse(revision.file)
-    type, encoding = mimetypes.guess_type(revision.file.name)
+    type = revision.mimetype()
     if type is None:
         type = 'application/octet-stream'
     response['Content-Type'] = type
@@ -54,7 +54,7 @@ def revision_download(request, revision_id):
 @login_required 
 def revision_add(request, attachment_id):
     attachment = Attachment.objects.get(pk=attachment_id)
-    form = RevisionCreateForm(initial={'attachment': attachment})
+    form = RevisionCreateForm(initial={'attachment': attachment, 'uploaded_by': request.user})
     return render(request, 'revision.html', {'form': form})
 
 @login_required
@@ -64,11 +64,10 @@ def revision_submit(request):
     """
     if request.method == 'POST':
         form = RevisionCreateForm(request.POST, request.FILES)
-        form.cleaned_data['uploaded_by'] = request.user
-        if not form.is_valid():
-            print form.errors
-        revision = form.save()
-        return redirect(revision.attachment.get_absolute_url())
+        if form.is_valid():
+            revision = form.save()
+            return redirect(revision.attachment.get_absolute_url())
+        
 
 @login_required 
 def download_all_revisions(request, attachment_id):
