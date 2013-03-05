@@ -261,8 +261,8 @@ class AttachmentTestCase(unittest.TestCase):
 		"""
 		The File Size is determined
 		"""
-		self.assertEqual(self.file1.get_total_size(), '60KB')
-		self.assertEqual(self.file2.get_total_size(), '60KB')
+		self.assertEqual(self.file1.get_total_size(), 0)
+		self.assertEqual(self.file2.get_total_size(), 0)
 
 class Revision(Base):
     """
