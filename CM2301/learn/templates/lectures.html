@@ -11,7 +11,11 @@
             <a href="/lectures/{{lecture.id}}"><img src="http://placehold.it/200x200"/></a>
             <h4><a href="/lectures/{{lecture.id}}">{{lecture.title}}</a></h4>
         </div>
-        {% cycle '' '' '' '' '' '</div>' %}
+        {% if forloop.last %}
+        </div>
+        {% else %}
+        {%  cycle '' '' '' '</div>' %}
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

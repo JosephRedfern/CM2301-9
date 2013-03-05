@@ -8,7 +8,11 @@
             <p>{{ module.description }}</p>
             <p> <a class="btn" href="/modules/{{ module.id }}">View module &raquo;</a> </p>
         </div>
-        {% cycle '' '' '' '</div>' %}
+        {% if forloop.last %}
+    	</div>
+    	{% else %}
+        {%  cycle '' '' '' '</div>' %}
+        {% endif %}
     {% endfor %}
 
 {% endblock %}
