@@ -12,13 +12,15 @@
 	<tr>
 		<th>Filename</th>
 		<th>Description</th>
+		<th>Filesize</th>
 		<th>Download</th>
 	</tr>
 	{% for attachment in attachments %}
 	<tr>
 		<td>{{ attachment.file_name }}</td>
 		<td>{{ attachment.description }}</td>
-        <td><a class="btn btn-small" href="/attachments/{{attachment.id}}/latest"><i class="icon-download-alt"></i></a></td>
+		<td>{{ attachment.get_latest_revision.file_size|filesizeformat }}</td>
+        <td><a class="btn btn-small" href="{{attachment.get_absolute_url}}download"><i class="icon-download-alt"></i></a></td>
 		</td>
 	</tr>
 	{% endfor %}
