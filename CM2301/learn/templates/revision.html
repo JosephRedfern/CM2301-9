@@ -3,6 +3,7 @@
 
 <form enctype="multipart/form-data" method="post" action="/revisions/submit/">{% csrf_token %}
 	<p>{{ form.attachment.as_hidden }}</p>
+	<p>{{ form.uploaded_by.as_hidden }}</p>
   	<p>{{ form.file }}</p>
 	<input type="submit" value="Submit" class="btn"/>
 </form>
