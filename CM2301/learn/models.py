@@ -489,6 +489,9 @@ class Lecture(Base):
 
     def __unicode__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('learn.views.lecture.view', args=[str(self.id)])
 
 class Course(Base):
     """
