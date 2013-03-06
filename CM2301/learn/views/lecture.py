@@ -22,3 +22,4 @@ def view(request, lecture_id):
 
     values['breadcrumb'] = ('LCARS', values['lecture'].module.title + " ("+values['lecture'].module.module_code+')', values['lecture'].title)
     return render(request, 'lecture.html', values)
+
