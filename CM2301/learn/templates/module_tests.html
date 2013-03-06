@@ -1,0 +1,71 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+
+<div class="row-fluid">
+  <div class="well"><h2>{{module.module_code}} - Tests</h2></div>
+</div>
+
+<div class="row-fluid">
+
+  {% if duetests %}
+  <div class="span4">
+    <h3>Due Tests</h3>
+    <ul>
+      {% for duetest in duetests %}
+      <li><a href="/tests/{{duetest.id}}">{{duetest.title}}</a></li>
+      {%endfor%}
+    </ul>
+  </div><!--/span-->
+  {% endif %}
+
+  {% if topresults %}
+  <div class="span4">
+    <h3>Top 5 Module Results</h3>
+    <ul style="list-style-type: none;">
+      {% for topresult in topresults %}
+      <li><span class="badge {% if topresult >= 70 %} badge-success {% elif topresult >= 40 %} badge-warning {% else %} badge-important {% endif %}">{{topresult.result}}</span> <a href="/test/{{topresult.test.id}}">{{topresult.test.title}}</a></li>
+      {% endfor %}
+    </ul>
+  </div><!--/span-->
+  {% endif %}
+
+  {% if bottomresults %}
+  <div class="span4">
+    <h3>Bottom 5 Module Results</h3>
+    <ul style="list-style-type: none;">
+      {% for bottomresult in bottomresults %}
+      <li><span class="badge {% if topresult >= 70 %} badge-success {% elif topresult >= 40 %} badge-warning {% else %} badge-important {% endif %}">{{bottomresult.result}}</span> <a href="/test/{{bottomresult.test.id}}">{{bottomresult.test.title}}</a></li>
+      {% endfor %}
+    </ul>
+  </div><!--/span-->
+  {% endif %}
+
+</div><!--/row-->
+
+<div class="row-fluid">
+  <div class="span12">
+    <h2>All Tests</h2>
+    <table class="table table-striped">
+      <thead>
+        <th>Lecture</th>
+        <th>Test Title</th>
+        <th>Best Mark</th>
+        <th>Re-take</th>
+      </thead>
+      <tr>
+        {%for test in tests%}
+        <td><a href="/lectures/{{test.lecture.id}}">{{test.lecture.title}}</a></td>
+        <td><a href="/tests/{{test.id}}">{{test.title}}</a></td>
+        <td>{%if test.max %}<span class="badge badge-success">{{test.max.score}}%</span>{% endif %}</td>
+        <td><a href="/tests/{{test.id}}" class="btn btn-primary btn-mini"><i class="icon-white icon-repeat"></i></a></td>
+        <td>
+        {%endfor%}
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+
+{% endblock %}

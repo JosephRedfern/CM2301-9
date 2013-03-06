@@ -614,7 +614,7 @@ class Test(Base):
     ##The questions from which they will be randomly selected.
     questions = models.ManyToManyField(Question)
     ##The lectures the test belong to.
-    lecture = models.ManyToManyField(Lecture)
+    lecture = models.ForeignKey(Lecture)
     
     def get_random_questions(self):
         """
@@ -665,7 +665,17 @@ class TestInstance(Base):
         
         @return Float Returns mark as a percentage
         """
-        return
+
+        answers = Result.objects.filter(test_instance=self.pk)
+
+        total_questions = len(answers)
+        total_correct = 0
+
+        for answer in answers:
+            if answer.answer.correct:
+                total_correct += 1
+
+        return total_correct/total_questions
     
     def __unicode__(self):
         return "Instance of "+self.test.__unicode__()+" for user "+self.student.__unicode__()
