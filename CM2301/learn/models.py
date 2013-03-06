@@ -406,23 +406,33 @@ class Video(Base):
     
     def _update_progress(self, converter):
         #TODO: MAKE THIS NOT SHITE!!
-        
-        print type(converter)
-        print converter.progress
-        print type(converter.progress)
-        
-        
-        print "wha tthe fuck is going on"
-        while converter.progress < 99:
+                
+        while converter.completed == False:
             if converter.is_started is False:
                 self.converting = False
                 break
             
             self.conversion_progress = converter.progress
             self.save()
+
             print converter.progress
+            print converter.is_started
+            print converter.completed
             time.sleep(3)
         self.converting = False
+        
+        print "THIS IS A TEST!!"
+        
+        vf = VideoFormat()
+        vf.file.name = converter.output_file
+        vf.encoding = ffmpeg.VideoCodec.H264
+        vf.bitrate = 100
+        vf.video = self
+        vf.save()
+        
+            
+            
+            
             
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
