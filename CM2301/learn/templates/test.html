@@ -2,13 +2,12 @@
 
 {% block content %}
 
-{% from Test in Tests %}
 <!-- Need to add a sidebar -->
 	<div class="well">
 		<h3>{{ Test.title }}</h2>
 		<p>{{ Test.description }}</p>
 	</div>
-
+	{% for Question in Questions %}
 	<div class="row-fluid">
         	<div class="span12">
               		<div class="well">
@@ -44,48 +43,47 @@
                   			</fieldset>
                 		</form> 
 
-                 <form class="form-horizontal">
-                  <fieldset>
-                    <div id="legend" class="">
-                      <legend class="">Question 2</legend>
-                <p>What does the main coursework task for CM1101 involve?</p>
-                    </div>
-                  <div class="control-group">
-                        <label class="control-label">Answer</label>
-                        <div class="controls">
-                    <!-- Multiple Radios -->
-                    <label class="radio">
-                      <input type="radio" value="game" name="q1">
-                      Developing a Game
-                    </label>
-                    <label class="radio">
-                      <input type="radio" value="calc" name="q1">
-                      Developing a Calculator
-                    </label>
-                    <label class="radio">
-                      <input type="radio" value="word" name="q1">
-                      Developing a Word Processor
-                    </label>
-                    <label class="radio">
-                      <input type="radio" value="lisp" name="q1">
-                      Implementing a Lisp Interpreter
-                    </label>
-                  </div>
-                </div>
+                 		<form class="form-horizontal">
+                  			<fieldset>
+                    				<div id="legend" class="">
+                      					<legend class="">Question 2</legend>
+                					<p>What does the main coursework task for CM1101 involve?</p>
+                    				</div>
+                  				<div class="control-group">
+                        				<label class="control-label">Answer</label>
+                        				<div class="controls">
+                    					<!-- Multiple Radios -->
+                    						<label class="radio">
+                      							<input type="radio" value="game" name="q1">
+                      								Developing a Game
+                   	 					</label>
+                    						<label class="radio">
+                      							<input type="radio" value="calc" name="q1">
+                      								Developing a Calculator
+                    						</label>
+                    						<label class="radio">
+                      							<input type="radio" value="word" name="q1">
+                      								Developing a Word Processor
+                    						</label>
+                    						<label class="radio">
+                      							<input type="radio" value="lisp" name="q1">
+                      								Implementing a Lisp Interpreter
+                    						</label>
+                 				 	</div>
+                				</div>
+                  			</fieldset>
+                		</form> 
 
-                  </fieldset>
-                </form> 
-
-                 <form class="form-horizontal">
-                  <fieldset>
-                    <div id="legend" class="">
-                      <legend class="">Question 3</legend>
-                <p>How many weeks does the CM1101 module last?</p>
-                    </div>
-                  <div class="control-group">
-                        <label class="control-label">Answer</label>
-                        <div class="controls">
-                    <!-- Multiple Radios -->
+                 		<form class="form-horizontal">
+                  			<fieldset>
+                    				<div id="legend" class="">
+                      					<legend class="">Question 3</legend>
+                					<p>How many weeks does the CM1101 module last?</p>
+                    				</div>
+                  				<div class="control-group">
+                        				<label class="control-label">Answer</label>
+                        				<div class="controls">
+                    					<!-- Multiple Radios -->
                     <label class="radio">
                       <input type="radio" value="1" name="q1">
                       1 Week
