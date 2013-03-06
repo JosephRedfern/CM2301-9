@@ -11,10 +11,13 @@ class Converter(object):
     container = None
     video_codec = None
     audio_codec = None
-    _progress = None
-    _is_started = False
+    _progress = 0
+    is_started = False
+    completed = False
     _process = None
     _length = None
+    _height = None
+    _width = None
     _dimensions = {}
 
     def __init__(self, input_path, output_path, ffmpeg_path=None):
@@ -86,10 +89,10 @@ class Converter(object):
         """
         Cancels the current conversion task.
         """
-        if self._is_started:
+        if self.is_started:
             self._process.kill()
             self._process = None
-            self._is_started = False
+            self.is_started = False
             self._progress = 0
             
         else:
@@ -126,9 +129,8 @@ class Converter(object):
         This method is run by the thread, it executes the ffmpeg process
         and captures the output.
         """
-        self._is_started = True
+        self.is_started = True
         self._length = self.get_duration()
-        
         self._process = subprocess.Popen(self._parse_options(),
                                          stdout=subprocess.PIPE, 
                                          stderr=subprocess.PIPE)
@@ -152,6 +154,8 @@ class Converter(object):
                 tmp = pat.findall(line)
                 parts = tmp[0].split(':')
                 progress = self.__to_decimal(parts)
+                if progress >= self._length:
+                    self.completed = True
                 percent = (progress/self._length)*100
                 self._progress = round(percent, 2)
                 
@@ -161,24 +165,34 @@ class Converter(object):
         Checks the current config for the encoding and outputs the 
         correct commands for ffmpeg.
         """
+        self._scale()
         video = []
+        
+        width = self._width
+        height = self._height
+        
+        print (width, height, 'dfsdf')
+        
         if self.container is ContainerFormat.WEBM:
+            print (self._width, self._height)
             video = ['-codec:v', VideoCodec.VP8, 
                     '-quality', 'good', 
                     '-cpu-used', '0',
                     '-b:v', '500k',
                     '-qmin', '10',
                     '-qmax', '42',
-                    '-vf', 'scale=-1:480'
+                    '-vf', 'scale=' + str(width) + ':' + str(height)
                     ]
         elif self.container is ContainerFormat.MP4:
+            print (self._width, self._height)
             video = ['-codec:v', VideoCodec.H264,
+                    '-r', '25',
                     '-vprofile', 'high',
                     '-preset', 'slow',
-                    '-b:v', '500k',
-                    '-maxrate', '500k',
-                    '-bufsize', '1000k',
-                    '-vf', 'scale=-1:480'
+                    '-b:v', '1000k',
+                    '-maxrate', '1000k',
+                    '-bufsize', '1200k',
+                    '-vf', 'scale=' + str(width) + ':' + str(height)
                     ]
             
         audio = ['-codec:a', self.audio_codec,
@@ -186,14 +200,25 @@ class Converter(object):
                  ]
         
         cmds = [self.ffmpeg_path, '-i', self.input_file] + video + audio + ['-y', self.output_file]
-        
         return cmds
     
     
     def _scale(self):
-        ratio = MIN( maxWidth / width, maxHeight/ height )
-        width = ratio * width
-        height = ratio * height
+        probe = self.probe
+        self._width = probe.video.width
+        self._height = probe.video.height
+        
+        if self._width % 2:
+            self._width = self._width - 1
+            
+        if self._height % 2:
+            self._height = self._height - 1
+            
+        print 'run'
+        
+        #ratio = MIN( maxWidth / width, maxHeight/ height )
+        #height = ratio * height
+        #width = ratio * width
         
 
     @property
@@ -204,7 +229,7 @@ class Converter(object):
         @return float The progress ffmpeg as a percentage.
         """
         if (self._progress is None
-            and self._is_started is False):
+            and self.is_started is False):
             raise FFMpegException("Conversion not started")
         else:
             return self._progress
