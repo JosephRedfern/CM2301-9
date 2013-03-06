@@ -7,7 +7,6 @@
 	<h3>{{ test.title }}</h2>
 	<p>{{ test.description }}</p>
 </div>
-{% for question in questions %}
 	<div class="row-fluid">
         	<div class="span12">
              		<div class="well">
@@ -15,24 +14,26 @@
                   			<fieldset>
                     				<div id="legend" class="">
                       					<legend class="">Question {{forloop.counter}}</legend>
-                					<p>{{ Question }}</p>
+                					<p>{{ question.content }}</p>
                     				</div>
-						{% for answer in question.answer_set.all %}
-                  					<div class="control-group">
-                        					<label class="control-label">Answer</label>
-                        					<div class="controls">
-                    						<!-- Multiple Radios -->
-                    							<label class="radio">
-                      								<input type="radio" value={{answer}} name="q" {{forloop.counter}}>
-                      									{{answer}}
-                    							</label>
-                  						</div>
-                					</div>
-						{% endfor %}
+                  				<div class="control-group">
+                        				<label class="control-label">Answer</label>
+                        				<div class="controls">
+                    					<!-- Multiple Radios -->
+                  					
+
+							{{ testform.as_p  }}
+
+
+
+							</div>
+                				</div>
             	      			</fieldset>
                			</form> 
                  	</div>
                 </div>
 	</div>
-{% endfor %}
+        <div>
+                <a href="#" class="btn btn-primary" style="float: right;"><i class="icon-white icon-ok"></i> Submit</a>
+        </div>
 {% endblock %}

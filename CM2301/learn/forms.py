@@ -6,6 +6,10 @@ class AttachmentForm(ModelForm):
     class Meta:
         model = Attachment
 
+class Test(ModelForm, questions):
+    model = Test
+    
+
 class VideoUploadForm(ModelForm):
     class Meta:
         model = Video
