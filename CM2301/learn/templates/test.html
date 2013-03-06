@@ -14,10 +14,10 @@
                 		<form class="form-horizontal">
                   			<fieldset>
                     				<div id="legend" class="">
-                      					<legend class="">"Question " {{forloop.counter}}</legend>
+                      					<legend class="">Question {{forloop.counter}}</legend>
                 					<p>{{ Question }}</p>
                     				</div>
-						{% for answer in answers %}}
+						{% for answer in question.answer_set.all %}
                   					<div class="control-group">
                         					<label class="control-label">Answer</label>
                         					<div class="controls">
@@ -28,10 +28,11 @@
                     							</label>
                   						</div>
                 					</div>
-                  			</fieldset>
+						{% endfor %}
+            	      			</fieldset>
                			</form> 
                  	</div>
                 </div>
 	</div>
-
+{% endfor %}
 {% endblock %}
