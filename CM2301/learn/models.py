@@ -3,8 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
-import tempfile, zipfile, os, tarfile, StringIO, mimetypes
+import tempfile, zipfile, os, tarfile, StringIO, mimetypes, threading, time
 from django.core.exceptions import ValidationError
+from learn.ffmpeg import ffmpeg
 
 class Base(models.Model):
     """
@@ -246,7 +247,8 @@ class Attachment(Base):
         """
         type = mimetypes.guess_type(self.file_name)
         return type[0]
-        
+
+
 class Revision(Base):
     """
     A revision object represents a single file that belongs to an Attachment.
@@ -351,10 +353,13 @@ class Link(Base):
 
 class Video(Base):
     
+    uploaded_video = models.FileField(upload_to='videos')
+    conversion_progress = models.FloatField(null=True, blank=True)
+    converting = models.BooleanField(default=False)
+    
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
     
-    uploaded_video = models.FileField(upload_to='videos')
     def get_file_paths(self):
         """
         Returns a dictionary of filepaths for every availiable format
@@ -386,12 +391,54 @@ class Video(Base):
         return settings.MEDIA_ROOT + os.sep + self.uploaded_video.url
         
     def convert(self):
-        c.set_video_codec(VideoCodec.VP8)
-        c.set_audio_codec('aac')
-        c.set_container(ContainerFormat.MP4)
-        c.set_dimensions(height=480)
+        #Create new video format object
+        self.converting = True
+        c = ffmpeg.Converter(self.uploaded_video.file.name, settings.MEDIA_ROOT + '/videos/test.mp4')
+        c.set_video_codec(ffmpeg.VideoCodec.H264)
+        c.set_audio_codec('libfaac')
+        c.set_container(ffmpeg.ContainerFormat.MP4)
         c.start()
+        
+        thread = threading.Thread(target=self._update_progress, args=[c])
+        thread.start()
+        
         return c
+    
+    def _update_progress(self, converter):
+        #TODO: MAKE THIS NOT SHITE!!
+                
+        while converter.completed == False:
+            if converter.is_started is False:
+                self.converting = False
+                break
+            
+            self.conversion_progress = converter.progress
+            self.save()
+
+            print converter.progress
+            print converter.is_started
+            print converter.completed
+            time.sleep(3)
+        self.converting = False
+        
+        print "THIS IS A TEST!!"
+        
+        vf = VideoFormat()
+        vf.file.name = converter.output_file
+        vf.encoding = ffmpeg.VideoCodec.H264
+        vf.bitrate = 100
+        vf.video = self
+        vf.save()
+        
+            
+            
+            
+            
+    def save(self, *args, **kwargs):
+        super(Video, self).save(*args, **kwargs)
+        if len(self.videoformat_set.all()) == 0 and self.converting == False:
+            self.convert()
+        
     
 class VideoThumbnail(models.Model):
     """
