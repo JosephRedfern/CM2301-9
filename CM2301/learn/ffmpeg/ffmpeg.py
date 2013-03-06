@@ -152,7 +152,11 @@ class Converter(object):
             if '\r' in buf:
                 line, buf = buf.split('\r', 1)
                 tmp = pat.findall(line)
-                parts = tmp[0].split(':')
+                try:
+                    parts = tmp[0].split(':')
+                except IndexError:
+                    self.completed = True
+                    return
                 progress = self.__to_decimal(parts)
                 if progress >= self._length:
                     self.completed = True
