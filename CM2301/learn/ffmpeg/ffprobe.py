@@ -36,11 +36,11 @@ class FFProbe(object):
 
     @property
     def height(self):
-        return self.video.video_height
+        return self.video.height
 
     @property
     def width(self):
-        return self.video.video_width
+        return self.video.width
 
     def _parse_format(self, dic):
         for key, value in dic.iteritems():
@@ -73,27 +73,35 @@ class Stream(object):
     def parse_ffprobe(cls, dic):        
         stream = cls()
         
-        for key, value in dic.iteritems():
-            if key == 'index':
-                stream.index = int(dic[key])
-            elif key == 'codec_type':
-                stream.type = dic[key]
-            elif key == 'codec_name':
-                stream.codec = dic[key]
-            elif key == 'codec_long_name':
-                stream.codec_desc = dic[key]
-            elif key == 'duration':
-                stream.duration = float(dic[key])
-            elif key == 'width':
-                stream.video_width = int(dic[key])
-            elif key == 'height':
-                stream.video_height = int(dic[key])
-            elif key == 'r_frame_rate':
-                stream.video_fps = dic[key]
-            elif key == 'channels':
-                stream.audio_channels = int(dic[key])
-            elif key == 'sample_rate':
-                stream.audio_samplerate = dic[key]
+        if 'index' in dic:
+            stream.index = int(dic['index'])
+            
+        if 'width' in dic:
+            stream.width = int(dic['width'])
+        
+        if 'height' in dic:
+            stream.height = int(dic['height'])
+            
+        if 'codec_type' in dic:
+            stream.type = dic['codec_type']
+            
+        if 'codec_name' in dic:
+            stream.codec = dic['codec_name']
+            
+        if 'codec_long_name' in dic:
+            stream.codec_desc = dic['codec_long_name']
+            
+        if 'duration' in dic:
+            stream.duration = float(dic['duration'])
+            
+        if 'r_frame_rate' in dic:
+            stream.video_fps = dic['r_frame_rate']
+            
+        if 'channels' in dic:
+            stream.audio_channels = int(dic['channels'])
+            
+        if 'sample_rate' in dic:
+            stream.audio_samplerate = int(dic['sample_rate'])
 
         return stream
 
@@ -101,9 +109,5 @@ class Stream(object):
         d = 'index:%s, type:%s, codec:%s' % (self.index, self.type, self.codec)
         return 'Stream(%s)' % d
         
-
-        
-        
-probe = FFProbe('/Users/Charlie/Downloads/135628941.mp4')
         
     
