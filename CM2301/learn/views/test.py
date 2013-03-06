@@ -7,7 +7,6 @@ def test(request, test_id):
 	values = {}
 	values['test'] = Test.objects.get(pk=test_id)
 	values['lectures'] = values['test'].lecture.module.lecture_set.all()
-	values['breadcrumb'] = ("LCARS","Module Overview")
 
 
 	#Don't quite understand this, have hashed something that looks right, needs checking though
