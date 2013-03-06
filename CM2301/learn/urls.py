@@ -15,6 +15,9 @@ urlpatterns = patterns('',
     url(r'^videos/(?P<video_id>%s)/$' % (uuid), 'learn.views.video.video'),
     url(r'^videos/(?P<video_id>%s)/serve/(.+)$' % (uuid), 'learn.views.video.serve'),
     url(r'^videos/create/$', 'learn.views.video.create'),
+
+    #Test URL's
+    url(r'^tests/$', 'learn.views.test.test'),
     
 
     #Module URL's
