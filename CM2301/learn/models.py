@@ -408,6 +408,8 @@ class Video(Base):
         #TODO: MAKE THIS NOT SHITE!!
                 
         while converter.completed == False:
+            print "Converter is completed - " + str(converter.completed)
+            print "Converter is started - " + str(converter.is_started)
             if converter.is_started is False:
                 self.converting = False
                 break
@@ -416,17 +418,21 @@ class Video(Base):
             self.save()
 
             print converter.progress
-            print converter.is_started
-            print converter.completed
             time.sleep(3)
+            
+        if converter.completed:
+                self.conversion_progress = 100
+                self.save()
+                
         self.converting = False
         
         print "THIS IS A TEST!!"
         
         vf = VideoFormat()
         vf.file.name = converter.output_file
-        vf.encoding = ffmpeg.VideoCodec.H264
-        vf.bitrate = 100
+        vf.encoding = converter.video_codec
+        vf.bitrate = 1000
+        vf.format = converter.container
         vf.video = self
         vf.save()
         
@@ -461,7 +467,7 @@ class VideoThumbnail(models.Model):
         ordering = ['time']
     
     
-class VideoFormat(Revision):
+class VideoFormat(Base):
     """
     Represents a specific video format containing a file.
     
@@ -475,6 +481,8 @@ class VideoFormat(Revision):
     bitrate = models.CharField(max_length=10)
     ##The Video object the format belongs to.
     video = models.ForeignKey(Video)
+    ##The video file field
+    file = models.FileField(upload_to='videos')
 
     def probe(self):
         """
@@ -487,7 +495,7 @@ class VideoFormat(Revision):
         return
 
     def __unicode__(self):
-        return self.video.__unicode__() + " in " + self.encoding
+        return "Video Format: " + str(self.id)
     
     
 class Module(Base):
