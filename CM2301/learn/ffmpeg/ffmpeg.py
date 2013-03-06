@@ -13,6 +13,7 @@ class Converter(object):
     audio_codec = None
     _progress = 0
     is_started = False
+    completed = False
     _process = None
     _length = None
     _height = None
@@ -153,6 +154,8 @@ class Converter(object):
                 tmp = pat.findall(line)
                 parts = tmp[0].split(':')
                 progress = self.__to_decimal(parts)
+                if progress >= self._length:
+                    self.completed = True
                 percent = (progress/self._length)*100
                 self._progress = round(percent, 2)
                 
@@ -183,11 +186,12 @@ class Converter(object):
         elif self.container is ContainerFormat.MP4:
             print (self._width, self._height)
             video = ['-codec:v', VideoCodec.H264,
+                    '-r', '25',
                     '-vprofile', 'high',
                     '-preset', 'slow',
-                    '-b:v', '500k',
-                    '-maxrate', '500k',
-                    '-bufsize', '1000k',
+                    '-b:v', '1000k',
+                    '-maxrate', '1000k',
+                    '-bufsize', '1200k',
                     '-vf', 'scale=' + str(width) + ':' + str(height)
                     ]
             
