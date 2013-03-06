@@ -5,7 +5,6 @@ from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
 import tempfile, zipfile, os, tarfile, StringIO, mimetypes
 from django.core.exceptions import ValidationError
-from django.utils import unittest
 
 class Base(models.Model):
     """
@@ -248,22 +247,6 @@ class Attachment(Base):
         type = mimetypes.guess_type(self.file_name)
         return type[0]
         
-class AttachmentTestCase(unittest.TestCase):
-	"""
-	A test class for Attachment
-	""" 
-
-	def setUp(self):
-		self.file1 = Attachment(file_name="file1", description="A file")
-		self.file2 = Attachment(file_name="file2", description="Another File")
-	
-	def test_get_total_size(self):
-		"""
-		The File Size is determined
-		"""
-		self.assertEqual(self.file1.get_total_size(), 0)
-		self.assertEqual(self.file2.get_total_size(), 0)
-
 class Revision(Base):
     """
     A revision object represents a single file that belongs to an Attachment.
