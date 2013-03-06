@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from learn.models import Module, Lecture, Attachment, Link
+from learn.models import Module, Lecture, Attachment, Link, Test
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -43,3 +43,13 @@ def attachments(request, module_id):
     values['breadcrumb'] = ("LCARS", values['module'].title, "Attachments")
 
     return render(request, 'module_attachments.html', values)
+
+@login_required
+def tests(request, module_id):
+    values = {}
+    values['attachments'] = Attachment.objects.filter(object_id=module_id)
+    values['modules'] = Module.objects.all()
+    values['module'] = Module.objects.get(pk=module_id)
+    values['lectures'] = Lecture.objects.filter(module=module_id)
+    values['tests'] = Test.objects.filter(lecture__in=values['lectures'])
+    return render(request, 'module_tests.html', values)

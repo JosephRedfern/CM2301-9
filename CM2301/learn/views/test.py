@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from learn.models import Test
+from learn.forms import *
+from learn.models import Lecture, Module, Link
 from django.contrib.auth.decorators import login_required
 
 @login_required
