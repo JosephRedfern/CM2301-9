@@ -25,6 +25,8 @@ urlpatterns = patterns('',
     url(r'^modules/(?P<module_id>%s)/$' % (uuid), 'learn.views.module.module'),
     url(r'^modules/(?P<module_id>%s)/lectures/$' % (uuid), 'learn.views.module.lectures'),
     url(r'^modules/(?P<module_id>%s)/attachments/$' % (uuid), 'learn.views.module.attachments'),
+    url(r'^modules/(?P<module_id>%s)/tests/$' % (uuid), 'learn.views.module.tests'),
+
 
     #Lecture URL's
     url(r'^lectures/create/$', 'learn.views.lecture.create'),
@@ -40,7 +42,8 @@ urlpatterns = patterns('',
     url(r'^revisions/(?P<revision_id>%s)/download/$' % (uuid), 'learn.views.attachment.revision_download'),
     url(r'^(.*)/(?P<object_id>%s)/attachments/download/$' % (uuid), 'learn.views.attachment.download_all_attachments'),
     
-    
+    #Test URL's
+    url(r'^tests/(?P<test_id>%s)/$' % (uuid), 'learn.views.test.test'),
     
     
 )
