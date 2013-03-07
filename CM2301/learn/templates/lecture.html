@@ -1,6 +1,35 @@
 {% extends "base_navbar.html" %}
 
 {% block content %}
+
+
+<script>
+$(document).ready(function(){
+	var i = 0
+  	var progresspump = setInterval(function(){
+  		console.log("Iterated %i", i)
+  		i++
+  		$.get("/videos/{{ lecture.video.id }}/progress", function(data){
+  			console.log(data);
+  			json = $.parseJSON(data)
+  			var progress = json[0]['fields']['conversion_progress']
+  			var converting = json[0]['fields']['converting']
+  			console.log(progress)
+  			if(progress == 100 && converting==false){
+  				clearInterval(progresspump);
+  				if($('#progress').length > 0){
+  					window.location.reload()
+  				}
+  				$("#progress-div").hide()
+  			}
+  			$("#progress").css('width',progress+'%');
+  		})
+  	}, 1000);
+});
+	
+</script>
+
+
 <div class="well">
 <h2>{{lecture.title}}</h2>
 <p>{{lecture.description}}</p>
@@ -13,9 +42,16 @@
 
         <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" data-setup="{}">
         	{% for vf in lecture.video.videoformat_set.all %}
-        	<source src="{{ vf.get_absolute_url }}" type='video/mp4' ></source>
+        	<source src="{{ vf.get_absolute_url }}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></source>
         	{% endfor %}
         </video>
+        {% if lecture.video.conversion_progress != 100.0 %}
+        <h3>Conversion Progress: </h3>
+        <div class="progress progress-striped active" id="progress-div">
+  			<div class="bar" id="progress" style="width: {{ lecture.video.conversion_progress }}%;"></div>
+		</div>
+		{% endif %}
+        
     </div>
 </div>
 
@@ -48,3 +84,5 @@
 {% endif %}
 </div>
 {% endblock %}
+
+
