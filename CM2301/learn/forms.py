@@ -1,4 +1,5 @@
 from django.forms import ModelForm, Form
+from django import forms
 from learn.models import *
 from django.forms import ModelForm, DateInput
 
@@ -6,13 +7,11 @@ class AttachmentForm(ModelForm):
     class Meta:
         model = Attachment
 
-class TestForm(ModelForm):
-    def __init__(self, questions, *args, **kwargs):
-        super(TestForm, self).__init__(*args, **kwargs)
+class TestForm(forms.Form):
+    def initialise(self, questions):
         for question in questions:
             choices = [(choice.id, choice.content) for choice in Answer.objects.filter(question=question.id)]
-            self.fields["question-%s"%(question.id)] = forms.ChoiceField(choices, widget=forms.RadioSelect(), label=question.title)
-        return self.fields
+            self.fields["%s"%(question.id)] = forms.ChoiceField(choices, widget=forms.RadioSelect(), label=question.content)
 
     class Meta:
         model = Test
