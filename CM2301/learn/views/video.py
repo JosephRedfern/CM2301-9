@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
+from django.core import serializers
 from learn.models import Video
 from learn.forms import *
 
@@ -57,3 +59,10 @@ def format_serve(request, video_format_id):
     response = StreamingHttpResponse(vf.file, content_type='video/mp4')
     response['Content-length'] = vf.file.file.size
     return response
+
+@login_required
+@require_http_methods(["POST", "GET"])
+def conversion_progress(request, video_id):
+    video = Video.objects.filter(pk=video_id)
+    data = serializers.serialize('json', video, fields=('id','converting', 'conversion_progress'))
+    return HttpResponse(data)
