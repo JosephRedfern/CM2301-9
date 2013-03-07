@@ -8,32 +8,27 @@
 	<p>{{ test.description }}</p>
 </div>
 	<div class="row-fluid">
-        	<div class="span12">
              		<div class="well">
-                		<form class="form-horizontal">
+                		<form action="" method="POST" >
+                      {%csrf_token%}
                   			<fieldset>
                     				<div id="legend" class="">
                       					<legend class="">Question {{forloop.counter}}</legend>
                 					<p>{{ question.content }}</p>
                     				</div>
-                  				<div class="control-group">
-                        				<label class="control-label">Answer</label>
-                        				<div class="controls">
                     					<!-- Multiple Radios -->
                   					
 
 							{{ testform.as_p  }}
 
 
+  <input type="submit" value="Submit" style="float: right;" class="btn btn-primary btn-large"/>
 
-							</div>
                 				</div>
             	      			</fieldset>
                			</form> 
                  	</div>
                 </div>
-	</div>
         <div>
-                <a href="#" class="btn btn-primary" style="float: right;"><i class="icon-white icon-ok"></i> Submit</a>
         </div>
 {% endblock %}

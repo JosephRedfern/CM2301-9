@@ -1,17 +1,35 @@
 from django.shortcuts import render
 from learn.forms import TestForm
-from learn.models import Lecture, Module, Link, Test
+from learn.models import Lecture, Module, Link, Test, Answer, TestInstance, Result
+from uuidfield import UUIDField
 from django.contrib.auth.decorators import login_required
+
+
 
 @login_required
 def test(request, test_id):
     values = {}
-    values['test'] = Test.objects.get(pk=test_id)
+    values['test_instance'] = Test.objects.get(pk=test_id)
     values['lectures'] = values['test'].lecture.module.lecture_set.all()
     values['questions'] = values['test'].questions.all()
-    values['testform'] = TestForm(questions=values['questions'])
+    values['testform'] = TestForm()
+    values['testform'].initialise(questions=values['questions'])
 
-    #Don't quite understand this, have hashed something that looks right, needs checking though
     values['breadcrumb'] = ("LCARS", "%s (%s)"%(values['test'].title,values['test'].description))
+
+    if request.method == 'POST':
+        form = TestForm(request.POST)
+
+        test_instance = TestInstance()
+        test_instance.student = request.user
+        test_instance.test =  values['test']
+        test_instance.save()
+
+        if form.is_valid():
+            for question in values['questions']:
+                result = Result()
+                result.test_instance = test_instance
+                result.question = Question.objects.get(pk=question.id)
+                result.answer = Answer.objects.get(pk=form.data[str(question.id)])
 
     return render(request, 'test.html', values)
