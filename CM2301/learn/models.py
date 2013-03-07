@@ -586,7 +586,7 @@ class Course(Base):
         """
 
     def __unicode__(self):
-        return self.title + " (" + self.code + ")"
+         return self.title + " (" + self.code + ")"
     
     
 ################################################################
@@ -647,7 +647,7 @@ class Test(Base):
         @return List Returns a list of Question objects
         @throws TestException
         """
-        return
+        return self.__class__.objects.order_by('?')[:self.question_count]
 
     def __unicode__(self):
         return self.title
@@ -679,8 +679,8 @@ class TestInstance(Base):
     ##The associated Test object.
     test = models.ForeignKey(Test)
     ##The time the Test was completed.
-    time_completed = models.DateTimeField()
-    
+    time_completed = models.DateTimeField(null=True, blank=True)
+
     def calc_result(self):
         """
         Returns the percentage of answers correct in the TestInstance as a float.
@@ -714,8 +714,7 @@ class Result(Base):
     ##The answer chosen
     answer = models.ForeignKey(Answer)
 
-    def __unicode__(self):
-        return "Answer to "+self.question
+        
 
 
 ################################################################
