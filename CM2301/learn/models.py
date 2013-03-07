@@ -436,9 +436,7 @@ class Video(Base):
         if converter.completed:
                 self.conversion_progress = 100
                 self.converting = False
-                self.save()
                 
-        self.converting = False
         
         print "VIDEO CONVERTED!!"
         
@@ -449,6 +447,7 @@ class Video(Base):
         vf.format = converter.container
         vf.video = self
         vf.save()
+        self.save()
             
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)

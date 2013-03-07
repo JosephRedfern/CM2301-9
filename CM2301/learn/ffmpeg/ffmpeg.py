@@ -192,25 +192,28 @@ class Converter(object):
         if self.container is ContainerFormat.WEBM:
             print (self._width, self._height)
             video = ['-codec:v', VideoCodec.VP8, 
+                    '-r', '25',
                     '-quality', 'good', 
                     '-cpu-used', '0',
                     '-b:v', '1000k',
                     '-qmin', '10',
                     '-qmax', '42',
                     '-vf', 'scale=' + str(width) + ':' + str(height),
-                    '-threads', '0'
+                    '-pix_fmt', 'yuv420p',
+                    '-threads', '0',
                     ]
         elif self.container is ContainerFormat.MP4:
             print (self._width, self._height)
             video = ['-codec:v', VideoCodec.H264,
+                    '-profile:v', 'baseline',
                     '-r', '25',
-                    '-vprofile', 'high',
                     '-preset', 'slow',
                     '-b:v', '1000k',
                     '-maxrate', '1000k',
                     '-bufsize', '1200k',
                     '-vf', 'scale=' + str(width) + ':' + str(height),
-                    '-threads', '0'
+                    '-pix_fmt', 'yuv420p',
+                    '-threads', '0',
                     ]
             
         audio = ['-codec:a', self.audio_codec,
