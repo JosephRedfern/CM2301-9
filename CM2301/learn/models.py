@@ -647,7 +647,7 @@ class Test(Base):
         @return List Returns a list of Question objects
         @throws TestException
         """
-        return
+        return self.__class__.objects.order_by('?')[:self.question_count]
 
     def __unicode__(self):
         return self.title
@@ -714,8 +714,7 @@ class Result(Base):
     ##The answer chosen
     answer = models.ForeignKey(Answer)
 
-    def __unicode__(self):
-        return "Answer to "+self.question
+        
 
 
 ################################################################

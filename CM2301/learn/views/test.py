@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from learn.forms import TestForm
-from learn.models import Lecture, Module, Link, Test, Answer, TestInstance, Result
+from learn.models import *
 from uuidfield import UUIDField
 from django.contrib.auth.decorators import login_required
 
@@ -9,9 +9,9 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def test(request, test_id):
     values = {}
-    values['test_instance'] = Test.objects.get(pk=test_id)
+    values['test'] = Test.objects.get(pk=test_id)
     values['lectures'] = values['test'].lecture.module.lecture_set.all()
-    values['questions'] = values['test'].questions.all()
+    values['questions'] = values['test'].questions.all().
     values['testform'] = TestForm()
     values['testform'].initialise(questions=values['questions'])
 
@@ -31,5 +31,7 @@ def test(request, test_id):
                 result.test_instance = test_instance
                 result.question = Question.objects.get(pk=question.id)
                 result.answer = Answer.objects.get(pk=form.data[str(question.id)])
+                result.save()
+                test_instance.time_completed = datetime.now()
 
     return render(request, 'test.html', values)
