@@ -160,8 +160,6 @@ class Converter(object):
             if '\r' in buf:
                 line, buf = buf.split('\r', 1)
                 tmp = pat.findall(line)
-                print self._process
-                print 'return code: ' +  str(self._process.poll())
                 try:
                     parts = tmp[0].split(':')
                 except IndexError:
