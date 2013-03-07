@@ -6,7 +6,7 @@ class AttachmentForm(ModelForm):
     class Meta:
         model = Attachment
 
-class Test(ModelForm, questions):
+class Test(ModelForm):
     model = Test
     
 
