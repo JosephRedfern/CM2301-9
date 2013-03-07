@@ -45,3 +45,15 @@ def serve(request, video_id):
     response = StreamingHttpResponse(video.uploaded_video, content_type='video/mp4')
     response['Content-length'] = video.uploaded_video.file.size
     return response
+
+@login_required
+def format_serve(request, video_format_id):
+    """
+    Serves a video media stream to the client, this view is used
+    by the VideoJS player.
+    """
+    vf = VideoFormat.objects.get(pk=video_format_id)
+    filename = vf.file.name.split('/')[-1]
+    response = StreamingHttpResponse(vf.file, content_type='video/mp4')
+    response['Content-length'] = vf.file.file.size
+    return response
