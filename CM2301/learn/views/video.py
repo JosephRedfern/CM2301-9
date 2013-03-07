@@ -56,7 +56,8 @@ def format_serve(request, video_format_id):
     """
     vf = VideoFormat.objects.get(pk=video_format_id)
     filename = vf.file.name.split('/')[-1]
-    response = StreamingHttpResponse(vf.file, content_type='video/mp4')
+    response = StreamingHttpResponse(vf.file)
+    response['Content-Type'] = "video/%s" % (vf.format)
     response['Content-length'] = vf.file.file.size
     return response
 
