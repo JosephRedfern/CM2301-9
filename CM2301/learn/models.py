@@ -353,7 +353,7 @@ class Link(Base):
 
 class Video(Base):
     
-    uploaded_video = models.FileField(upload_to='videos')
+    uploaded_video = models.FileField(upload_to='videos/original/')
     conversion_progress = models.FloatField(null=True, blank=True)
     converting = models.BooleanField(default=False)
     
@@ -391,11 +391,18 @@ class Video(Base):
         return settings.MEDIA_ROOT + os.sep + self.uploaded_video.url
         
     def convert(self):
+        """
+        Runs the conversion process for the video, this is called by the
+        overridden save method, if not converting and no videoformats attached
+        to the video object.
+        """
         #Create new video format object
         self.converting = True
-        c = ffmpeg.Converter(self.uploaded_video.file.name, settings.MEDIA_ROOT + '/videos/test.mp4')
+        print self.uploaded_video.file.name
+        print self.uploaded_video.file
+        c = ffmpeg.Converter(self.uploaded_video.file.name, settings.MEDIA_ROOT + '/videos/converted/' + str(self.pk) + '.mp4')
         c.set_video_codec(ffmpeg.VideoCodec.H264)
-        c.set_audio_codec('libfaac')
+        c.set_audio_codec(ffmpeg.AudioCodec.AAC)
         c.set_container(ffmpeg.ContainerFormat.MP4)
         c.start()
         
@@ -405,6 +412,12 @@ class Video(Base):
         return c
     
     def _update_progress(self, converter):
+        """
+        This method is run as a thread, it updates the progress of the 
+        ffmpeg conversion in the database. Pass it a ffmpeg converter object
+        and it will do its magic.
+        
+        """
         #TODO: MAKE THIS NOT SHITE!!
                 
         while converter.completed == False:
@@ -426,7 +439,7 @@ class Video(Base):
                 
         self.converting = False
         
-        print "THIS IS A TEST!!"
+        print "VIDEO CONVERTED!!"
         
         vf = VideoFormat()
         vf.file.name = converter.output_file
@@ -435,10 +448,6 @@ class Video(Base):
         vf.format = converter.container
         vf.video = self
         vf.save()
-        
-            
-            
-            
             
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
@@ -496,6 +505,11 @@ class VideoFormat(Base):
 
     def __unicode__(self):
         return "Video Format: " + str(self.id)
+    
+    
+    def get_absolute_url(self):
+        #return reverse('learn.views.video.format_serve', args=[str(self.id)])
+        return '/videos/formats/%s/serve/video.mp4' % (self.id)
     
     
 class Module(Base):
