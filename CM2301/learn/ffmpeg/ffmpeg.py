@@ -84,6 +84,12 @@ class Converter(object):
         print ' '.join(self._parse_options())
         thread = threading.Thread(target=self.__conversion)
         thread.start()
+        
+    def _wait(self):
+        self._process.wait()
+        self.completed = True
+        self.is_started = False
+        print "Conversion Completed"
 
     def cancel(self):
         """
@@ -134,6 +140,8 @@ class Converter(object):
         self._process = subprocess.Popen(self._parse_options(),
                                          stdout=subprocess.PIPE, 
                                          stderr=subprocess.PIPE)
+        thread = threading.Thread(target=self._wait)
+        thread.start()
 
         buf = ''
         total_output = ''
@@ -152,6 +160,8 @@ class Converter(object):
             if '\r' in buf:
                 line, buf = buf.split('\r', 1)
                 tmp = pat.findall(line)
+                print self._process
+                print 'return code: ' +  str(self._process.poll())
                 try:
                     parts = tmp[0].split(':')
                 except IndexError:
