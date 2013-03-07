@@ -12,7 +12,9 @@
         <script src="http://vjs.zencdn.net/c/video.js"></script>
 
         <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" data-setup="{}">
-        <source src="/videos/{{lecture.video.id}}/serve/video.mp4" type='video/mp4'>
+        	{% for vf in lecture.video.videoformat_set.all %}
+        	<source src="{{ vf.get_absolute_url }}" type='video/mp4' ></source>
+        	{% endfor %}
         </video>
     </div>
 </div>
