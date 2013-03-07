@@ -435,6 +435,7 @@ class Video(Base):
             
         if converter.completed:
                 self.conversion_progress = 100
+                self.converting = False
                 self.save()
                 
         self.converting = False
