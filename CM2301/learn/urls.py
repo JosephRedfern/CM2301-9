@@ -45,6 +45,6 @@ urlpatterns = patterns('',
     
     #Test URL's
     url(r'^tests/(?P<test_id>%s)/$' % (uuid), 'learn.views.test.test'),
-    
+    url(r'^results/(?P<test_instance_id>%s)/$' % (uuid), 'learn.views.test.test_results'),
     
 )
