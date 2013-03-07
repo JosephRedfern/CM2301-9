@@ -396,7 +396,7 @@ class Video(Base):
         overridden save method, if not converting and no videoformats attached
         to the video object.
         """
-        #Create new video format object
+        #Create new video conversion object
         self.converting = True
         print self.uploaded_video.file.name
         print self.uploaded_video.file
@@ -406,12 +406,20 @@ class Video(Base):
         c.set_container(ffmpeg.ContainerFormat.MP4)
         c.start()
         
-        thread = threading.Thread(target=self._update_progress, args=[c])
+        c1 = ffmpeg.Converter(self.uploaded_video.file.name, settings.MEDIA_ROOT + '/videos/converted/' + str(self.pk) + '.webm')
+        c1.set_video_codec(ffmpeg.VideoCodec.VP8)
+        c1.set_audio_codec(ffmpeg.AudioCodec.VORBIS)
+        c1.set_container(ffmpeg.ContainerFormat.WEBM)
+        c1.start()
+        
+        args = [c, c1]
+
+        thread = threading.Thread(target=self._update_progress, args=[args])
         thread.start()
         
         return c
     
-    def _update_progress(self, converter):
+    def _update_progress(self, converters):
         """
         This method is run as a thread, it updates the progress of the 
         ffmpeg conversion in the database. Pass it a ffmpeg converter object
@@ -419,35 +427,47 @@ class Video(Base):
         
         """
         #TODO: MAKE THIS NOT SHITE!!
-                
-        while converter.completed == False:
-            print "Converter is completed - " + str(converter.completed)
-            print "Converter is started - " + str(converter.is_started)
-            if converter.is_started is False:
-                self.converting = False
-                break
-            
-            self.conversion_progress = converter.progress
+        
+        progress = []
+        ended = False
+        created = []
+        
+        while not ended:
+            for converter in converters:
+                if len(created) == len(converters):
+                    self.conversion_progress = 100
+                    self.converting = False
+                    self.save()
+                    ended = True
+                    break
+                if converter.completed == True:
+                    if converter in created:
+                        progress.append(100)
+                    else:
+                        vf = VideoFormat()
+                        vf.file.name = converter.output_file
+                        vf.encoding = converter.video_codec
+                        vf.bitrate = 1000
+                        vf.format = converter.container
+                        vf.video = self
+                        vf.save()
+                        created.append(converter)
+                        continue
+                else:
+                    progress.append(converter.progress)
+            percentage = sum(progress)/len(progress)
+            self.conversion_progress = percentage
+            print percentage
+            print created
+            print progress
+            print converters
             self.save()
-
-            print converter.progress
-            time.sleep(3)
+            #Clear list
+            progress[:] = []
+            time.sleep(2)
             
-        if converter.completed:
-                self.conversion_progress = 100
-                self.converting = False
-                
         
-        print "VIDEO CONVERTED!!"
         
-        vf = VideoFormat()
-        vf.file.name = converter.output_file
-        vf.encoding = converter.video_codec
-        vf.bitrate = 1000
-        vf.format = converter.container
-        vf.video = self
-        vf.save()
-        self.save()
             
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
@@ -509,7 +529,7 @@ class VideoFormat(Base):
     
     def get_absolute_url(self):
         #return reverse('learn.views.video.format_serve', args=[str(self.id)])
-        return '/videos/formats/%s/serve/video.mp4' % (self.id)
+        return '/videos/formats/%s/serve/video.%s' % (self.id, self.format)
     
     
 class Module(Base):
