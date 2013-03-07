@@ -633,8 +633,8 @@ class Test(Base):
         @return List Returns a list of Question objects
         @throws TestException
         """
-        return self.__class__.objects.order_by('?')[:self.question_count]
-
+        return self.questions.order_by('?')[:self.question_count]
+ 
     def __unicode__(self):
         return self.title
         
@@ -666,6 +666,8 @@ class TestInstance(Base):
     test = models.ForeignKey(Test)
     ##The time the Test was completed.
     time_completed = models.DateTimeField(null=True, blank=True)
+    ##The test result
+    test_score = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     def calc_result(self):
         """
@@ -683,7 +685,12 @@ class TestInstance(Base):
             if answer.answer.correct:
                 total_correct += 1
 
-        return total_correct/total_questions
+        self.test_score = total_correct/total_questions
+        self.save()
+        return self.test_score
+
+    def get_absolute_url(self):
+        return reverse('learn.views.test.test_results', args=[str(self.id)])
     
     def __unicode__(self):
         return "Instance of "+self.test.__unicode__()+" for user "+self.student.__unicode__()
