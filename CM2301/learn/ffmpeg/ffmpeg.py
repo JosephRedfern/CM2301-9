@@ -152,12 +152,18 @@ class Converter(object):
             if '\r' in buf:
                 line, buf = buf.split('\r', 1)
                 tmp = pat.findall(line)
-                parts = tmp[0].split(':')
-                progress = self.__to_decimal(parts)
-                if progress >= self._length:
+                try:
+                    parts = tmp[0].split(':')
+                except IndexError:
                     self.completed = True
+                    return
+                progress = self.__to_decimal(parts)
                 percent = (progress/self._length)*100
                 self._progress = round(percent, 2)
+                if progress >= self._length:
+                    self.completed = True 
+                elif self._progress > 100:
+                    self.completed = True
                 
                 
     def _parse_options(self):
@@ -178,10 +184,11 @@ class Converter(object):
             video = ['-codec:v', VideoCodec.VP8, 
                     '-quality', 'good', 
                     '-cpu-used', '0',
-                    '-b:v', '500k',
+                    '-b:v', '1000k',
                     '-qmin', '10',
                     '-qmax', '42',
-                    '-vf', 'scale=' + str(width) + ':' + str(height)
+                    '-vf', 'scale=' + str(width) + ':' + str(height),
+                    '-threads', '0'
                     ]
         elif self.container is ContainerFormat.MP4:
             print (self._width, self._height)
@@ -192,7 +199,8 @@ class Converter(object):
                     '-b:v', '1000k',
                     '-maxrate', '1000k',
                     '-bufsize', '1200k',
-                    '-vf', 'scale=' + str(width) + ':' + str(height)
+                    '-vf', 'scale=' + str(width) + ':' + str(height),
+                    '-threads', '0'
                     ]
             
         audio = ['-codec:a', self.audio_codec,
