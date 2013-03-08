@@ -30,7 +30,7 @@ class LectureForm(ModelForm):
             'valid_from': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
         }
         
-class RevisionCreateForm(ModelForm):
+class RevisionForm(ModelForm):
     class Meta:
         model = Revision
         #fields = ('file',)

@@ -41,10 +41,10 @@ urlpatterns = patterns('',
     url(r'^attachments/(?P<attachment_id>%s)/download/$' % (uuid), 'learn.views.attachment.download_all_revisions'),
     url(r'^attachments/(?P<attachment_id>%s)/add/$' % (uuid), 'learn.views.attachment.revision_add'),
     url(r'^revisions/(?P<revision_id>%s)/$' % (uuid), 'learn.views.attachment.revision'),
-    url(r'^revisions/submit/$', 'learn.views.attachment.revision_submit'),
     url(r'^revisions/(?P<revision_id>%s)/delete$' % (uuid), 'learn.views.attachment.revision_delete'),
     url(r'^revisions/(?P<revision_id>%s)/download/$' % (uuid), 'learn.views.attachment.revision_download'),
     url(r'^(.*)/(?P<object_id>%s)/attachments/download/$' % (uuid), 'learn.views.attachment.download_all_attachments'),
+    url(r'^(.*)/(?P<object_id>%s)/attachments/create/$' % (uuid), 'learn.views.attachment.attachment_create'),
     
     #Test URL's
     url(r'^tests/(?P<test_id>%s)/$' % (uuid), 'learn.views.test.test'),
