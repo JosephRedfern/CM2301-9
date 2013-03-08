@@ -433,6 +433,7 @@ class Video(Base):
         created = []
         
         while not ended:
+            print progress
             for converter in converters:
                 if len(created) == len(converters):
                     self.conversion_progress = 100
@@ -441,6 +442,7 @@ class Video(Base):
                     ended = True
                     break
                 if converter.completed == True:
+                    print "This format conversion has been completed"
                     if converter in created:
                         progress.append(100)
                     else:
@@ -455,12 +457,10 @@ class Video(Base):
                         continue
                 else:
                     progress.append(converter.progress)
+            if ended:
+                break
             percentage = sum(progress)/len(progress)
             self.conversion_progress = percentage
-            print percentage
-            print created
-            print progress
-            print converters
             self.save()
             #Clear list
             progress[:] = []
@@ -574,7 +574,7 @@ class Lecture(Base):
     ##Module that this lecture is associated with
     module = models.ForeignKey(Module)
     ##Video that this lecture is associated with.
-    video = models.ForeignKey(Video)
+    video = models.ForeignKey(Video, null=True, blank=True)
 
     def __unicode__(self):
         return self.title
