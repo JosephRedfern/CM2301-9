@@ -260,6 +260,44 @@ class Converter(object):
         @return FFProbe Returns an ffprobe for the current file.
         """
         return FFProbe(self.input_file)
+    
+    @classmethod
+    def thumbnail(cls, fname, time, outfile, size=None):
+        """
+        Create a thumbnal at the specific time point (in seconds) of
+        the media file, and store it to outfile. Size, if specified,
+        is WxH of the desired thumbnail. If not specified, the video
+        resolution is used.
+
+        >>> f.thumbnail('test1.ogg', 5, '/tmp/shot.png', '320x240')
+        """
+        
+        
+        path = '/usr/local/bin/ffmpeg'
+                
+
+        cmds = [path,
+            '-ss', str(time),
+            '-i', fname,
+            '-y', '-an', '-f', 'image2', '-q:v', '0', '-vframes', '1']
+        
+        
+
+        if size:
+            cmds.extend(['-s', str(size)])
+
+        cmds.append("'" + outfile + "'")
+        
+        print ' '.join(cmds)
+        
+        thread = threading.Thread(target=cls._run_popen, args=[cmds])
+        thread.start()
+        
+    @classmethod
+    def _run_popen(cls, cmd):
+        #output = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        #print output.stdout.read()
+         print subprocess.check_output(' '.join(cmd), shell=True)
 
 class ContainerFormat(object):
     """
