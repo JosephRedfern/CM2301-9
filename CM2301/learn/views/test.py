@@ -6,6 +6,8 @@ from uuidfield import UUIDField
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
+
+
 @login_required
 def tests(request):
     values = {}

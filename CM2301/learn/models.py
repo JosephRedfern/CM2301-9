@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from learn.models import *
 from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
