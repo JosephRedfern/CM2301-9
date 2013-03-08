@@ -38,7 +38,7 @@ def view(request, lecture_id):
     values['title'] = values['lecture'].title
     values['attachments'] = Attachment.objects.filter(object_id=lecture_id)
     values['links'] = Link.objects.filter(object_id=lecture_id)
-    values['test'] = Test.objects.filter(lecture=values['lecture'])[0]
+    values['test'] = Test.objects.filter(lecture=values['lecture'])
     values['test_results'] = TestInstance.objects.filter(test=values['test'], student=request.user)
 
     values['breadcrumb'] = ('LCARS', values['lecture'].module.title + " ("+values['lecture'].module.module_code+')', values['lecture'].title)
