@@ -8,7 +8,7 @@
     {% for lecture in lectures %}
     {% cycle '<div class="row-fluid">' '' '' '' '' '' %}
         <div class="span2">
-            <a href="/lectures/{{lecture.id}}"><img src="{{ lecture.video.videothumbnail_set.get.get_absolute_url }}"/></a>
+            <a href="/lectures/{{lecture.id}}"><img src="{{ lecture.video.videothumbnail_set.all.0.get_absolute_url }}"/></a>
             <h4><a href="/lectures/{{lecture.id}}">{{lecture.title}}</a></h4>
         </div>
         {% if forloop.last %}
