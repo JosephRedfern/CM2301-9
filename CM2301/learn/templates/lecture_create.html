@@ -6,8 +6,9 @@
 <script src="{{ STATIC_URL }}js/jquery.js"></script>
 <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
 <script src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
-<form action="/lectures/submit/" method="POST">{% csrf_token %}
-  {{form.as_p}}
+<form enctype="multipart/form-data" action="" method="POST">{% csrf_token %}
+  {{lecture_form.as_p}}
+  {{video_form.as_p}}
 	<input type="submit" value="Submit" class="btn"/>
 </form>
 <script>$(document).ready($('.datepicker').datepicker());</script>
