@@ -1,0 +1,16 @@
+{% extends "base_navbar.html" %}
+{% block content %}
+<div class="row-fluid">
+    <div class="well">
+        <h1>Rest result: {{test.title}}</h1>
+    </div>
+</div>
+<div class="row-fluid">
+    <p>
+        <ul>
+            <li><b>Test Score:</b> {{test_instance.test_score}}%</li>
+        </ul>
+    </p>
+    <div><a class="btn btn-primary" href="/tests/">Back to tests <span class="icon-hand-left icon-white"></i></a></div>
+</div>
+{% endblock %}

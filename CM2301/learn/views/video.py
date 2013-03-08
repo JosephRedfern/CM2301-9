@@ -17,6 +17,7 @@ def all(request):
 
 @login_required
 def video(request, video_id):
+    Viewed.log_view(request, video_id)
     print video_id
     try:
         video = Video.objects.get(pk=video_id)
@@ -40,6 +41,7 @@ def serve(request, video_id):
     Serves a video media stream to the client, this view is used
     by the VideoJS player.
     """
+    Viewed.log_view(request, video_id)
     video = Video.objects.get(pk=video_id)
     filename = video.uploaded_video.name.split('/')[-1]
     response = StreamingHttpResponse(video.uploaded_video, content_type='video/mp4')
@@ -52,6 +54,7 @@ def format_serve(request, video_format_id):
     Serves a video media stream to the client, this view is used
     by the VideoJS player.
     """
+    Viewed.log_view(request, video_format_id)
     vf = VideoFormat.objects.get(pk=video_format_id)
     filename = vf.file.name.split('/')[-1]
     response = StreamingHttpResponse(vf.file, content_type='video/mp4')

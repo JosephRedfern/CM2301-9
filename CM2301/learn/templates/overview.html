@@ -7,9 +7,9 @@
 </div>
 
 <div class="row-fluid">
+    {% if announcements %}
     <div class="span4">
         <h2>Announcements</h2>
-        {% if announcements %}
         <ul>
         {% for announcement in announcements  %}
             <li><a href="#{{announcement.id}}" role="button" data-toggle="modal">{{ announcement.title }}</a></li>
@@ -28,8 +28,18 @@
                 </div>
         {% endfor %}
         </ul>
-        {% endif %}
     </div>
+    {% endif %}
+    {% if announcements %}
+    <div class="span4">
+        <h2>Recently Viewed</h2>
+        <ul>
+        {% for activity in activities  %}
+            <li></li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -9,6 +9,7 @@ import mimetypes, tempfile, zipfile
 
 @login_required 
 def attachment(request, attachment_id):
+    Viewed.log_view(request, attachment_id)
     values = {}
     values['attachment'] = Attachment.objects.get(id=attachment_id)
     values['title'] = "Attachment %s"%(values['attachment'].file_name)
@@ -40,6 +41,7 @@ def revision(request, revision_id):
 
 @login_required 
 def revision_download(request, revision_id):
+    Viewed.log_view(request, revision_id)
     revision = Revision.objects.get(pk=revision_id)
     response = HttpResponse(revision.file)
     type = revision.mimetype()

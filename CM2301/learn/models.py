@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from learn.models import *
 from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
@@ -139,7 +140,26 @@ class CustomField(Base):
     key = models.CharField(max_length=250)
     ##The field value
     value = models.TextField()
-    
+
+
+class Viewed(Base):
+    ##The user that has viewed the object
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    ##The object that has been viewed
+    object_id = UUIDField()
+
+    ##The date/time that the object was viewed
+    view_date = models.DateTimeField(auto_now_add=True)
+
+    @classmethod
+    def log_view(cls, request, object_id):
+        v = cls()
+        v.object_id = object_id
+        v.user = request.user
+        v.save()
+        return v
+
 ################################################################
 #File Handling
 ################################################################
@@ -653,7 +673,6 @@ class Test(Base):
     def __unicode__(self):
         return self.title
         
-        
 class Answer(Base):
     """
     An instance of the Answer class hold answer details.
@@ -692,15 +711,19 @@ class TestInstance(Base):
         """
 
         answers = Result.objects.filter(test_instance=self.pk)
+        print answers
 
         total_questions = len(answers)
         total_correct = 0
 
         for answer in answers:
+            print str(answer.answer.question) +": " + str(answer.answer.correct)
             if answer.answer.correct:
+                print answer.answer.correct
                 total_correct += 1
 
-        self.test_score = total_correct/total_questions
+        self.test_score = 100.0*(total_correct/float(total_questions))
+        print 100.0*(total_correct/float(total_questions))
         self.save()
         return self.test_score
 

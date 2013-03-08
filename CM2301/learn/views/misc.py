@@ -10,6 +10,9 @@ def home(request):
     values['title'] = 'Home'
     values['modules'] = Module.objects.all()
     values['announcements'] = Announcement.objects.all()
+    viewed = Viewed.objects.filter(user=request.user)
+    values['activity'] = []
+
     values['breadcrumb'] = ("LCARS", "Overview")
     return render(request, 'overview.html', values)
 
