@@ -1,13 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from learn.forms import *
 from learn.models import Lecture, Module, Link
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+import uuid
 
 @login_required
 def create(request):
-    form = LectureCreateForm()
-    print form.as_p()
-    return render(request, 'lecture_create.html', {'form': form})
+    if request.method == 'POST':
+        video_form = VideoForm(request.POST, request.FILES, prefix='video')
+        lecture_form = LectureForm(request.POST, prefix='lecture')
+        print "Video form valid: " + video_form.as_p()
+        print video_form.is_valid()
+        if all([lecture_form.is_valid(), video_form.is_valid()]):
+            video = video_form.save(commit=False)
+            lecture = lecture_form.save(commit=False)
+            video.id = uuid.uuid4().hex
+            lecture.video = video
+            video.save()
+            lecture.save()
+            
+            return redirect(lecture.get_absolute_url())
+    
+    lecture_form = LectureForm(prefix="lecture")
+    video_form = VideoForm(prefix="video")
+    print lecture_form.as_p()
+    return render(request, 'lecture_create.html', {'lecture_form': lecture_form, 'video_form': video_form})
 
 
 @login_required
