@@ -57,16 +57,21 @@ def tests(request, module_id):
     values['tests_with_max'] = []
     for test in values['tests']:
         test_instances = TestInstance.objects.filter(test=test).order_by('-test_score')[:1]
-        values['tests_with_max'].append((test, test_instances[0].test_score))
+        if len(test_instances)>0:
+            values['tests_with_max'].append((test, test_instances[0].test_score))
+        else:
+            values['tests_with_max'].append((test, ""))
 
     values['top_results'] = []
     for test in values['tests']:
         test_instances = TestInstance.objects.filter(test=test).order_by('-test_score')[:1]
-        values['top_results'].append((test, test_instances[0].test_score))
+        if len(test_instances)>0:
+            values['top_results'].append((test, test_instances[0].test_score))
 
     values['bottom_results'] = []
     for test in values['tests']:
         test_instances = TestInstance.objects.filter(test=test).order_by('test_score')[:1]
-        values['bottom_results'].append((test, test_instances[0].test_score))
-
+        if len(test_instances)>0:
+            values['bottom_results'].append((test, test_instances[0].test_score))
+        
     return render(request, 'module_tests.html', values)
