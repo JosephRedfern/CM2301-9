@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from uuidfield import UUIDField
 from django.core.urlresolvers import reverse
-import tempfile, zipfile, os, tarfile, StringIO, mimetypes, threading, time
+import tempfile, zipfile, os, tarfile, StringIO, mimetypes, threading, time, uuid
 from django.core.exceptions import ValidationError
 from learn.ffmpeg import ffmpeg
 
@@ -417,6 +417,7 @@ class Video(Base):
         """
         #Create new video conversion object
         self.converting = True
+        self.generate_thumbnail()
         print self.uploaded_video.file.name
         print self.uploaded_video.file
         c = ffmpeg.Converter(self.uploaded_video.file.name, settings.MEDIA_ROOT + '/videos/converted/' + str(self.pk) + '.mp4')
@@ -437,6 +438,15 @@ class Video(Base):
         thread.start()
         
         return c
+    
+    def generate_thumbnail(self):
+        fp = '%s/videos/thumbnails/%s%s' % (settings.MEDIA_ROOT, uuid.uuid4().hex, '.png')
+        ffmpeg.Converter.thumbnail(self.uploaded_video.file.name, 5, fp, size='300x200')
+        thumbnail = VideoThumbnail()
+        thumbnail.video = self
+        thumbnail.time = 5
+        thumbnail.thumbnail.name = fp
+        thumbnail.save()
     
     def _update_progress(self, converters):
         """
@@ -494,7 +504,7 @@ class Video(Base):
             self.convert()
         
     
-class VideoThumbnail(models.Model):
+class VideoThumbnail(Base):
     """
     Handles the storage of video thumbnails. 
     
@@ -506,13 +516,16 @@ class VideoThumbnail(models.Model):
     ##The video the thumbnail belongs to.
     video = models.ForeignKey(Video)
     ##The thumbnail image.
-    thumbnail = models.FileField(upload_to='thumbnails')
+    thumbnail = models.FileField(upload_to='videos/thumbnails/')
     
-    def __unicode__(self):
-        return "Thumbnail for " + self.video.__unicode__() + " at " + str(self.time) + "s"
+    #def __unicode__(self):
+        #return "Thumbnail for " + self.video.__unicode__() + " at " + str(self.time) + "s"
 
     class Meta:
         ordering = ['time']
+        
+    def get_absolute_url(self):
+        return reverse('learn.views.video.thumbnail', args=[str(self.id)])
     
     
 class VideoFormat(Base):
