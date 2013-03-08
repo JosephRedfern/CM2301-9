@@ -55,20 +55,15 @@ def revision_download(request, revision_id):
 
 @login_required 
 def revision_add(request, attachment_id):
-    attachment = Attachment.objects.get(pk=attachment_id)
-    form = RevisionCreateForm(initial={'attachment': attachment, 'uploaded_by': request.user})
-    return render(request, 'revision.html', {'form': form})
-
-@login_required
-def revision_submit(request):
-    """
-    Handles the POST submission of creating or editing and revision.
-    """
     if request.method == 'POST':
-        form = RevisionCreateForm(request.POST, request.FILES)
+        form = RevisionForm(request.POST, request.FILES)
         if form.is_valid():
             revision = form.save()
             return redirect(revision.attachment.get_absolute_url())
+    attachment = Attachment.objects.get(pk=attachment_id)
+    form = RevisionForm(initial={'attachment': attachment, 'uploaded_by': request.user})
+    return render(request, 'revision.html', {'form': form})
+    
         
 
 @login_required 
@@ -101,4 +96,19 @@ def download_all_attachments(request, object_id):
     response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (attachment.id)
     return response
     
+@login_required
+def attachment_create(request, object_id):
+    if request.method == 'POST':
+        attachment = AttachmentForm(request.POST, prefix='attachment').save(commit=False)
+        revision = RevisionForm(request.POST, request.FILES, prefix='revision').save(commit=False)
+        attachment.owner = request.user
+        attachment.save()
+        revision.attachment = attachment
+        revision.uploaded_by = request.user
+        revision.save()
+        return redirect(attachment.get_absolute_url())
+        
+    attachment_form = AttachmentForm(prefix='attachment', initial={'object_id': object_id})
+    revision_form = RevisionForm(prefix='revision')
+    return render(request, 'attachment_create.html', {'attachment_form': attachment_form, 'revision_form': revision_form})
     

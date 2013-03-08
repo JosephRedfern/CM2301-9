@@ -1,0 +1,14 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+
+<form enctype="multipart/form-data" method="post" action="">{% csrf_token %}
+	<p>{{ attachment_form.object_id.as_hidden }}</p>
+	<p>{{ attachment_form.file_name.label_tag }}{{ attachment_form.file_name }}</p>
+	<p>{{ attachment_form.description.label_tag }}{{ attachment_form.description }}</p>
+  	<p>{{ revision_form.file }}</p>
+	<input type="submit" value="Submit" class="btn"/>
+</form>
+{% endblock %}
+
+
