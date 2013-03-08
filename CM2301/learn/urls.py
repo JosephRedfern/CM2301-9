@@ -17,7 +17,8 @@ urlpatterns = patterns('',
     url(r'^videos/formats/(?P<video_format_id>%s)/serve/(.+)$' % (uuid), 'learn.views.video.format_serve'),
     url(r'^videos/create/$', 'learn.views.video.create'),
     url(r'^videos/(?P<video_id>%s)/progress/$' % (uuid), 'learn.views.video.conversion_progress'),
-    
+    url(r'^thumbnails/(?P<thumbnail_id>%s)/$' % (uuid), 'learn.views.video.thumbnail'),
+        
 
     #Test URL's
     url(r'^tests/(?P<test_id>%s)/$'% (uuid), 'learn.views.test.test'),
