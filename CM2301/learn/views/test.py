@@ -18,7 +18,8 @@ def tests(request):
     values['tests_with_max'] = []
     for test in values['tests']:
         test_instances = TestInstance.objects.filter(test=test).order_by('-test_score')[:1]
-        values['tests_with_max'].append((test, test_instances[0].test_score))
+        if test_instances[0]:
+            values['tests_with_max'].append((test, test_instances[0].test_score))
     return render(request, "tests.html", values)
 
 @login_required
