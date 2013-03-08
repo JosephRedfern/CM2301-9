@@ -39,8 +39,14 @@ $(document).ready(function(){
     <div class="span8">
         <!--<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
         <script src="http://vjs.zencdn.net/c/video.js"></script>-->
-
-        <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" data-setup='{}'>
+		{% if lecture.video.converting %}
+		<h3>Please bear with us...</h3>
+        <video id="my_video_1" class="video-js vjs-default-skin" preload="auto" width="624" 
+       		height="352" data-setup='{}' style="background-color: #FFFFFF;" poster="{{ STATIC_URL }}img/dancing.gif">
+        {% else %}
+        <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" 
+        data-setup='{}'>
+        {% endif %}
         	{% for vf in lecture.video.videoformat_set.all %}
         			<source src="{{ vf.get_absolute_url }}" type="video/{{ vf.format }}"/>
         	{% endfor %}

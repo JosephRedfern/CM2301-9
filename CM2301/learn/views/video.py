@@ -3,7 +3,7 @@ from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
-from learn.models import Video
+from learn.models import Video, VideoThumbnail
 from learn.forms import *
 
 @login_required
@@ -69,3 +69,10 @@ def conversion_progress(request, video_id):
     video = Video.objects.filter(pk=video_id)
     data = serializers.serialize('json', video, fields=('id','converting', 'conversion_progress'))
     return HttpResponse(data)
+
+@login_required
+def thumbnail(request, thumbnail_id):
+    thumbnail = VideoThumbnail.objects.get(pk=thumbnail_id)
+    response = HttpResponse(thumbnail.thumbnail, mimetype="image/png")
+    response['Content-length'] = thumbnail.thumbnail.file.size
+    return response
