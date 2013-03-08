@@ -50,10 +50,11 @@
 
 {% if test %}
     <div class="span4">
-        <h3>Relevant Links</h3>
+        <h3>Test</h3>
+                <p><a href="/tests/{{test.id}}" class="btn btn-primary">Take Test</a></p>
                 <ul>
-                {% for link in links %}
-                <li><a href="{{link.link}}">{{link.title}}</a></li>
+                {% for result in test_results %}
+                <li><span class="badge  {% if result.test_score >= 70 %} badge-success {% elif result.test_score >= 40 %} badge-warning {% else %} badge-important {% endif %}">{{result.test_score}}%</span> - {{result.time_completed|date:"SHORT_DATE_FORMAT"}}</li>
                 {% endfor %}
                 </ul>
     </div>
