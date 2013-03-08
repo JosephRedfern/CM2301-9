@@ -12,6 +12,7 @@ def create(request):
 
 @login_required
 def view(request, lecture_id):
+    Viewed.log_view(request, lecture_id)
     values = {}
     values['lecture'] = Lecture.objects.get(pk=lecture_id)
     values['lectures'] = values['lecture'].module.lecture_set.all()

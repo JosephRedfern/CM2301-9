@@ -31,6 +31,16 @@
             </ul>
         </div>
     {% endif %}
+    {% if tests %}
+    <div class="span4">
+        <h2>Tests</h2>
+        <p>
+            View a summary of all tests available for this module, including a breakdown of your marks.
+        </p>
+
+        <p><a class="btn" href="/modules/{{module.id}}/tests">View Tests &raquo;</a></p>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}
