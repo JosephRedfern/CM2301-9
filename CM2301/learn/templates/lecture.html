@@ -40,11 +40,11 @@ $(document).ready(function(){
         <!--<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
         <script src="http://vjs.zencdn.net/c/video.js"></script>-->
 		{% if lecture.video.converting %}
-		<h3>Please bear with us...</h3>
+		<h3>Converting, please bear with us...</h3>
         <video id="my_video_1" class="video-js vjs-default-skin" preload="auto" width="624" 
        		height="352" data-setup='{}' style="background-color: #FFFFFF;" poster="{{ STATIC_URL }}img/dancing.gif">
         {% else %}
-        <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" 
+        <video id="my_video_1" class="video-js vjs-default-skin" style="background-color: #000000;" controls preload="auto" width="624" height="352" 
         data-setup='{}'>
         {% endif %}
         	{% for vf in lecture.video.videoformat_set.all %}
@@ -62,22 +62,32 @@ $(document).ready(function(){
 </div>
 
 <div class="row-fluid">
-    {% if attachments %}
-    <div class="span4">
+    <div class="span6">
         <h3>Lecture Materials 
+        	<a class="btn" href="{{ lecture.get_absolute_url }}attachments/create">
+				Add
+				<i class="icon-plus">
+				</i>
+			</a>
+        	{% if attachments %}
         	<a class="btn" href="{{ lecture.get_absolute_url }}attachments/download">
 				ZIP
 				<i class="icon-download-alt">
 				</i>
+			
 			</a>
         </h3>
                 <ul>
                 {% for attachment in attachments %}
-                <li><a href="/attachments/{{attachment.id}}">{{attachment.file_name}}</a></li>
+                <li>
+                	<a href="{{ attachment.get_latest_revision.get_absolute_url }}download">{{attachment.file_name}}</a> - 
+                	<a href="{{ attachment.get_absolute_url }}">revisions</a>
+                </li>
                 {% endfor %}
                 </ul>
+    {% endif %}
     </div>
-{% endif %}
+
 
 {% if links %}
     <div class="span4">
