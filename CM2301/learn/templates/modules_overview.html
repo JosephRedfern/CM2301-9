@@ -2,7 +2,7 @@
 
 {% block content %}
     {% for module in modules %}
-    {% cycle '<div class="row-fluid">' '' '' '' %}
+    {% cycle '<div class="row-fluid">' '' '' %}
         <div class="span4 well" style="padding: 10px">
             <h2>{{ module.title  }}</h2>
             <p>{{ module.description }}</p>
@@ -11,7 +11,7 @@
         {% if forloop.last %}
     	</div>
     	{% else %}
-        {%  cycle '' '' '' '</div>' %}
+        {%  cycle '' '' '</div>' %}
         {% endif %}
     {% endfor %}
 
