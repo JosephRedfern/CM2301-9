@@ -37,10 +37,10 @@ $(document).ready(function(){
 
 <div class="row-fluid">
     <div class="span8">
-        <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-        <script src="http://vjs.zencdn.net/c/video.js"></script>
+        <!--<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+        <script src="http://vjs.zencdn.net/c/video.js"></script>-->
 
-        <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" data-setup="{}">
+        <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="624" height="352" data-setup='{}'>
         	{% for vf in lecture.video.videoformat_set.all %}
         			<source src="{{ vf.get_absolute_url }}" type="video/{{ vf.format }}"/>
         	{% endfor %}

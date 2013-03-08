@@ -16,14 +16,15 @@ class TestForm(forms.Form):
     class Meta:
         model = Test
 
-class VideoUploadForm(ModelForm):
+class VideoForm(ModelForm):
     class Meta:
         model = Video
+        fields = ('uploaded_video',)
         
-class LectureCreateForm(ModelForm):
+class LectureForm(ModelForm):
     class Meta:
         model = Lecture
-        exclude = ('id', 'visible')
+        exclude = ('id', 'visible', 'video')
         widgets = {
             'valid_to': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
             'valid_from': DateInput(attrs={'class': 'datepicker', 'data-date-format': 'dd/mm/yy'}),
