@@ -177,7 +177,7 @@ class Attachment(Base):
     ##The description of the Attachment
     description = models.CharField(max_length=250)
     ##The User owning the Attachment, usually the uploader.
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     
     def get_total_size(self):
         """
@@ -277,13 +277,13 @@ class Revision(Base):
     ##The timestamp the document was uploaded/attached to the revision
     time_uploaded = models.DateTimeField(auto_now_add=True)
     ##The Attachment object the Revision belongs to.
-    attachment = models.ForeignKey(Attachment)
+    attachment = models.ForeignKey(Attachment, null=True, blank=True)
     ###The File Object
     file = models.FileField(upload_to='attachments')
     ##Whether or not the Revision has been approved
     approved = models.BooleanField()
     ##The User whom owns the Revision - Usually the uploader.
-    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     ##The file size of the Revision file.
     file_size = models.FloatField(null=True, blank=True)
     ##The version number of the revision
@@ -330,10 +330,9 @@ class Revision(Base):
         """
         Ensures all validation passes before the object is saved
         """
-        print self.filename
-        print self.attachment.file_name
-        if self.mimetype() != self.attachment.mimetype():
-            raise ValidationError('Revisions must have the same filename as the attachment')
+        if self.attachment != None:
+            if self.mimetype() != self.attachment.mimetype():
+                raise ValidationError('Revisions must have the same filename as the attachment')
         
     def mimetype(self):
         """
