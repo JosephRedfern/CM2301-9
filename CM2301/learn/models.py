@@ -185,13 +185,8 @@ class Attachment(Base):
         
         @return: Float A float of the total size in Kb
         """
-        revisions = self.revision_set.all()
-
-        total_size = 0
-        for revision in revisions:
-            total_size += revision.file_size
-
-        return total_size
+        
+        return self.revision_set.all().aggregate(Sum('file_size'))
 
     def remove_revision(self, revision_uuid):
         """
