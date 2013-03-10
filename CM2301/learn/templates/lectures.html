@@ -8,7 +8,13 @@
     {% for lecture in lectures %}
     {% cycle '<div class="row-fluid">' '' '' '' '' '' %}
         <div class="span2">
-            <a href="/lectures/{{lecture.id}}"><img src="{{ lecture.video.videothumbnail_set.all.0.get_absolute_url }}"/></a>
+        {% if lecture.video.videothumbnail_set.all %}
+        	{% with thumbnail=lecture.video.videothumbnail_set.all|random %}
+            <a href="/lectures/{{lecture.id}}"><img src="{{ thumbnail.get_absolute_url }}"/></a>
+            {% endwith %}
+        {% else %}
+        	<a href="/lectures/{{lecture.id}}"><img src="http://placehold.it/300x200"/></a>
+     	{% endif %}
             <h4><a href="/lectures/{{lecture.id}}">{{lecture.title}}</a></h4>
         </div>
         {% if forloop.last %}
