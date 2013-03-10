@@ -411,7 +411,7 @@ class Video(Base):
         """
         #Create new video conversion object
         self.converting = True
-        self.generate_thumbnail()
+        self.generate_thumbnails(10)
         print self.uploaded_video.file.name
         print self.uploaded_video.file
         c = ffmpeg.Converter(self.uploaded_video.file.name, settings.MEDIA_ROOT + '/videos/converted/' + str(self.pk) + '.mp4')
@@ -433,14 +433,20 @@ class Video(Base):
         
         return c
     
-    def generate_thumbnail(self):
-        fp = '%s/videos/thumbnails/%s%s' % (settings.MEDIA_ROOT, uuid.uuid4().hex, '.png')
-        ffmpeg.Converter.thumbnail(self.uploaded_video.file.name, 5, fp, size='300x200')
-        thumbnail = VideoThumbnail()
-        thumbnail.video = self
-        thumbnail.time = 5
-        thumbnail.thumbnail.name = fp
-        thumbnail.save()
+    def generate_thumbnails(self, thumbnail_count, size='300x200'):
+        length = ffmpeg.FFProbe(self.uploaded_video.file.name).duration
+        interval = length/thumbnail_count
+        time = interval
+        while time < length:
+            fp = '%s/videos/thumbnails/%s%s' % (settings.MEDIA_ROOT, uuid.uuid4().hex, '.png')
+            ffmpeg.Converter.thumbnail(self.uploaded_video.file.name, time, fp, size='300x200')
+            thumbnail = VideoThumbnail()
+            thumbnail.video = self
+            thumbnail.time = time
+            thumbnail.thumbnail.name = fp
+            thumbnail.save()
+            
+            time = time + interval
     
     def _update_progress(self, converters):
         """
@@ -496,6 +502,9 @@ class Video(Base):
         super(Video, self).save(*args, **kwargs)
         if len(self.videoformat_set.all()) == 0 and self.converting == False:
             self.convert()
+            
+    def __unicode__(self):
+        return 'Video: ' + str(self.id)
         
     
 class VideoThumbnail(Base):
