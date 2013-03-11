@@ -33,6 +33,8 @@ urlpatterns = patterns('',
 
 
     #Lecture URL's
+    url(r'^modules/(?P<module_id>%s)/lectures/create/$' % (uuid), 'learn.views.lecture.create'),
+    
     url(r'^lectures/create/$', 'learn.views.lecture.create'),
     url(r'^lectures/(?P<lecture_id>%s)/$' % (uuid), 'learn.views.lecture.view'),    
     
