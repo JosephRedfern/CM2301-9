@@ -204,6 +204,8 @@ class Attachment(Base):
         """
         Purges all Revisions but the most recent in the Attachment object.
         """
+        current = self.revision_set.all().latest('time_uploaded')
+        self.revision_set.all().exclude(pk=current.pk).delete()
         return
     
     def get_all_revisions(self):
@@ -434,6 +436,8 @@ class Video(Base):
         return c
     
     def generate_thumbnails(self, thumbnail_count, size='300x200'):
+        if Config.objects.filter(key='thumbnail_count').count():
+            thumbnail_count = int(Config.objects.get(key='thumbnail_count').value)
         length = ffmpeg.FFProbe(self.uploaded_video.file.name).duration
         interval = length/thumbnail_count
         time = interval
