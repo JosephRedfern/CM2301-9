@@ -13,7 +13,7 @@
             {% if lectures %}
             <p><a class="btn" href="/modules/{{module.id}}/lectures">View Lectures &raquo;</a></p>
             {% endif %}
-            <p><a class="btn" href="/lectures/create">Create Lecture &raquo;</a></p>
+            <p><a class="btn" href="{{module.get_absolute_url}}lectures/create">Create Lecture &raquo;</a></p>
         </div>
     {% if attachments %}
         <div class="span4">
