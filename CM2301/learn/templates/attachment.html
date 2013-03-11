@@ -1,6 +1,59 @@
 {% extends "base_navbar.html" %}
 
 {% block content %}
+
+<script src="{{ STATIC_URL }}js/jquery.dateFormat-1.0.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$('form#newRevision').submit(function(){
+			var formData = new FormData($(this)[0]);
+			$.ajax({
+				url: 'add/',
+				type: 'POST',
+				data: formData,
+				async: false,
+				success: function (data) {
+					try{
+						$('#addRevisionModal').modal('hide');
+						console.log(data)
+						appendTable(data)
+						$('html,body').scrollTop(0);
+						return false
+					}
+					catch(err){
+						console.log(err.message)
+						return false
+					}
+					
+            		//$('#addRevisionModal').modal('hide');
+        		},
+        		cache: false,
+				contentType: false,
+        		processData: false
+			})
+			return false
+		});
+	});
+	
+	function appendTable(data){
+		data = $.parseJSON(data)
+		var version = data[0]['fields']['version']
+		var time_uploaded = new Date(data[0]['fields']['time_uploaded'])
+		var user = data[0]['fields']['uploaded_by']
+		time_uploaded = $.format.date(time_uploaded.toString(), "d MMM yyyy, h:mm p")
+		var file_size = Math.round((data[0]['fields']['file_size']/1024) * 10 ) / 10;
+		file_size = file_size + ' KB'
+		
+		html = "<tr> <td>" + version + "</td> <td>" + time_uploaded + "</td> <td>" + file_size + "</td> <td><a href='/users/" + user  + "'>User</a></td> </tr>" + $('#revisionButtons').html
+		
+		//$(html).prependTo("#revisionTable > tbody");
+		//$("#revisionTable tbody").prepend(html);
+		$(html).insertAfter("#revisionTable tr:first");
+	}
+</script>
+
+
 <h3>
 	<a href="{{ attachment.get_latest_revision.get_absolute_url }}download">
 		{{ attachment.file_name }}
@@ -29,7 +82,7 @@
 </div>
 
 <h3>Revisions</h3>
-<table class="table">
+<table class="table" id="revisionTable">
 	<tr>
 		<th>Version</th>
 		<th>Time Uploaded</th>
@@ -37,6 +90,7 @@
 		<th>Uploaded By</th>
 		<th></th>
 	</tr>
+	<tbody>
 	{% for revision in attachment.revision_set.all %}
 	<tr>
 		<td>{{ revision.version }}</td>
@@ -47,7 +101,7 @@
 				{{ revision.uploaded_by }}
 			</a>
 		</td>
-		<td>
+		<td id=#revisionButtons>
 			<a class="btn btn-small" href="{{ revision.get_absolute_url }}download">
 				<i class="icon-download-alt"></i>
 			</a>
@@ -57,8 +111,9 @@
 		</td>
 	</tr>
 	{% endfor %}
+	</tbody>
 </table>
-<a class="btn" href="{{ revision.attachment.get_absolute_url }}add">
+<a class="btn" href="#addRevisionModal" role="button" data-toggle="modal">
 	Add Revision
 	<i class="icon-plus">
 	</i>
@@ -68,5 +123,26 @@
 	<i class="icon-download-alt">
 	</i>
 </a>
+
+<div id="addRevisionModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addRevisionModal" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Add revision</h3>
+  </div>
+  <div class="modal-body">
+  	<p>
+  		Add a new revision to {{ attachment.file_name }}
+  	</p>
+  	<form id="newRevision" enctype="multipart/form-data" method="post" action="">{% csrf_token %}
+	<p>{{ form.attachment.as_hidden }}</p>
+	<p>{{ form.uploaded_by.as_hidden }}</p>
+  	<p>{{ form.file }}</p>
+	<input type="submit" value="Submit" class="btn"/>
+</form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
 
 {% endblock %}
