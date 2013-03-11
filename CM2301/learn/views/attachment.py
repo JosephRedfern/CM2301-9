@@ -4,6 +4,7 @@ from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from learn.models import Attachment, Revision, Module, Lecture
+from django.core import serializers
 from learn.forms import *
 import mimetypes, tempfile, zipfile
 
@@ -20,6 +21,9 @@ def attachment(request, attachment_id):
         pass
 
     values['breadcrumb'] = ("LCARS", "Attachments")
+    
+    form = RevisionForm(initial={'attachment': attachment_id, 'uploaded_by': request.user})
+    values['form'] = form
     return render(request, 'attachment.html', values)
 
 @require_http_methods(["GET"])
@@ -59,7 +63,10 @@ def revision_add(request, attachment_id):
         form = RevisionForm(request.POST, request.FILES)
         if form.is_valid():
             revision = form.save()
-            return redirect(revision.attachment.get_absolute_url())
+            #return redirect(revision.attachment.get_absolute_url())
+            revisions = Revision.objects.filter(pk=revision.id)
+            data = serializers.serialize('json', revisions)
+            return HttpResponse(data)
     attachment = Attachment.objects.get(pk=attachment_id)
     form = RevisionForm(initial={'attachment': attachment, 'uploaded_by': request.user})
     return render(request, 'revision.html', {'form': form})
