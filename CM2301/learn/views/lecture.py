@@ -6,7 +6,7 @@ from django.http import HttpResponse
 import uuid
 
 @login_required
-def create(request):
+def create(request, module_id):
     if request.method == 'POST':
         video_form = VideoForm(request.POST, request.FILES, prefix='video')
         lecture_form = LectureForm(request.POST, prefix='lecture')
@@ -22,7 +22,7 @@ def create(request):
             
             return redirect(lecture.get_absolute_url())
     
-    lecture_form = LectureForm(prefix="lecture")
+    lecture_form = LectureForm(prefix="lecture", initial={'module': module_id})
     video_form = VideoForm(prefix="video")
     print lecture_form.as_p()
     return render(request, 'lecture_create.html', {'lecture_form': lecture_form, 'video_form': video_form})
