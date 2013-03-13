@@ -7,6 +7,14 @@
 </div>
 
 <div class="row-fluid">
+	{% if announcements != 0 %}
+		<div class="span4">
+        <h2>Announcements</h2>
+        <ul>
+        	 No Announcement Yet <br />
+        </ul>
+		<br />		
+	{% endif %}
     {% if announcements %}
     <div class="span4">
         <h2>Announcements</h2>
