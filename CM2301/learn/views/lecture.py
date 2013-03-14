@@ -30,6 +30,8 @@ def create(request, module_id):
 
 @login_required
 def view(request, lecture_id):
+    attachment_form = AttachmentForm(prefix='attachment', initial={'object_id': lecture_id})
+    revision_form = RevisionForm(prefix='revision')
     Viewed.log_view(request, lecture_id)
     values = {}
     values['lecture'] = Lecture.objects.get(pk=lecture_id)
@@ -40,6 +42,8 @@ def view(request, lecture_id):
     values['links'] = Link.objects.filter(object_id=lecture_id)
     values['test'] = Test.objects.filter(lecture=values['lecture']) 
     values['test_results'] = TestInstance.objects.filter(test=values['test'], student=request.user)
+    values['attachment_form'] = attachment_form
+    values['revision_form'] = revision_form
 
     values['breadcrumb'] = ('LCARS', values['lecture'].module.title + " ("+values['lecture'].module.module_code+')', values['lecture'].title)
     return render(request, 'lecture.html', values)
