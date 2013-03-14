@@ -17,8 +17,11 @@
 					try{
 						$('#addRevisionModal').modal('hide');
 						console.log(data)
-						appendTable(data)
-						$('html,body').scrollTop(0);
+						//appendTable(data)
+						//$('html,body').scrollTop(0);
+						setTimeout( function(){
+							location.reload()
+							}, 1200 );
 						return false
 					}
 					catch(err){
