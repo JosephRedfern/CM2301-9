@@ -25,6 +25,39 @@ $(document).ready(function(){
   			$("#progress").css('width',progress+'%');
   		})
   	}, 1000);
+  	
+  	$('form#newAttachment').submit(function(){
+			var formData = new FormData($(this)[0]);
+			$.ajax({
+				url: 'attachments/create/',
+				type: 'POST',
+				data: formData,
+				async: false,
+				success: function (data) {
+					try{
+						$('#addAttachmentModal').modal('hide');
+						console.log(data)
+						//appendTable(data)
+						//$('html,body').scrollTop(0);
+						setTimeout( function(){
+							location.reload()
+							}, 1200 );
+						return false
+					}
+					catch(err){
+						console.log(err.message)
+						return false
+					}
+					
+            		//$('#addRevisionModal').modal('hide');
+        		},
+        		cache: false,
+				contentType: false,
+        		processData: false
+			})
+			return false
+		});
+  	
 });
 	
 </script>
@@ -64,7 +97,7 @@ $(document).ready(function(){
 <div class="row-fluid">
     <div class="span4">
         <h3>Lecture Materials</h3>
-        	<a class="btn" href="{{ lecture.get_absolute_url }}attachments/create">Add<i class="icon-plus"></i>
+        	<a class="btn" href="#addAttachmentModal" role="button" data-toggle="modal">Add<i class="icon-plus"></i>
 			</a>
         	{% if attachments %}
         	<a class="btn" href="{{ lecture.get_absolute_url }}attachments/download">
@@ -109,6 +142,32 @@ $(document).ready(function(){
                 </ul>
     </div>
 {% endif %}
+
+
+<div id="addAttachmentModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addAttachmentModal" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Add attachment</h3>
+  </div>
+  <div class="modal-body">
+  	<p>
+  		Add a new attachment to {{ lecture.title }}
+  	</p>
+  	<form id="newAttachment" enctype="multipart/form-data" method="post" action="{{ lecture.get_absolute_url }}attachments/create/">{% csrf_token %}
+	<p>{{ attachment_form.object_id.as_hidden }}</p>
+	<p>{{ attachment_form.file_name.label_tag }}{{ attachment_form.file_name }}</p>
+	<p>{{ attachment_form.description.label_tag }}{{ attachment_form.description }}</p>
+  	<p>{{ revision_form.file }}</p>
+	<input type="submit" value="Submit" class="btn"/>
+</form>
+</form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+
 </div>
 {% endblock %}
 
