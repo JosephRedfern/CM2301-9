@@ -1,0 +1,17 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+	{% for FAQ in FAQs %}
+	{% cycle '<div class="row-fluid">' '' '' %}
+		<div class="span4 well" style="padding: 10px">
+			<h2>{{ FAQQuestion.question }}</h2>
+			<p>{{ FAQAnswer.answer }}</p>
+		
+		{% if forloop.last %}
+		</div>
+		{% else %}
+		{% cycle '' '' '</div>' %}
+		{% endif %}
+	{% endfor %}
+
+{% endblock %}

@@ -569,7 +569,36 @@ class VideoFormat(Base):
     def get_absolute_url(self):
         #return reverse('learn.views.video.format_serve', args=[str(self.id)])
         return '/videos/formats/%s/serve/video.%s' % (self.id, self.format)
-    
+  
+
+ 
+class FAQQuestions(Base):
+    """
+    An FAQ is a question submitted by a student to a lecturer. 
+
+    """
+    ## Unique ID for FAQ
+    object_id = UUIDField()
+    ##The question e.g. What is the perfect bacon to egg ratio?
+    question = models.TextField(max_length=8192) 
+    ##The answer e.g. You should have 1 egg for every rasher of bacon
+    answer = models.TextField(max_length=8192)
+        
+    def __unicode__(self):
+    	return self.title + str(self.object_id)
+
+class FAQAnswers(Base):
+    """
+
+    """
+
+    ## Unique ID for answer
+    ## id = models.??
+    ## the answer e.g. You should have a 1 egg for every rasher of bacon
+    answer = models.TextField(max_length=8192)
+
+    def __unicode__(self):
+	return self.answer
     
 class Module(Base):
     """
