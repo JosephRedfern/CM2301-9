@@ -33,8 +33,7 @@ class Base(models.Model):
         if (self._attachments is None):
             self._attachments = list(Attachment.objects.filter(object_id = self.id))
         return self._attachments
-    
-    
+     
     @property
     def custom_fields(self):
         """
@@ -498,10 +497,7 @@ class Video(Base):
             #Clear list
             progress[:] = []
             time.sleep(2)
-            
-        
-        
-            
+                
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
         if len(self.videoformat_set.all()) == 0 and self.converting == False:
