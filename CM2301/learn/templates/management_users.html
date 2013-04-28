@@ -8,6 +8,18 @@
         <h2>LCARS - User Management</h2>
     </div>
     {% if user_list %}
+    <!--Update user modal dialog-->
+        <div id="update-user-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Update User</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>  
     <table class="table table-striped">
         <tr>
             <th>Username</th>
@@ -16,6 +28,7 @@
             <th>Email Address</th>
             <th>Phone Number</th>
             <th>Last Login</th>
+            <th>Edit</th>
         </tr>
         {% for user in user_list %}
         <tr>
@@ -25,6 +38,7 @@
             <td>{{ user.email }}</td>
             <td>{{ user.phone }}</td>
             <td>{{ user.last_login }}</td>
+            <td><a data-toggle="modal" data-target="#update-user-modal" href="/management/users/{{user.id}}/update"><i class="icon-edit"></i></a></td>
         </tr>
         {% endfor %}
     </table>

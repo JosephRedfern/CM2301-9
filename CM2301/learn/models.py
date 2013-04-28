@@ -109,6 +109,8 @@ class User(AbstractUser, Base):
     """
     ##Phone number for the User
     phone = models.CharField(max_length=20)
+
+    course = models.ManyToManyField('Course')
     
     def add_user_field(self, UserField):
         """
@@ -689,7 +691,7 @@ class Course(Base):
     ##The description of the course
     description = models.TextField()
     ##Attachments attached to the course. E.g Timetable
-    attachments = models.ManyToManyField(Attachment)
+    attachments = models.ManyToManyField(Attachment, null=True, blank=True)
     
     def get_lectures(self):
         """

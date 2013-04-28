@@ -17,9 +17,14 @@ urlpatterns = patterns('',
 
     #management stuff
     url(r'^management/$', 'learn.views.management.overview'),
+
     url(r'^management/users$', UserListView.as_view()),
-    url(r'^management/users/(?P<slug>[a-z0-9-]{0,100})/update', UserUpdateView.as_view()),
+    url(r'^management/users/create$', UserCreateView.as_view()),
+    url(r'^management/users/(?P<pk>%s)/update' % (uuid), UserUpdateView.as_view()),
+
     url(r'^management/courses$', CourseListView.as_view()),
+    url(r'^management/courses/create', CourseCreateView.as_view()),
+    url(r'^management/courses/(?P<pk>%s)/update' % (uuid), CourseUpdateView.as_view()),
 
 
     #Announcement Stuff
