@@ -35,3 +35,6 @@ class RevisionForm(ModelForm):
         model = Revision
         #fields = ('file',)
         
+class FAQQuestion(ModelForm):
+    class Meta:
+        model = FAQQuestion

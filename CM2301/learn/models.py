@@ -568,33 +568,38 @@ class VideoFormat(Base):
   
 
  
-class FAQQuestions(Base):
+class FAQQuestion(Base):
     """
     An FAQ is a question submitted by a student to a lecturer. 
-
     """
-    ## Unique ID for FAQ
-    object_id = UUIDField()
-    ##The question e.g. What is the perfect bacon to egg ratio?
-    question = models.TextField(max_length=8192) 
-    ##The answer e.g. You should have 1 egg for every rasher of bacon
-    answer = models.TextField(max_length=8192)
+
+    ##Question Author
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    ##Question Date
+    ask_date = models.DateField(auto_now_add=True)
+
+    ##Related module
+    module = models.ForeignKey('Module')
+
+    body = models.TextField(max_length=65535)
         
     def __unicode__(self):
-    	return self.title + str(self.object_id)
+    	return self.body
 
-class FAQAnswers(Base):
-    """
 
-    """
 
-    ## Unique ID for answer
-    ## id = models.??
-    ## the answer e.g. You should have a 1 egg for every rasher of bacon
-    answer = models.TextField(max_length=8192)
+class FAQAnswer(Base):
+    ##Question Author
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    def __unicode__(self):
-	return self.answer
+    ##Question Date
+    answer_date = models.DateField(auto_now_add=True)
+
+    question = models.ForeignKey(FAQQuestion)
+
+    body = models.TextField(max_length=65535)
+
     
 class Module(Base):
     """
