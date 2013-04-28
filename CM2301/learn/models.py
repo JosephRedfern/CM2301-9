@@ -1072,6 +1072,11 @@ class Announcement(Base):
     """
     title = models.CharField(max_length=256)
     body = models.TextField(max_length=4096)
-    valid_from = models.DateTimeField(auto_now_add=True)
-    valid_until = models.DateTimeField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
+
+    def get_absolute_url(self):
+        return "/"
+
+    class Meta:
+        ordering = ['-creation_date']
