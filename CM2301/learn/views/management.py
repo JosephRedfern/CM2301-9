@@ -4,6 +4,7 @@ from django.contrib.auth.views import login
 from django.contrib.auth.decorators import login_required
 from learn.forms import *
 from django.views.generic import CreateView, ListView, UpdateView
+from django.contrib.auth.hashers import make_password
 
 
 def overview(request):
@@ -32,6 +33,11 @@ class UserUpdateView(UpdateView):
             context['management'] = True
             context['pk'] = self.kwargs['pk']
             return context
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.password = make_password(form.cleaned_data['password'])
+        return super(UserUpdateView, self).form_valid(form)
 
 class UserCreateView(CreateView):
     model = User
@@ -65,7 +71,7 @@ class CourseUpdateView(UpdateView):
 class CourseCreateView(CreateView):
     model = Course
     template_name = "management_course_create.html"
-    success_url= "/management/courses"
+    success_url = "/management/courses"
 
     def get_context_data(self, **kwargs):
         context = super(CourseCreateView, self).get_context_data(**kwargs)
