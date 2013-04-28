@@ -48,6 +48,11 @@ class UserCreateView(CreateView):
         context = super(UserCreateView, self).get_context_data(**kwargs)
         return context
 
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.password = make_password(form.cleaned_data['password'])
+        return super(UserUpdateView, self).form_valid(form)
+
 class CourseListView(ListView):
     model = Course
     template_name = "management_courses.html"
