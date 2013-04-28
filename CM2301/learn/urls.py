@@ -12,6 +12,10 @@ urlpatterns = patterns('',
     url(r'^login/$', 'learn.views.misc.custom_login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/login'}),
 
+    #management stuff
+    url(r'^management/$', 'learn.views.management.overview'),
+
+
     #Announcement Stuff
     url(r'^announcement/create/$', CreateAnnouncementView.as_view()),
 
