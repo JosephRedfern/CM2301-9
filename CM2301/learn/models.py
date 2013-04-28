@@ -620,12 +620,22 @@ class Module(Base):
     title = models.CharField(max_length=100)
     ##The module description
     description = models.TextField(max_length=8192)
+    ##The modules which are in the course
+    courses = models.ManyToManyField('Course', related_name="modules")
 
     def __unicode__(self):
         return self.title + " (" + self.module_code + ")"
     
     def get_absolute_url(self):
         return reverse('learn.views.module.module', args=[str(self.id)])
+
+
+    class Meta:
+        permissions = (
+            ('read', 'Can view module'),
+            ('update', 'Can update module details'),
+            ('delete', 'Can delete module')
+            )
 
 class Lecture(Base):
     """
@@ -657,6 +667,15 @@ class Lecture(Base):
     def get_absolute_url(self):
         return reverse('learn.views.lecture.view', args=[str(self.id)])
 
+
+    class Meta:
+        permissions = (
+            ('read', 'Can view lecture'),
+            ('create', 'Can create lectures'),
+            ('update', 'Can make changes the lecture'),
+            ('delete', 'Can delete the lecture')
+            )
+
 class Course(Base):
     """
     A course represents a top level definition of a degree. 
@@ -669,8 +688,6 @@ class Course(Base):
     code = models.CharField(max_length=50)
     ##The description of the course
     description = models.TextField()
-    ##The modules which are in the course
-    modules = models.ManyToManyField(Module)
     ##Attachments attached to the course. E.g Timetable
     attachments = models.ManyToManyField(Attachment)
     
