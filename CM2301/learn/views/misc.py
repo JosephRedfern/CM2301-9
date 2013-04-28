@@ -9,7 +9,7 @@ def home(request):
     values = {}
     values['title'] = 'Home'
     values['modules'] = Module.objects.all()
-    values['announcements'] = Announcement.objects.all()
+    values['announcements'] = Announcement.objects.all()[:5]
     viewed = Viewed.objects.filter(user=request.user)
     values['activity'] = []
 
