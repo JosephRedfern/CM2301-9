@@ -45,7 +45,7 @@
             {{ faqquestion.body }}
           </a>
         </div>
-        <div id="{{faqquestion.id}}" class="accordion-body collapse in">
+        <div id="{{faqquestion.id}}" class="accordion-body collapse">
           <div class="accordion-inner">
             {% if faqquestion.faqanswer_set.all %}
             {% for faqanswer in faqquestion.faqanswer_set.all %}
@@ -53,7 +53,7 @@
             {% endfor %}
             {% else %}
             This question has not been answered yet!
-            <a href="{{faqquestion.id}}/answer" data-target="#answer-question-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-white icon-bullhorn"></i> Ask a Question</a>
+            <a href="{{faqquestion.id}}/answer" data-target="#answer-question-modal" role="button" class="btn btn-small" data-toggle="modal"><i class="icon-bullhorn"></i> Answer Question</a>
             {% endif %}
           </div>
         </div>
