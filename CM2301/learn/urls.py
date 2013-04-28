@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from learn.views.faq import *
-from learn.views. announcement import *
+from learn.views.announcement import *
+from learn.views.management import *
 
 uuid = '[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}'
 
@@ -14,6 +15,9 @@ urlpatterns = patterns('',
 
     #management stuff
     url(r'^management/$', 'learn.views.management.overview'),
+    url(r'^management/users$', UserListView.as_view()),
+    url(r'^management/users/(?P<slug>[a-z0-9-]{0,100})/update', UserUpdateView.as_view()),
+    url(r'^management/courses$', CourseListView.as_view()),
 
 
     #Announcement Stuff

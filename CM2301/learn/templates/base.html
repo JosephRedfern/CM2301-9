@@ -64,6 +64,17 @@
                         </div>
                     </div>
                     <div class="span9">
+                    {% elif management %}
+                    <div class="span3">
+                        <h4><a href="/management/">Management</a></h4>
+                        <div class="well sidebar-nav">
+                            <ul class="nav nav-list">
+                                <li><a href="/management/users">Users</a></li>
+                                <li><a href="/management/courses">Courses</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="span9">
                     {% else %}
                     <div class="span12">
                         {% endif %}
