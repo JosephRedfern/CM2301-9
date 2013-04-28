@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from learn.views.faq import *
 
 uuid = '[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}'
 
@@ -30,6 +31,9 @@ urlpatterns = patterns('',
     url(r'^modules/(?P<module_id>%s)/lectures/$' % (uuid), 'learn.views.module.lectures'),
     url(r'^modules/(?P<module_id>%s)/attachments/$' % (uuid), 'learn.views.module.attachments'),
     url(r'^modules/(?P<module_id>%s)/tests/$' % (uuid), 'learn.views.module.tests'),
+    url(r'^modules/(?P<module_id>%s)/faqs/$' % (uuid), 'learn.views.faq.faqs'),
+    url(r'^modules/(?P<module_id>%s)/faqs/ask/$' % (uuid), CreateFAQQuestionView.as_view()),
+    url(r'^modules/(?P<module_id>%s)/faqs/(?P<faq_id>%s)/answer/$' % (uuid, uuid), CreateFAQAnswerView.as_view()),
 
 
     #Lecture URL's
