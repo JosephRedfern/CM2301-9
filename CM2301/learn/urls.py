@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from learn.views.faq import *
+from learn.views. announcement import *
+from learn.views.module import *
 from learn.views.announcement import *
 from learn.views.management import *
 
@@ -40,6 +42,7 @@ urlpatterns = patterns('',
 
     #Module URL's
     url(r'^modules/$', 'learn.views.module.modules'),
+    url(r'^modules/create/$', CreateModuleView.as_view()),
     url(r'^modules/(?P<module_id>%s)/$' % (uuid), 'learn.views.module.module'),
     url(r'^modules/(?P<module_id>%s)/lectures/$' % (uuid), 'learn.views.module.lectures'),
     url(r'^modules/(?P<module_id>%s)/attachments/$' % (uuid), 'learn.views.module.attachments'),
