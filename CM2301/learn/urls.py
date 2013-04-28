@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^modules/(?P<module_id>%s)/lectures/$' % (uuid), 'learn.views.module.lectures'),
     url(r'^modules/(?P<module_id>%s)/attachments/$' % (uuid), 'learn.views.module.attachments'),
     url(r'^modules/(?P<module_id>%s)/tests/$' % (uuid), 'learn.views.module.tests'),
+    url(r'^modules/(?P<module_id>%s)/faqs/$' % (uuid), 'learn.views.faq.faqs'),
 
 
     #Lecture URL's

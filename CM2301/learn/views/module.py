@@ -13,6 +13,7 @@ def module(request, module_id):
     values['tests'] = Test.objects.filter(lecture__in=[x.pk for x in values['lectures']])
     values['attachments'] = Attachment.objects.filter(object_id=module_id)
     values['links'] = Link.objects.filter(object_id=module_id)
+    values['faq'] = FAQQuestion.objects.filter(module=values['module'])
     values['breadcrumb'] = ("LCARS", "%s (%s)"%(values['module'].title,values['module'].module_code))
     return render(request, 'module_detail.html', values) 
 
