@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from learn.views.faq import *
+from learn.views. announcement import *
 
 uuid = '[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}'
 
@@ -9,7 +10,11 @@ urlpatterns = patterns('',
     #url(r'^videos/$', 'learn.views.videos'),
     url(r'^videos/submit/$', 'learn.views.video.submit'),
     url(r'^login/$', 'learn.views.misc.custom_login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/login'}),
+
+    #Announcement Stuff
+    url(r'^announcement/create/$', CreateAnnouncementView.as_view()),
+
     
     #Video URL's
     url(r'^videos/$', 'learn.views.video.all'),
