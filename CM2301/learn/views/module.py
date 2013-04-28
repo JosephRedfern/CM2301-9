@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from learn.models import *
+from django.views.generic import CreateView
+
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -76,3 +78,8 @@ def tests(request, module_id):
             values['bottom_results'].append((test, test_instances[0].test_score))
         
     return render(request, 'module_tests.html', values)
+
+
+class CreateModuleView(CreateView):
+    model = Module
+    template_name = "module_create.html"
