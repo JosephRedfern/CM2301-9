@@ -2,38 +2,66 @@
 
 {% block content %}
 
-     <div class="well">
-              <h2>CM1101 - FAQ</h2>
-              <p>Below are some commonly asked questions - if the answer to youe question isn't listed here, then don't worry - you can ask your own questions!</p>
-              <a href="moduleask.html" class="btn btn-primary"><i class="icon-white icon-bullhorn"></i> Ask a Question</a>
-            </div>
-          <div class="row-fluid">
-            <div class="span12">
-              <div class="accordion" id="accordion2">
+<div class="well">
+  <h2>CM1101 - FAQ</h2>
+  <p>Below are some commonly asked questions - if the answer to youe question isn't listed here, then don't worry - you can ask your own questions!</p>
+  <a href="ask/" data-target="#ask-question-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-white icon-bullhorn"></i> Ask a Question</a>
+</div>
 
-{% for faqquestion in faqs %}
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{faqquestion.id}}">
-        {{ faqquestion.body }}
-      </a>
+  <div id="ask-question-modal" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Ask Question</h3>
     </div>
-    <div id="{{faqquestion.id}}" class="accordion-body collapse in">
-      <div class="accordion-inner">
-        {% if faqquestion.faqanswer_set.all %}
-        {% for faqanswer in faqquestion.faqanswer_set.all %}
-          {{ faqanswer.body }}
-        {% endfor %}
-        {% else %}
-        This question has not been answered yet!
-        {% endif %}
-      </div>
+    <div class="modal-body">
+      <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-toggle="modal" data-target="#ask-question-modal">Close</a> 
     </div>
   </div>
-{% endfor %}
+
+    <div id="answer-question-modal" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Answer Question</h3>
+    </div>
+    <div class="modal-body">
+      <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-toggle="modal" data-target="#answer-question-modal">Close</a> 
+    </div>
+  </div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="accordion" id="accordion2">
+
+      {% for faqquestion in faqs %}
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{faqquestion.id}}">
+            {{ faqquestion.body }}
+          </a>
+        </div>
+        <div id="{{faqquestion.id}}" class="accordion-body collapse in">
+          <div class="accordion-inner">
+            {% if faqquestion.faqanswer_set.all %}
+            {% for faqanswer in faqquestion.faqanswer_set.all %}
+            {{ faqanswer.body }}
+            {% endfor %}
+            {% else %}
+            This question has not been answered yet!
+            <a href="{{faqquestion.id}}/answer" data-target="#answer-question-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-white icon-bullhorn"></i> Ask a Question</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
 
 
 
 
 
-{% endblock %}
+      {% endblock %}
