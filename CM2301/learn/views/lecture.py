@@ -7,6 +7,10 @@ import uuid
 
 @login_required
 def create(request, module_id):
+
+    values = {}
+    values['modules'] = Module.objects.all()
+
     if request.method == 'POST':
         video_form = VideoForm(request.POST, request.FILES, prefix='video')
         lecture_form = LectureForm(request.POST, prefix='lecture')
@@ -24,8 +28,10 @@ def create(request, module_id):
     
     lecture_form = LectureForm(prefix="lecture", initial={'module': module_id})
     video_form = VideoForm(prefix="video")
+    values['lecture_form'] = lecture_form
+    values['video_form'] = video_form
     print lecture_form.as_p()
-    return render(request, 'lecture_create.html', {'lecture_form': lecture_form, 'video_form': video_form})
+    return render(request, 'lecture_create.html', values)
 
 
 @login_required

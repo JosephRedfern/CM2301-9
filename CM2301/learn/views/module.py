@@ -9,7 +9,6 @@ def module(request, module_id):
     Viewed.log_view(request, module_id)
     values = {}
     values['module'] =  Module.objects.get(pk=module_id)
-    values['modules'] = Module.objects.all()
     values['title'] = "Module %s"%(values['module'].title)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['tests'] = Test.objects.filter(lecture__in=[x.pk for x in values['lectures']])
