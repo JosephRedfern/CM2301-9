@@ -9,13 +9,13 @@ from django.views.generic import CreateView
 def faqs(request, module_id):
     values = dict()
     values['module'] = Module.objects.get(pk=module_id)
+    values['title'] = values['module'].module_code+" FAQ"
     values['lectures'] = values['module'].lecture_set.all
     values['faqs'] = FAQQuestion.objects.filter(module=values['module'])
     return render(request, 'faqs.html', values)
 
 class CreateFAQQuestionView(CreateView):
     model = FAQQuestion
-    form = CreateFAQQuestionForm
     template_name = "faqquestion_form.html"
 
     def form_valid(self, form):
@@ -27,12 +27,18 @@ class CreateFAQQuestionView(CreateView):
 
 
 class CreateFAQAnswerView(CreateView):
-    model = FAQQuestion
-    form = CreateFAQAnswerForm
+    model = FAQAnswer
     template_name = "faqanswer_form.html"
+
+
+    def get_context_data(self, **kwargs):
+            context = super(CreateFAQAnswerView, self).get_context_data(**kwargs)
+            context['faq_id'] = self.kwargs['faq_id']
+            return context
 
     def form_valid(self, form):
         faq_answer = form.save(commit=False)
         faq_answer.author = self.request.user
-        faq_question.save()
+        faq_answer.question = FAQQuestion.objects.get(pk=self.kwargs['faq_id'])
+        faq_answer.save()
         return super(CreateFAQAnswerView, self).form_valid(form)
