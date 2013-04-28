@@ -574,18 +574,21 @@ class FAQQuestion(Base):
     """
 
     ##Question Author
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
 
     ##Question Date
     ask_date = models.DateField(auto_now_add=True)
 
     ##Related module
-    module = models.ForeignKey('Module')
+    module = models.ForeignKey('Module', editable=False)
 
     body = models.TextField(max_length=65535)
         
     def __unicode__(self):
     	return self.body
+
+    def get_absolute_url(self):
+        return '/modules/%s/faqs/' % (self.module.id)
 
 
 
