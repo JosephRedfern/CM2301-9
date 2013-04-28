@@ -6,6 +6,18 @@
 <div class="row-fluid">
     <div class="well">
         <h2>LCARS - User Management</h2>
+        <div id="create-user-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Create User</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>  
+        <a href="/management/users/create" class="btn btn-small" data-toggle="modal" data-target="#create-user-modal"><i class="icon-user"></i> New User</a>
     </div>
     {% if user_list %}
     <!--Update user modal dialog-->
