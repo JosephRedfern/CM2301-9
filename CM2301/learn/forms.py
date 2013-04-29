@@ -34,3 +34,7 @@ class RevisionForm(ModelForm):
     class Meta:
         model = Revision
         #fields = ('file',)
+
+
+class ModuleAssociateForm(forms.Form):
+    modules = forms.ModelChoiceField(queryset = Module.objects.all())

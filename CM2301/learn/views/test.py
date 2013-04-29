@@ -13,7 +13,13 @@ def tests(request):
     values = {}
     values['breadcrumb'] = ["LCARS", "All Tests"]
     values['title'] = "All Tests"
-    values['modules'] = Module.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+    
     values['tests'] = Test.objects.all()
     values['tests_with_max'] = []
     for test in values['tests']:
@@ -31,6 +37,13 @@ def test(request, test_id):
     values['test'] = Test.objects.get(pk=test_id)
     values['lectures'] = values['test'].lecture.module.lecture_set.all()
 
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+    
     if request.method != 'POST':
         values['questions'] = values['test'].get_random_questions()
         request.session['questions'] = values['questions']
@@ -72,6 +85,14 @@ def test(request, test_id):
 def test_results(request, test_instance_id):
     Viewed.log_view(request, test_instance_id)
     values = {}
+
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+
     values['lectures'] = TestInstance.objects.get(pk=test_instance_id).test.lecture.module.lecture_set.all()
     values['test_instance'] = TestInstance.objects.get(pk=test_instance_id)
     values['test'] = values['test_instance'].test
