@@ -6,6 +6,7 @@
 <div class="row-fluid">
     <div class="well">
         <h2>LCARS - Course details</h2>
+
         <div id="create-course-modal" class="modal hide fade">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -16,8 +17,22 @@
             </div>
             <div class="modal-footer">
             </div>
+        </div>
+
+        <div id="create-module-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>New Module</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+            </div>
         </div>  
+
         <a href="/management/courses/{{course.id}}/details/associate" class="btn btn-small" data-toggle="modal" data-target="#create-course-modal"><i class="icon-plus-sign"></i> Add Module to Course</a>
+        <a href="/modules/create" class="btn btn-small" data-toggle="modal" data-target="#create-module-modal"><i class="icon-plus-sign"></i> Create Module</a>
     </div>
     {% if course %}
     <table class="table table-striped">

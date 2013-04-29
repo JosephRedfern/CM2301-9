@@ -23,6 +23,8 @@ def all(request):
 
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
+
+    values['modules'] = set(values['modules'])
     
     return render(request, 'video_list.html', values)
 
