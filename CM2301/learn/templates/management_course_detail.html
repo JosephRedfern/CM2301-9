@@ -1,0 +1,41 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+
+
+<div class="row-fluid">
+    <div class="well">
+        <h2>LCARS - Course details</h2>
+        <div id="create-course-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Add module to course</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>  
+        <a href="/management/courses/{{course.id}}/details/associate" class="btn btn-small" data-toggle="modal" data-target="#create-course-modal"><i class="icon-plus-sign"></i> Add Module to Course</a>
+    </div>
+    {% if course %}
+    <table class="table table-striped">
+        <tr>
+            <th>Course Title</th>
+            <th>Course Code</th>
+            <th>Course Description</th>
+            <th>Remove</th>
+        </tr>
+        {% for module in course.modules.all %}
+        <tr>
+            <td>{{ module.title }}</td>
+            <td>{{ module.module_code }}</td>
+            <td>{{ module.description }}</td>
+            <td><a href="/management/courses/{{course.id}}/details/unassociate/{{module.id}}  "><i class="icon-remove"></i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

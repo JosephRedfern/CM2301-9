@@ -14,7 +14,12 @@ def attachment(request, attachment_id):
     values = {}
     values['attachment'] = Attachment.objects.get(id=attachment_id)
     values['title'] = "Attachment %s"%(values['attachment'].file_name)
-    values['modules'] = Module.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
     try:
         values['lectures'] = Lecture.objects.get(id=values['attachment'].object_id).module.lecture_set.all()
     except:

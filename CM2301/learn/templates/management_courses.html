@@ -41,7 +41,7 @@
         </tr>
         {% for course in course_list %}
         <tr>
-            <td>{{ course.title }}</td>
+            <td><a href="/management/courses/{{course.id}}/details">{{ course.title }}</td>
             <td>{{ course.code }}</td>
             <td>{{ course.description }}</td>
             <td><a data-toggle="modal" data-target="#update-course-modal" href="/management/courses/{{course.id}}/update"><i class="icon-edit"></i></a></td>
