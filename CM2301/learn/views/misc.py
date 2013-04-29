@@ -14,6 +14,7 @@ def home(request):
 
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
+    values['modules'] = set(values['modules'])
 
     values['announcements'] = Announcement.objects.all()[:5]
     viewed = Viewed.objects.filter(user=request.user)

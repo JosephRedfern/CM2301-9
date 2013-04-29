@@ -20,6 +20,9 @@ def attachment(request, attachment_id):
 
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
+
+    values['modules'] = set(values['modules'])
+
     try:
         values['lectures'] = Lecture.objects.get(id=values['attachment'].object_id).module.lecture_set.all()
     except:

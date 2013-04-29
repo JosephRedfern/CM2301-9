@@ -20,6 +20,8 @@ def tests(request):
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
     
+    values['modules'] = set(values['modules'])
+
     values['tests'] = Test.objects.all()
     values['tests_with_max'] = []
     for test in values['tests']:
@@ -43,7 +45,9 @@ def test(request, test_id):
 
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
-    
+
+    values['modules'] = set(values['modules'])
+
     if request.method != 'POST':
         values['questions'] = values['test'].get_random_questions()
         request.session['questions'] = values['questions']
@@ -92,6 +96,8 @@ def test_results(request, test_instance_id):
 
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
+
+    values['modules'] = set(values['modules'])
 
     values['lectures'] = TestInstance.objects.get(pk=test_instance_id).test.lecture.module.lecture_set.all()
     values['test_instance'] = TestInstance.objects.get(pk=test_instance_id)
