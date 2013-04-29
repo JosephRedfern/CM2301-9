@@ -16,6 +16,8 @@ def module(request, module_id):
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
 
+    values['modules'] = set(values['modules'])
+
     values['title'] = "Module %s"%(values['module'].title)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['tests'] = Test.objects.filter(lecture__in=[x.pk for x in values['lectures']])
@@ -51,7 +53,9 @@ def lectures(request, module_id):
 
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
-    
+
+    values['modules'] = set(values['modules'])
+
     values['breadcrumb'] = ("LCARS", "%s (%s)" % (values['module'].title, values['module'].module_code), "Lectures")
     return render(request, 'lectures.html', values)
 
@@ -66,6 +70,8 @@ def attachments(request, module_id):
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
     
+    values['modules'] = set(values['modules'])
+
     values['module'] = Module.objects.get(pk=module_id)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['breadcrumb'] = ("LCARS", values['module'].title, "Attachments")
@@ -84,6 +90,8 @@ def tests(request, module_id):
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
     
+    values['modules'] = set(values['modules'])
+
     values['module'] = Module.objects.get(pk=module_id)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['tests'] = Test.objects.filter(lecture__in=values['lectures'])
