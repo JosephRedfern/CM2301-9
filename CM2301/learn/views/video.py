@@ -14,8 +14,17 @@ def create(request):
 
 @login_required
 def all(request):
-    videos = Video.objects.all()
-    return render(request, 'video_list.html', {'videos': videos})
+    values = {}
+
+    values['videos'] = Video.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+    
+    return render(request, 'video_list.html', values)
 
 @login_required
 def video(request, video_id):

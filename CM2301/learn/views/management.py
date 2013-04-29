@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from learn.models import *
 from django.contrib.auth.views import login
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from learn.forms import *
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.contrib.auth.hashers import make_password
 
 
@@ -12,6 +13,42 @@ def overview(request):
     values['management'] = True
     values['title'] = "Management"
     return render(request, "management_overview.html", values)
+
+def unassociate_module(request, course_id, module_id):
+    course = Course.objects.get(pk=course_id)
+    module = Module.objects.get(pk=module_id)
+
+    module.courses.remove(course)
+
+    messages.add_message(request, messages.INFO, 'Module un-associated succesfully.')
+    return redirect('/management/courses/'+course_id+'/details')
+
+def associate_module(request, course_id):
+    values = dict()
+
+    if request.method == 'POST':
+        form = ModuleAssociateForm(data=request.POST)
+
+        if form.is_valid():
+            module = form.cleaned_data['modules']
+            course = Course.objects.get(pk=course_id)
+            if course in module.courses.all():
+                messages.add_message(request, messages.INFO, 'Module already associated.')
+            else:
+                module.courses.add(course)  
+                module.save()
+                messages.add_message(request, messages.INFO, 'Module succesfully associated')
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid module specified')
+
+        return redirect('/management/courses/'+course_id+'/details')
+
+    else:
+        form = ModuleAssociateForm()
+        values['course_id'] = course_id
+        values['form'] = form
+        return render(request, "management_course_associate.html", values)
+
 
 
 class UserListView(ListView):
@@ -74,6 +111,16 @@ class CourseUpdateView(UpdateView):
             context = super(CourseUpdateView, self).get_context_data(**kwargs)
             context['management'] = True
             context['pk'] = self.kwargs['pk']
+            return context
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = "management_course_detail.html"
+
+    def get_context_data(self, **kwargs):
+            context = super(CourseDetailView, self).get_context_data(**kwargs)
+            context['management'] = True
+            context['title'] = "Course Details"
             return context
 
 class CourseCreateView(CreateView):
