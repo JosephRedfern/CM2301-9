@@ -23,8 +23,11 @@ urlpatterns = patterns('',
     url(r'^management/users/(?P<pk>%s)/update' % (uuid), UserUpdateView.as_view()),
 
     url(r'^management/courses$', CourseListView.as_view()),
-    url(r'^management/courses/create', CourseCreateView.as_view()),
-    url(r'^management/courses/(?P<pk>%s)/update' % (uuid), CourseUpdateView.as_view()),
+    url(r'^management/courses/create$', CourseCreateView.as_view()),
+    url(r'^management/courses/(?P<pk>%s)/details$' % (uuid), CourseDetailView.as_view()),
+    url(r'^management/courses/(?P<pk>%s)/update$' % (uuid), CourseUpdateView.as_view()),
+    url(r'^management/courses/(?P<course_id>%s)/details/unassociate/(?P<module_id>%s)$' % (uuid, uuid), 'learn.views.management.unassociate_module'),
+    url(r'^management/courses/(?P<course_id>%s)/details/associate$' % (uuid), 'learn.views.management.associate_module'),
 
 
     #Announcement Stuff
