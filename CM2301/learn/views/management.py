@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password
 def overview(request):
     values = dict()
     values['management'] = True
+    values['title'] = "Management"
     return render(request, "management_overview.html", values)
 
 
@@ -20,6 +21,7 @@ class UserListView(ListView):
     def get_context_data(self, **kwargs):
             context = super(UserListView, self).get_context_data(**kwargs)
             context['management'] = True
+            context['title'] = "User Management"
             return context
 
 
@@ -60,6 +62,7 @@ class CourseListView(ListView):
     def get_context_data(self, **kwargs):
             context = super(CourseListView, self).get_context_data(**kwargs)
             context['management'] = True
+            context['title'] = "Course Management"
             return context
 
 class CourseUpdateView(UpdateView):
