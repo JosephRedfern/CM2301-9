@@ -45,6 +45,9 @@ def associate_module(request, course_id):
 
     else:
         form = ModuleAssociateForm()
+        course = Course.objects.get(pk=course_id)
+        current_modules = course.modules.all()
+        form.fields['modules'].queryset = Module.objects.all().exclude(pk__in = current_modules)
         values['course_id'] = course_id
         values['form'] = form
         return render(request, "management_course_associate.html", values)
