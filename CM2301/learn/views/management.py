@@ -11,6 +11,12 @@ def overview(request):
     values = dict()
     values['management'] = True
     values['title'] = "Management"
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
     return render(request, "management_overview.html", values)
 
 

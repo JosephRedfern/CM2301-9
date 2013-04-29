@@ -9,6 +9,13 @@ def module(request, module_id):
     Viewed.log_view(request, module_id)
     values = {}
     values['module'] =  Module.objects.get(pk=module_id)
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+
     values['title'] = "Module %s"%(values['module'].title)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['tests'] = Test.objects.filter(lecture__in=[x.pk for x in values['lectures']])
@@ -22,7 +29,13 @@ def module(request, module_id):
 def modules(request):
     values = {}
     values['title'] =  "Module Overview"
-    values['modules'] = Module.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+
     values['breadcrumb'] = ("LCARS","Module Overview")
     return render(request, 'modules_overview.html', values)
 
@@ -32,7 +45,13 @@ def lectures(request, module_id):
     values['title'] = "Lecture Overview"
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['module'] = Module.objects.get(pk=module_id)
-    values['modules'] = Module.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+    
     values['breadcrumb'] = ("LCARS", "%s (%s)" % (values['module'].title, values['module'].module_code), "Lectures")
     return render(request, 'lectures.html', values)
 
@@ -40,7 +59,13 @@ def lectures(request, module_id):
 def attachments(request, module_id):
     values = {}
     values['attachments'] = Attachment.objects.filter(object_id=module_id)
-    values['modules'] = Module.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+    
     values['module'] = Module.objects.get(pk=module_id)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['breadcrumb'] = ("LCARS", values['module'].title, "Attachments")
@@ -52,7 +77,13 @@ def attachments(request, module_id):
 def tests(request, module_id):
     values = {}
     values['attachments'] = Attachment.objects.filter(object_id=module_id)
-    values['modules'] = Module.objects.all()
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+    
     values['module'] = Module.objects.get(pk=module_id)
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['tests'] = Test.objects.filter(lecture__in=values['lectures'])
