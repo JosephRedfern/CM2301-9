@@ -53,7 +53,10 @@
             {% endfor %}
             {% else %}
             This question has not been answered yet!
-            <a href="{{faqquestion.id}}/answer" data-target="#answer-question-modal" role="button" class="btn btn-small" data-toggle="modal"><i class="icon-bullhorn"></i> Answer Question</a>
+              {% if user.is_staff %}
+              <a href="{{faqquestion.id}}/answer" data-target="#answer-question-modal" role="button" class="btn btn-small" data-toggle="modal"><i class="icon-bullhorn"></i>
+              Answer Question</a>
+              {%endif%}
             {% endif %}
           </div>
         </div>
