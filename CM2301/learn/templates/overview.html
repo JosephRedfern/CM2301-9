@@ -85,6 +85,20 @@
     </div>
     {% endif %}
 
+    {% if courses %}
+
+    {%for course in courses%}
+    <div class="span3">
+        <h2>{{course.title}}</h2>
+        <p>
+            {{course.description}}
+        </p>
+        <a href="/courses/{{course.id}}" class="btn btn-small"><i class="icon-eye-open"></i> View Modules</a>
+    </div>
+    
+    {%endfor%}
+
+    {%endif%}
 </div>
 
 {% endblock %}
