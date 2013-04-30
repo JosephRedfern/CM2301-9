@@ -18,21 +18,24 @@ urlpatterns = patterns('',
     #management stuff
     url(r'^management/$', 'learn.views.management.overview'),
 
-    url(r'^management/users$', UserListView.as_view()),
-    url(r'^management/users/create$', UserCreateView.as_view()),
-    url(r'^management/users/(?P<pk>%s)/update' % (uuid), UserUpdateView.as_view()),
+    url(r'^management/users$', login_required(UserListView.as_view())),
+    url(r'^management/users/create$', login_required(UserCreateView.as_view())),
+    url(r'^management/users/(?P<pk>%s)/update' % (uuid), login_required(UserUpdateView.as_view())),
 
-    url(r'^management/courses$', CourseListView.as_view()),
-    url(r'^management/courses/create$', CourseCreateView.as_view()),
-    url(r'^management/courses/(?P<pk>%s)/details$' % (uuid), CourseDetailView.as_view()),
-    url(r'^management/courses/(?P<pk>%s)/update$' % (uuid), CourseUpdateView.as_view()),
+    url(r'^management/courses$', login_required(CourseListView.as_view())),
+    url(r'^management/courses/create$', login_required(CourseCreateView.as_view())),
+    url(r'^management/courses/(?P<pk>%s)/details$' % (uuid), login_required(CourseDetailView.as_view())),
+    url(r'^management/courses/(?P<pk>%s)/update$' % (uuid), login_required(CourseUpdateView.as_view())),
     url(r'^management/courses/(?P<course_id>%s)/details/unassociate/(?P<module_id>%s)$' % (uuid, uuid), 'learn.views.management.unassociate_module'),
     url(r'^management/courses/(?P<course_id>%s)/details/associate$' % (uuid), 'learn.views.management.associate_module'),
 
 
     #Announcement Stuff
-    url(r'^announcement/create/$', CreateAnnouncementView.as_view()),
+    url(r'^announcement/create/$', login_required(CreateAnnouncementView.as_view())),
 
+
+    #Course listing
+    url(r'^courses/(?P<course_id>%s)$' % (uuid), 'learn.views.course.course'),
     
     #Video URL's
     url(r'^videos/$', 'learn.views.video.all'),
@@ -56,8 +59,8 @@ urlpatterns = patterns('',
     url(r'^modules/(?P<module_id>%s)/attachments/$' % (uuid), 'learn.views.module.attachments'),
     url(r'^modules/(?P<module_id>%s)/tests/$' % (uuid), 'learn.views.module.tests'),
     url(r'^modules/(?P<module_id>%s)/faqs/$' % (uuid), 'learn.views.faq.faqs'),
-    url(r'^modules/(?P<module_id>%s)/faqs/ask/$' % (uuid), CreateFAQQuestionView.as_view()),
-    url(r'^modules/(?P<module_id>%s)/faqs/(?P<faq_id>%s)/answer/$' % (uuid, uuid), CreateFAQAnswerView.as_view()),
+    url(r'^modules/(?P<module_id>%s)/faqs/ask/$' % (uuid), login_required(CreateFAQQuestionView.as_view())),
+    url(r'^modules/(?P<module_id>%s)/faqs/(?P<faq_id>%s)/answer/$' % (uuid, uuid), login_required(CreateFAQAnswerView.as_view())),
 
 
     #Lecture URL's

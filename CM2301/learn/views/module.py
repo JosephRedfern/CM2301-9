@@ -38,6 +38,8 @@ def modules(request):
     for course in courses:
         [values['modules'].append(module) for module in course.modules.all()]
 
+    values['modules'] = set(values['modules'])
+
     values['breadcrumb'] = ("LCARS","Module Overview")
     return render(request, 'modules_overview.html', values)
 

@@ -8,14 +8,8 @@ from learn.forms import *
 def home(request):
     values = {}
     values['title'] = 'Home'
-    values['modules'] = []
-
-    courses = request.user.course.all()
-
-    for course in courses:
-        [values['modules'].append(module) for module in course.modules.all()]
-    values['modules'] = set(values['modules'])
-
+    values['courses'] = request.user.course.all()
+    
     values['announcements'] = Announcement.objects.all()[:5]
     viewed = Viewed.objects.filter(user=request.user)
     values['activity'] = []
