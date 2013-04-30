@@ -109,7 +109,6 @@ class User(AbstractUser, Base):
     """
     ##Phone number for the User
     phone = models.CharField(max_length=20)
-
     course = models.ManyToManyField('Course')
     
     def add_user_field(self, UserField):
