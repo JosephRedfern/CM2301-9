@@ -7,7 +7,7 @@
 </div>
 
 <div class="row-fluid">
-	<div class="span4">
+	<div class="span3">
         <!--Create Announcement modal dialog-->
         <div id="create-announcement-modal" class="modal hide fade">
             <div class="modal-header">
@@ -52,7 +52,7 @@
     <button href="/announcement/create" type="button" class='btn btn-small' data-toggle="modal" data-target="#create-announcement-modal"><i class="icon-plus-sign"></i> New Announcement</button>
 </div>
     {% if recent %}
-    <div class="span4">
+    <div class="span3">
         <h2>Recently Viewed</h2>
         <ul>
         {% for activity in activities  %}
@@ -61,6 +61,21 @@
         </ul>
     </div>
     {% endif %}
+
+    {% if courses %}
+
+    {%for course in courses%}
+    <div class="span3">
+        <h2>{{course.title}}</h2>
+        <p>
+            {{course.description}}
+        </p>
+        <a href="/courses/{{course.id}}" class="btn btn-small"><i class="icon-eye-open"></i> View Modules</a>
+    </div>
+    
+    {%endfor%}
+
+    {%endif%}
 </div>
 
 {% endblock %}
