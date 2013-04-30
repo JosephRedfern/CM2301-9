@@ -4,9 +4,13 @@ from learn.models import Lecture, Module, Link
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import uuid
+from django.core.exceptions import PermissionDenied
 
 @login_required
 def create(request, module_id):
+
+    if not request.user.is_staff():
+        raise PermissionDenied()
 
     values = {}
     values['modules'] = Module.objects.all()
@@ -50,6 +54,12 @@ def view(request, lecture_id):
     values['test_results'] = TestInstance.objects.filter(test=values['test'], student=request.user)
     values['attachment_form'] = attachment_form
     values['revision_form'] = revision_form
+
+    courses = request.user.course.all()
+    if not set(courses) & set(values['lecture'].module.courses.all()):
+        print "sdfdf"
+        raise PermissionDenied()
+
 
     values['breadcrumb'] = ('LCARS', values['lecture'].module.title + " ("+values['lecture'].module.module_code+')', values['lecture'].title)
     return render(request, 'lecture.html', values)
