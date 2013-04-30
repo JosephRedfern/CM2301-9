@@ -13,7 +13,9 @@
             {% if lectures %}
             <p><a class="btn" href="/modules/{{module.id}}/lectures">View Lectures &raquo;</a></p>
             {% endif %}
+            {% if user.is_staff %}
             <p><a class="btn" href="{{module.get_absolute_url}}lectures/create">Create Lecture &raquo;</a></p>
+            {% endif %}
         </div>
     {% if attachments %}
         <div class="span3">
