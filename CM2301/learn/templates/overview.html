@@ -1,10 +1,31 @@
 {% extends "base_navbar.html" %}
 
 {% block content %}
-<div class="well">
-<h2>Welcome to LCARS</h2>
-<p>LCARS is a centralised online learning system. You can use LCARS to access Lecture Videos, take tests, ask questions and submit coursework.</p>
+
+{% if courses %}
+<div class="row-fluid">
+    <h2>Courses <small>All courses you're enrolled on</small> </h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+                <tr>
+                    <td class="lead">{{ course.title }}</td>
+                    <td><span class="label">{{ course.code }}</span></td>
+                    <td><p>{{ course.description }}</p></td>
+                    <td><a href="/courses/{{course.id}}" class="btn btn-small"><i class="icon-eye-open"></i> View Modules</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{%endif%}
 
 <div class="row-fluid">
 	<div class="span3">
@@ -19,13 +40,12 @@
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn">Close</a>
-                <a href="#" class="btn btn-primary">Save changes</a>
             </div>
         </div>	
     {% if announcements %}
     
 
-        <h2>Announcements</h2>
+        <h3>Announcements</h3>
         <ul>
         {% for announcement in announcements  %}
             <li><a href="#{{announcement.id}}" role="button" data-toggle="modal">{{ announcement.title }}</a></li>
@@ -45,11 +65,14 @@
         {% endfor %}
         </ul>
     {% else %}
-        <h2>Announcements</h2>
+        <h3>Announcements</h3>
         	 No Announcements Yet <br />
 		<br />
     {% endif %} 
+
+    {% if user.is_staff %}
     <button href="/announcement/create" type="button" class='btn btn-small' data-toggle="modal" data-target="#create-announcement-modal"><i class="icon-plus-sign"></i> New Announcement</button>
+    {% endif %}
 </div>
     {% if recent %}
     <div class="span3">
@@ -62,20 +85,6 @@
     </div>
     {% endif %}
 
-    {% if courses %}
-
-    {%for course in courses%}
-    <div class="span3">
-        <h2>{{course.title}}</h2>
-        <p>
-            {{course.description}}
-        </p>
-        <a href="/courses/{{course.id}}" class="btn btn-small"><i class="icon-eye-open"></i> View Modules</a>
-    </div>
-    
-    {%endfor%}
-
-    {%endif%}
 </div>
 
 {% endblock %}
