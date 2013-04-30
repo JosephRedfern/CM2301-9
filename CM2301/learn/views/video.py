@@ -5,6 +5,8 @@ from django.views.decorators.http import require_http_methods
 from django.core import serializers
 from learn.models import Video, VideoThumbnail
 from learn.forms import *
+from django.core.exceptions import PermissionDenied
+
 
 @login_required
 def create(request):
@@ -54,6 +56,8 @@ def serve(request, video_id):
     Serves a video media stream to the client, this view is used
     by the VideoJS player.
     """
+    
+
     Viewed.log_view(request, video_id)
     video = Video.objects.get(pk=video_id)
     filename = video.uploaded_video.name.split('/')[-1]
@@ -67,7 +71,14 @@ def format_serve(request, video_format_id):
     Serves a video media stream to the client, this view is used
     by the VideoJS player.
     """
+
     vf = VideoFormat.objects.get(pk=video_format_id)
+    courses = request.user.course.all()
+    if not set(courses) & set(vf.video.lecture_set.all()[0].module.courses.all()):
+        print "sdfdf"
+        raise PermissionDenied()
+
+    
     filename = vf.file.name.split('/')[-1]
     response = StreamingHttpResponse(vf.file)
     response['Content-Type'] = "video/%s" % (vf.format)
