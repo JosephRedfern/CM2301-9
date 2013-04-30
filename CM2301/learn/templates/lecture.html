@@ -63,7 +63,7 @@ $(document).ready(function(){
 </script>
 
 
-<div class="well">
+<div class="well well-small">
 <h2>{{lecture.title}}</h2>
 <p>{{lecture.description}}</p>
 </div>
@@ -97,7 +97,9 @@ $(document).ready(function(){
 <div class="row-fluid">
     <div class="span4">
         <h3>Lecture Materials</h3>
+        {% if user.is_staff %}
         	<a class="btn" href="#addAttachmentModal" role="button" data-toggle="modal">Add<i class="icon-plus"></i>
+            {% endif %}
 			</a>
         	{% if attachments %}
         	<a class="btn" href="{{ lecture.get_absolute_url }}attachments/download">
@@ -116,6 +118,8 @@ $(document).ready(function(){
                 {% endfor %}
                 </ul>
                 </div>
+    {% else %}
+    <div class="well well-small text-info">There are no attachments for this lecture.</div>
     {% endif %}
     </div>
 
