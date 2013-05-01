@@ -37,6 +37,7 @@
             <th>Module Title</th>
             <th>Module Code</th>
             <th>Module Description</th>
+            <th>Mark Coursework</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -45,6 +46,7 @@
             <td><a href="/management/modules/{{module.id}}/lectures">{{ module.title }}</td>
             <td>{{ module.module_code }}</td>
             <td>{{ module.description }}</td>
+            <td><a href="/management/modules/{{module.id}}/coursework"><i class="icon-book"></i></a></td>
             <td><a data-toggle="modal" data-target="#update-module-modal" href="/management/courses/{{course.id}}/update"><i class="icon-edit"></i></a></td>
             <td><a data-toggle="modal" data-target="#update-module-modal" href="/management/modules/{{module.id}}/delete"><i class="icon-remove"></i></a></td>
         </tr>
