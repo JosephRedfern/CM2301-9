@@ -1,0 +1,10 @@
+
+{% if current_mark >= 0 %}
+<h3>Current Mark: {{current_mark}}</h3>
+{% else %}
+<h3>Not yet marked</h3>
+{% endif %}
+<form action="/management/modules/{{module_id}}/coursework/{{task_id}}/mark/{{submission_id}}" method="POST">{% csrf_token %}
+    {{form.as_p}}
+   <input type="submit" class="btn" value="Submit" />
+</form>
