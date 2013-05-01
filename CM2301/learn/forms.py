@@ -1,5 +1,6 @@
 from django.forms import ModelForm, Form
 from django import forms
+from django.contrib import messages
 from learn.models import *
 from django.forms import ModelForm, DateInput
 
@@ -38,3 +39,9 @@ class RevisionForm(ModelForm):
 
 class ModuleAssociateForm(forms.Form):
     modules = forms.ModelChoiceField(queryset = Module.objects.all())
+
+
+class CourseworkSubmissionForm(forms.Form):
+    submission = forms.FileField(
+        label='Select a file',
+        )
