@@ -1,0 +1,75 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+
+<div class="row-fluid">
+  <div class="well"><h2>{{module.module_code}} - Coursework</h2>
+    {%if user.is_staff %}
+      <a class="btn btn-small" data-toggle="modal" data-target="#create-courseworktask-modal" href="/modules/{{module.id}}/coursework/create"><i class="icon-plus"></i> Create Coursework Task</a>
+
+          <div id="create-courseworktask-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>New</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+            </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<div class="row-fluid">
+</div><!--/row-->
+
+<div class="row-fluid">
+  <div class="span12">
+    <h2>Coursework</h2>
+    <div id="create-courseworksubmission-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Submit Coursework</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+            </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <th>Coursework Title</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Mark</th>
+      </thead>
+      {% for task_with_result in tasks_with_results %}
+      <tr>
+        <td>{{task_with_result.task.title}}</td>
+        <td>{{task_with_result.task.content}}
+        <td>{{task_with_result.task.due_date}}</td>
+        <td>
+          {%if task_with_result.score == -1 %}
+          Awaiting Results
+          {% elif task_with_result.score >= 0 %}
+          <span class="badge  {% if task_with_result.score >= 70 %} badge-success {% elif task_with_result.score >= 40 %} badge-warning {% else %} badge-important {% endif %}">{{task_with_result.score}}%</span>
+          {% endif %}
+
+
+          {%if not task_with_result.score %}
+          <a href="/modules/{{module.id}}/coursework/{{task_with_result.task.id}}/submit" class="btn btn-small" data-toggle="modal" data-target="#create-courseworksubmission-modal"><i class="icon-plus-sign"></i> Submit</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+
+
+{% endblock %}
