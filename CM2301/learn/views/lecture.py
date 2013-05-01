@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 @login_required
 def create(request, module_id):
 
-    if not request.user.is_staff():
+    if not request.user.is_staff:
         raise PermissionDenied()
 
     values = {}
