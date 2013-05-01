@@ -94,12 +94,10 @@ class Base(models.Model):
         @param CustomField The CustomField object to set. 
         """
         
-        
 ################################################################
 #Core System
 ################################################################
-             
-        
+                    
 class User(AbstractUser, Base):
     """
     Represents a user of the system. 
@@ -139,7 +137,6 @@ class CustomField(Base):
     key = models.CharField(max_length=250)
     ##The field value
     value = models.TextField()
-
 
 class Viewed(Base):
     ##The user that has viewed the object
@@ -264,7 +261,6 @@ class Attachment(Base):
         type = mimetypes.guess_type(self.file_name)
         return type[0]
 
-
 class Revision(Base):
     """
     A revision object represents a single file that belongs to an Attachment.
@@ -345,8 +341,7 @@ class Revision(Base):
     class Meta:
         get_latest_by = "time_uploaded"
         ordering = ['-version']
-
-    
+  
 ################################################################
 #Lecturing Classes
 ################################################################
@@ -506,8 +501,7 @@ class Video(Base):
             
     def __unicode__(self):
         return 'Video: ' + str(self.id)
-        
-    
+          
 class VideoThumbnail(Base):
     """
     Handles the storage of video thumbnails. 
@@ -530,8 +524,7 @@ class VideoThumbnail(Base):
         
     def get_absolute_url(self):
         return reverse('learn.views.video.thumbnail', args=[str(self.id)])
-    
-    
+       
 class VideoFormat(Base):
     """
     Represents a specific video format containing a file.
@@ -567,8 +560,6 @@ class VideoFormat(Base):
         #return reverse('learn.views.video.format_serve', args=[str(self.id)])
         return '/videos/formats/%s/serve/video.%s' % (self.id, self.format)
   
-
- 
 class FAQQuestion(Base):
     """
     An FAQ is a question submitted by a student to a lecturer. 
@@ -591,8 +582,6 @@ class FAQQuestion(Base):
     def get_absolute_url(self):
         return '/modules/%s/faqs/' % (self.module.id)
 
-
-
 class FAQAnswer(Base):
     ##Question Author
     author = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
@@ -606,8 +595,7 @@ class FAQAnswer(Base):
 
     def get_absolute_url(self):
         return '/modules/%s/faqs/' % (self.question.module.id)
-
-    
+   
 class Module(Base):
     """
     A module is a set of lectures belonging to multiple courses.
@@ -700,8 +688,7 @@ class Course(Base):
 
     def __unicode__(self):
          return self.title + " (" + self.code + ")"
-    
-    
+       
 ################################################################
 #Testing/Marking Classes
 ################################################################
@@ -732,8 +719,7 @@ class Question(Base):
 
     def __unicode__(self):
         return self.content[:97]+"..."
-        
-        
+                
 class Test(Base):
     """
     An instance of the test class will contain details of the Test with the lecture it belongs to. 
@@ -837,9 +823,6 @@ class Result(Base):
     ##The answer chosen
     answer = models.ForeignKey(Answer)
 
-        
-
-
 ################################################################
 #Coursework Setting/Marking Classes
 ################################################################
@@ -880,8 +863,7 @@ class ProgrammingTask(CourseworkTask):
     language = models.CharField(max_length=20)
     ##The input and expected output to test the code
     input_output = models.TextField()
-    
-    
+       
 class CourseworkSubmission(Base):
     """
     CourseworkSubmission caters for the submission of coursework by a user.
@@ -931,8 +913,7 @@ class ProgrammingSubmission(CourseworkSubmission):
     main = models.CharField(max_length=200)
     ##Flag whether to extract zip files.
     extract_compressed = models.BooleanField()
-    
-    
+       
 ################################################################
 #System Maintainence Classes
 ################################################################
@@ -988,8 +969,7 @@ class Server(Base):
     load = models.FloatField()
     ##The amount of free disk storage on the server
     free_storage = models.FloatField()
-    
-    
+      
 class QueueItem(Base):
     """
     QueueItem is responsible for handling load balancing of CPU/Memory intensive tasks.
@@ -1046,7 +1026,6 @@ class UserQuestion(Base):
         """
         return
 
-
 class QuestionResponse(Base):
     """
     QuestionReponse class handles the answering of UserQuestion objects.
@@ -1061,8 +1040,7 @@ class QuestionResponse(Base):
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The user who posted it.
     post_date = models.DateTimeField(auto_now_add=True)
-    
-    
+       
 class Search(object):
     """
     This Search class handles the searching of objects in the database.

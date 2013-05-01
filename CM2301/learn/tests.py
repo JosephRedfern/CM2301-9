@@ -8,6 +8,10 @@ from django.utils import unittest
 from django.test import TestCase
 from models import Attachment, Viewed, User, CourseworkSubmission, TestInstance, Question, Course, Lecture, Module, VideoFormat, VideoThumbnail, Video, Revision
 
+################################################################
+#File Handling
+################################################################
+
 class AttachmentTestCase(TestCase):
     """
     A test class for Attachment
@@ -50,13 +54,107 @@ class AttachmentTestCase(TestCase):
         self.assertEqual(self.file1.test_get_latest_revision(), self.revision_set.all()[0])
         self.assertEqual(self.file2.test_get_latest_revision(), self.revision_set.all()[0])
 
-class ViewedTestCase(TestCase):
+class RevisionTestCase(TestCase):
+    def setUp(self):
+
+        self.file1 = Attachment(file_name="file1", description="A file")
+        self.file2 = Attachment(file_name="file2", description="Another File")
+
+        self.revision1 = Revision(version="1", )
+        ##self.revision2 = 
+
+    def test_filename(self):
+        """
+        """
+    def test_get_file(self):
+        """
+        """
+    def test_get_absolute_url(self):
+        """
+        """
+    def test_get_version_filename(self):
+        """
+        """
+        ##self.assertEqual(self.revision1.get_version_filename(), str(1) + "_" os.path.basename(self.file.name))
+
+################################################################
+#Lecturing Classes
+################################################################
+
+class VideoTestCase(TestCase):
     def setUp(self):
         """
         """
-    def test_log_view(cls, request, object_id):
+
+    def test_get_file_paths(self):
         """
         """
+    def test_get_file_path(self, format):
+        """
+        """
+    def test_url(self):
+        """
+        """
+    def test_convert(self):
+        """
+        """
+    def test_save(self, *args, **kwargs):
+        """
+        """
+
+class VideoThumbnailTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+    def test_get_absolute_url(self):
+        """
+        """
+
+class VideoFormatTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+
+    def test_get_absolute_url(self):
+        """
+        """
+
+class FAQQuestionTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+    def test_get_absolute_url(self):
+        """
+        """
+
+class FAQAnswerTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+    def test_get_absolute_url(self):
+        """
+        """
+
+class ModuleTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+    def test_get_absolute_url(self):
+        """
+        """
+
+class LectureTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+    def test_get_absolute_url(self):
+        """
+        """
+
+################################################################
+#Testing/Marking Classes
+################################################################
+
 
 class UserTestCase(TestCase):
     def setUp(self):
@@ -96,116 +194,10 @@ class TestTestCase(TestCase):
     def test_get_random_questions(self):
         """
         """
-class QuestionTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_answers(self):
 
-        """
-        Not returning anything, therefore can't test
-        """
 
-    def test_get_correct_answer(self):
 
-        """
-        Not returning anything, therefore can't test
-        """
 
-class CourseTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_lectures(self):
-        """
-        """
-class LectureTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-class ModuleTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-class VideoFormatTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_probe(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-class VideoThumbnailTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-class VideoTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_save(self, *args, **kwargs):
-        """
-        """
-    def test_get_file_paths(self):
-        """
-        """
-    def test_get_file_path(self, format):
-        """
-        """
-    def test_url(self):
-        """
-        """
-    def test_convert(self):
-        """
-        """
-    def test_generate_thumbnails(self, thumbnail_count, size):
-        """
-        """
-    def test_update_progress(self, converters):
-        """
-        """
-    def test_save(self, *args, **kwargs):
-        """
-        """
-class RevisionTestCase(TestCase):
-    def setUp(self):
 
-        self.file1 = Attachment(file_name="file1", description="A file")
-        self.file2 = Attachment(file_name="file2", description="Another File")
 
-        self.revision1 = Revision(version="1", )
-        ##self.revision2 = 
 
-    def test_filename(self):
-        """
-        """
-    def test_get_file(self):
-        """
-        """
-    def test_save(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-    def test_get_version_filename(self):
-        """
-        """
-        ##self.assertEqual(self.revision1.get_version_filename(), str(1) + "_" os.path.basename(self.file.name))
-    def test_clean(self):
-        """
-        """
-    def test_mimetype(self):
-                """
-        """
