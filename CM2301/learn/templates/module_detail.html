@@ -41,16 +41,20 @@
             </ul>
         </div>
     {% endif %}
-    {% if coursework %}
         <div class="span3">
             <h2>Coursework </h2>
+
+            {% if coursework %}
             <ul>
                 {% for coursework in courseworks %}
                 <li><a href="/modules/{{module.id}}/coursework/{{coursework.id}}">{{coursework.title}}</a></li>
                 {% endfor %}
             </ul>
+            {%else%}
+            There are no coursework tasks for this module
+            {% endif %}
+            <a href="/modules/{{module.id}}/coursework" class="btn">View Coursework</a>
         </div>
-    {% endif %}
     {% if tests %}
     <div class="span3">
         <h2>Tests</h2>
