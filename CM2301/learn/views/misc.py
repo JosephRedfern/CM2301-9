@@ -14,6 +14,16 @@ def home(request):
     viewed = Viewed.objects.filter(user=request.user)
     values['activity'] = []
 
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+
+    values['modules'] = set(values['modules'])
+
+
     values['breadcrumb'] = ("LCARS", "Overview")
     return render(request, 'overview.html', values)
 

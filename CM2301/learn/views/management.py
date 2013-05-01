@@ -12,7 +12,17 @@ def overview(request):
     values = dict()
     values['management'] = True
     values['title'] = "Management"
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+
+    values['modules'] = set(values['modules'])
+
     return render(request, "management_overview.html", values)
+
 
 def unassociate_module(request, course_id, module_id):
     course = Course.objects.get(pk=course_id)
@@ -62,6 +72,14 @@ class UserListView(ListView):
             context = super(UserListView, self).get_context_data(**kwargs)
             context['management'] = True
             context['title'] = "User Management"
+            context['modules'] = []
+
+            courses = self.request.user.course.all()
+
+            for course in courses:
+                [context['modules'].append(module) for module in course.modules.all()]
+
+            context['modules'] = set(context['modules'])
             return context
 
 
@@ -74,6 +92,14 @@ class UserUpdateView(UpdateView):
             context = super(UserUpdateView, self).get_context_data(**kwargs)
             context['management'] = True
             context['pk'] = self.kwargs['pk']
+            context['modules'] = []
+
+            courses = self.request.user.course.all()
+
+            for course in courses:
+                [context['modules'].append(module) for module in course.modules.all()]
+
+            context['modules'] = set(context['modules'])
             return context
 
     def form_valid(self, form):
@@ -88,6 +114,15 @@ class UserCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
+        context['modules'] = []
+
+        courses = self.request.user.course.all()
+
+        for course in courses:
+            [context['modules'].append(module) for module in course.modules.all()]
+
+        context['modules'] = set(context['modules'])
+
         return context
 
     def form_valid(self, form):
@@ -103,6 +138,15 @@ class CourseListView(ListView):
             context = super(CourseListView, self).get_context_data(**kwargs)
             context['management'] = True
             context['title'] = "Course Management"
+            context['modules'] = []
+
+            courses = self.request.user.course.all()
+
+            for course in courses:
+                [context['modules'].append(module) for module in course.modules.all()]
+
+            context['modules'] = set(context['modules'])
+
             return context
 
 class CourseUpdateView(UpdateView):
@@ -114,6 +158,15 @@ class CourseUpdateView(UpdateView):
             context = super(CourseUpdateView, self).get_context_data(**kwargs)
             context['management'] = True
             context['pk'] = self.kwargs['pk']
+
+            context['modules'] = []
+
+            courses = self.request.user.course.all()
+
+            for course in courses:
+                [context['modules'].append(module) for module in course.modules.all()]
+
+            context['modules'] = set(context['modules'])
             return context
 
 class CourseDetailView(DetailView):
@@ -124,6 +177,14 @@ class CourseDetailView(DetailView):
             context = super(CourseDetailView, self).get_context_data(**kwargs)
             context['management'] = True
             context['title'] = "Course Details"
+            context['modules'] = []
+
+            courses = self.request.user.course.all()
+
+            for course in courses:
+                [context['modules'].append(module) for module in course.modules.all()]
+
+            context['modules'] = set(context['modules'])
             return context
 
 class CourseCreateView(CreateView):
@@ -133,4 +194,13 @@ class CourseCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseCreateView, self).get_context_data(**kwargs)
+        context['modules'] = []
+
+        courses = self.request.user.course.all()
+
+        for course in courses:
+            [context['modules'].append(module) for module in course.modules.all()]
+
+        context['modules'] = set(context['modules'])
+
         return context
