@@ -4,6 +4,10 @@ from learn.views. announcement import *
 from learn.views.module import *
 from learn.views.announcement import *
 from learn.views.management import *
+from learn.views.coursework import *
+from django.conf.urls.static import static
+
+
 
 uuid = '[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}'
 
@@ -30,6 +34,11 @@ urlpatterns = patterns('',
     url(r'^management/courses/(?P<course_id>%s)/details/associate$' % (uuid), 'learn.views.management.associate_module'),
 
 
+    url(r'^management/modules$', login_required(ModuleListView.as_view())),
+    url(r'^management/modules/(?P<pk>%s)/delete$' % (uuid), login_required(ModuleDeleteView.as_view())),
+    url(r'^management/modules/(?P<pk>%s)/lectures' % (uuid), login_required(LectureListView.as_view())),
+
+
     #Announcement Stuff
     url(r'^announcement/create/$', login_required(CreateAnnouncementView.as_view())),
 
@@ -47,7 +56,7 @@ urlpatterns = patterns('',
     url(r'^thumbnails/(?P<thumbnail_id>%s)/$' % (uuid), 'learn.views.video.thumbnail'),
         
 
-    #Test URL's
+    #Test URL'sq
     url(r'^tests/(?P<test_id>%s)/$'% (uuid), 'learn.views.test.test'),
     
 
@@ -62,6 +71,10 @@ urlpatterns = patterns('',
     url(r'^modules/(?P<module_id>%s)/faqs/ask/$' % (uuid), login_required(CreateFAQQuestionView.as_view())),
     url(r'^modules/(?P<module_id>%s)/faqs/(?P<faq_id>%s)/answer/$' % (uuid, uuid), login_required(CreateFAQAnswerView.as_view())),
 
+    url(r'^modules/(?P<pk>%s)/coursework$' % (uuid), login_required(CourseworkListView.as_view())),
+    url(r'^modules/(?P<pk>%s)/coursework/create$' % (uuid), login_required(CourseworkTaskCreateView.as_view())),
+    url(r'^modules/(?P<pk>%s)/create$' % (uuid), login_required(CourseworkListView.as_view())),
+    url(r'^modules/(?P<module_id>%s)/coursework/(?P<coursework_id>%s)/submit$' % (uuid, uuid), 'learn.views.coursework.coursework_submission'),
 
     #Lecture URL's
     url(r'^modules/(?P<module_id>%s)/lectures/create/$' % (uuid), 'learn.views.lecture.create'),
@@ -84,4 +97,4 @@ urlpatterns = patterns('',
     url(r'^tests/$', 'learn.views.test.tests'),
     url(r'^results/(?P<test_instance_id>%s)/$' % (uuid), 'learn.views.test.test_results'),
     
-)
+)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

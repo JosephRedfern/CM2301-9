@@ -1,0 +1,5 @@
+
+<form action="/management/modules/{{module.pk}}/delete" method="POST">{% csrf_token %}
+    <b>Are you sure you wish to delete the module {{module.title}}?</b>
+   <input type="submit" class="btn" value="Submit" />
+</form>

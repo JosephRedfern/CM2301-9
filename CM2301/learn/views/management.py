@@ -4,7 +4,7 @@ from django.contrib.auth.views import login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from learn.forms import *
-from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 from django.contrib.auth.hashers import make_password
 
 
@@ -202,5 +202,49 @@ class CourseCreateView(CreateView):
             [context['modules'].append(module) for module in course.modules.all()]
 
         context['modules'] = set(context['modules'])
+
+        return context
+
+
+class ModuleListView(ListView):
+    model = Module
+    template_name = "management_modules.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ModuleListView, self).get_context_data(**kwargs)
+        context['management'] = True
+        context['modules'] = []
+
+        courses = self.request.user.course.all()
+
+        for course in courses:
+            [context['modules'].append(module) for module in course.modules.all()]
+
+        context['modules'] = set(context['modules'])
+
+        return context
+
+class ModuleDeleteView(DeleteView):
+    model = Module
+    template_name = "management_module_delete.html"
+    success_url = "/management/modules"
+
+class LectureListView(ListView):
+    model = Lecture
+    template_name = "management_module_lectures.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(LectureListView, self).get_context_data(**kwargs)
+        context['management'] = True
+        context['modules'] = []
+
+        courses = self.request.user.course.all()
+
+        for course in courses:
+            [context['modules'].append(module) for module in course.modules.all()]
+
+        context['modules'] = set(context['modules'])
+
+        print context
 
         return context
