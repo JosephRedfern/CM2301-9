@@ -12,6 +12,15 @@ def faqs(request, module_id):
     values['title'] = values['module'].module_code+" FAQ"
     values['lectures'] = values['module'].lecture_set.all
     values['faqs'] = FAQQuestion.objects.filter(module=values['module'])
+    values['modules'] = []
+
+    courses = request.user.course.all()
+
+    for course in courses:
+        [values['modules'].append(module) for module in course.modules.all()]
+
+    values['modules'] = set(values['modules'])
+
     return render(request, 'faqs.html', values)
 
 class CreateFAQQuestionView(CreateView):
