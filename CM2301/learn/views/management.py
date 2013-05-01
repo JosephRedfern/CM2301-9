@@ -3,6 +3,7 @@ from learn.models import *
 from django.contrib.auth.views import login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from learn.forms import *
 from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 from django.contrib.auth.hashers import make_password
@@ -248,3 +249,60 @@ class LectureListView(ListView):
         print context
 
         return context
+
+class ManagementCourseworkTaskListView(ListView):
+    model = CourseworkTask
+    template_name = "management_coursework_tasks.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ManagementCourseworkTaskListView, self).get_context_data(**kwargs)
+        context['management'] = True
+        context['title'] = "Coursework Task List"
+        context['courseworktask_list'] = CourseworkTask.objects.filter(module=self.kwargs['pk'])
+        print dir(self)
+
+        return context
+
+
+@staff_member_required
+def mark_coursework(request, module_id, task_id, submission_id):
+    if request.method == "POST":
+        form = MarkCourseworkForm(data=request.POST)
+
+        if form.is_valid():
+            score = form.cleaned_data['score']
+            submission = CourseworkSubmission.objects.get(pk=submission_id)
+            submission.score = score
+            submission.save()
+            messages.add_message(request, messages.INFO, 'Coursework marked')
+
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid mark specified')
+
+        return redirect("/management/modules/"+str(module_id)+"/coursework/"+str(task_id))
+
+    else:
+        form = MarkCourseworkForm()
+        values = {}
+        values['form'] = form
+        values['module_id'] = module_id
+        values['task_id'] = task_id
+        values['submission_id'] = submission_id
+        values['current_mark'] = CourseworkSubmission.objects.get(pk=submission_id).score
+
+        return render(request, "management_coursework_mark.html", values)
+
+
+class ManagementCourseworkSubmissionListView(ListView):
+    model = CourseworkSubmission
+    template_name = "management_coursework_submissions.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ManagementCourseworkSubmissionListView, self).get_context_data(**kwargs)
+        context['management'] = True
+        context['title'] = "Coursework Submissions"
+        context['courseworksubmission_list'] = CourseworkSubmission.objects.filter(coursework_task=CourseworkTask.objects.get(pk=self.kwargs['pk']))
+        print dir(self)
+
+        return context
+

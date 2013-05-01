@@ -45,3 +45,6 @@ class CourseworkSubmissionForm(forms.Form):
     submission = forms.FileField(
         label='Select a file',
         )
+
+class MarkCourseworkForm(forms.Form):
+    score = forms.IntegerField(min_value=0, max_value=100)

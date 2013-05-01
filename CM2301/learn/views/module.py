@@ -19,6 +19,7 @@ def module(request, module_id):
     values['modules'] = set(values['modules'])
 
     values['title'] = "Module %s"%(values['module'].title)
+    values['coursework'] = CourseworkTask.objects.filter(module=values["module"])
     values['lectures'] = Lecture.objects.filter(module=module_id)
     values['tests'] = Test.objects.filter(lecture__in=[x.pk for x in values['lectures']])
     values['attachments'] = Attachment.objects.filter(object_id=module_id)

@@ -1,0 +1,29 @@
+{% extends "base_navbar.html" %}
+
+{% block content %}
+
+
+<div class="row-fluid">
+    <div class="well">
+        <h2>LCARS - Coursework Tasks</h2>
+    </div>
+    {% if courseworktask_list %}
+    <table class="table table-striped">
+        <tr>
+            <th>Task Title</th>
+            <th>Date Set</th>
+            <th>Date Due</th>
+            <th>View Submissions</th>
+        </tr>
+        {% for courseworktask in courseworktask_list %}
+        <tr>
+            <td>{{ courseworktask.title }}</td>
+            <td>{{ courseworktask.start_date }}</td>
+            <td>{{ courseworktask.due_date }}</td>
+            <td><a href="/management/modules/{{courseworktask.module.id}}/coursework/{{courseworktask.id}}"><i class="icon-list-alt"></i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

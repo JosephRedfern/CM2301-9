@@ -37,9 +37,10 @@
     {% if course %}
     <table class="table table-striped">
         <tr>
-            <th>Course Title</th>
-            <th>Course Code</th>
-            <th>Course Description</th>
+            <th>Module Title</th>
+            <th>Module Code</th>
+            <th>Module Description</th>
+            <th>Mark Coursework</th>
             <th>Remove</th>
         </tr>
         {% for module in course.modules.all %}
@@ -47,6 +48,7 @@
             <td>{{ module.title }}</td>
             <td>{{ module.module_code }}</td>
             <td>{{ module.description }}</td>
+            <td><a href="/management/modules/{{module.id}}/coursework"><i class="icon-book"></i></a></td>
             <td><a href="/management/courses/{{course.id}}/details/unassociate/{{module.id}}  "><i class="icon-remove"></i></a></td>
         </tr>
         {% endfor %}
