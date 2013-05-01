@@ -892,7 +892,7 @@ class CourseworkSubmission(Base):
     ##The User submitting the courseworkFi
     student = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The coursework attachments/uploads
-    attachments = models.FileField(upload_to='assets', blank=True, null=True)
+    attachments = models.FileField(upload_to="cw", blank=True, null=True)
     ##The related CourseworkTask
     coursework_task = models.ForeignKey(CourseworkTask)
     ##The mark recieved by the student

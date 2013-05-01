@@ -38,6 +38,10 @@ urlpatterns = patterns('',
     url(r'^management/modules/(?P<pk>%s)/delete$' % (uuid), login_required(ModuleDeleteView.as_view())),
     url(r'^management/modules/(?P<pk>%s)/lectures' % (uuid), login_required(LectureListView.as_view())),
 
+    url(r'management/modules/(?P<pk>%s)/coursework/$' % (uuid), login_required(ManagementCourseworkTaskListView.as_view())),
+    url(r'management/modules/(?P<module>%s)/coursework/(?P<pk>%s)$' % (uuid, uuid), login_required(ManagementCourseworkSubmissionListView.as_view())),
+    url(r'management/modules/(?P<module_id>%s)/coursework/(?P<task_id>%s)/mark/(?P<submission_id>%s)$' % (uuid, uuid, uuid), 'learn.views.management.mark_coursework'),
+
 
     #Announcement Stuff
     url(r'^announcement/create/$', login_required(CreateAnnouncementView.as_view())),
