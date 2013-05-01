@@ -27,7 +27,7 @@
 
         <div class="span3">
             <h2>FAQ</h2>
-            <p>Click here to view {{ module.title }}</p>
+            <p>Click here to view the FAQ for {{ module.title }}</p>
             <p><a class="btn" href="/modules/{{module.id}}/faqs">View FAQs &raquo;</a></p>
             </div>
 
@@ -37,6 +37,16 @@
             <ul>
                 {% for link in links %}
                 <li><a href="{{link.link}}">{{link.title}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if coursework %}
+        <div class="span3">
+            <h2>Coursework </h2>
+            <ul>
+                {% for coursework in courseworks %}
+                <li><a href="/modules/{{module.id}}/coursework/{{coursework.id}}">{{coursework.title}}</a></li>
                 {% endfor %}
             </ul>
         </div>

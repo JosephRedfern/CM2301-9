@@ -70,7 +70,6 @@ def test(request, test_id):
                 print question.id
 
                 if form.data[str(question.id)]:
-                    print "testing"
                     result = Result()
                     result.test_instance = test_instance
                     result.question = Question.objects.get(pk=question.id)

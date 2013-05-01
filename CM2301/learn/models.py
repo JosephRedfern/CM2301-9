@@ -855,13 +855,16 @@ class CourseworkTask(Base):
     ##The coursework instructions
     content = models.TextField()
     ##Any attachments associated with the coursework
-    attachments = models.ManyToManyField(Attachment)
+    attachments = models.ManyToManyField(Attachment, blank=True, null=True, editable=False)
     ##The module the coursework belongs to
-    module = models.ManyToManyField(Module)
+    module = models.ForeignKey(Module, editable=False)
     ##The coursework start date
-    start_date = models.DateTimeField()
+    start_date = models.DateTimeField(auto_now_add=True)
     ##The coursework submission date
     due_date = models.DateTimeField()
+
+    def get_absolute_url(self):
+        return "/modules/"+str(self.module.id)+"/coursework"
 
     def __unicode__(self):
         return "Coursework Task: "+self.title
@@ -886,12 +889,12 @@ class CourseworkSubmission(Base):
     A CourseworkSubmission object contains details of uploaded files and
     CourseworkTask.
     """
-    ##The User submitting the coursework
+    ##The User submitting the courseworkFi
     student = models.ForeignKey(settings.AUTH_USER_MODEL)
     ##The coursework attachments/uploads
-    attachments = models.ManyToManyField(Attachment)
+    attachments = models.FileField(upload_to='assets', blank=True, null=True)
     ##The related CourseworkTask
-    courswork_task = models.ForeignKey(CourseworkTask)
+    coursework_task = models.ForeignKey(CourseworkTask)
     ##The mark recieved by the student
     score = models.FloatField()
     ##Whether the CourseworkSubmission has been marked
@@ -914,7 +917,7 @@ class CourseworkSubmission(Base):
         return True
 
     def __unicode__(self):
-        return 
+        return self.coursework_task.title
 
 class ProgrammingSubmission(CourseworkSubmission):
     """
