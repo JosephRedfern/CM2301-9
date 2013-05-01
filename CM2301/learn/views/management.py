@@ -128,7 +128,7 @@ class UserCreateView(CreateView):
     def form_valid(self, form):
         user = form.save(commit=False)
         user.password = make_password(form.cleaned_data['password'])
-        return super(UserUpdateView, self).form_valid(form)
+        return super(UserCreateView, self).form_valid(form)
 
 class CourseListView(ListView):
     model = Course
