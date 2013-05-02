@@ -50,9 +50,6 @@ class AttachmentTestCase(TestCase):
     def test_compress_revisions(self, method='zip'):
         """
         """
-    def test_get_latest_revision(self):
-        self.assertEqual(self.file1.test_get_latest_revision(), self.revision_set.all()[0])
-        self.assertEqual(self.file2.test_get_latest_revision(), self.revision_set.all()[0])
 
 class RevisionTestCase(TestCase):
     def setUp(self):
@@ -155,20 +152,38 @@ class LectureTestCase(TestCase):
 #Testing/Marking Classes
 ################################################################
 
-
-class UserTestCase(TestCase):
+class TestTestCase(TestCase):
     def setUp(self):
         """
         """
-    def test_add_user_field(self, UserField):
+    def test_get_random_questions(self):
         """
         """
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+
+class TestInstanceTestCase(TestCase):
+    def setUp(self):
+        self.testInstance1 = TestInstance()
+
+    def test_calc_result(self):
         """
-        Tests that 1 + 1 always equals 2.
         """
-        self.assertEqual(1 + 1, 2)
+    
+    def test_get_absolute_url(self):
+        """
+        """
+
+################################################################
+#Coursework Setting/Marking Classes
+################################################################
+
+class CourseworkTaskTestCase(TestCase):
+    def setUp(self):
+        """
+        """
+
+    def test_get_absolute_url(self):
+        """
+        """
 
 class CourseworkSubmissionTestCase(TestCase):
     def setUp(self):
@@ -180,20 +195,17 @@ class CourseworkSubmissionTestCase(TestCase):
     def test_set_unmarked(self):
         """
         """
-class TestInstanceTestCase(TestCase):
-    def setUp(self):
-        self.testInstance1 = TestInstance()
 
-    def test_calc_result(self):
+class SimpleTest(TestCase):
+    def test_basic_addition(self):
         """
+        Tests that 1 + 1 always equals 2.
         """
-class TestTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_random_questions(self):
-        """
-        """
+        self.assertEqual(1 + 1, 2)
+
+
+
+
 
 
 
