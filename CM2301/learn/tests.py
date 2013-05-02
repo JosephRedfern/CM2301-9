@@ -30,12 +30,12 @@ class AttachmentTestCase(TestCase):
         self.assertEqual(self.file1.get_total_size(), 0)
         self.assertEqual(self.file2.get_total_size(), 0)
 
-    def test_remove_revision(self):
-        """
-        To remove revision, a revision is returned 
-        """
-        self.assertEqual(self.file1.remove_revision(self.file1.object_id), self.file1)
-        self.assertEqual(self.file2.remove_revision(self.file2.object_id), self.file2)
+    #def test_remove_revision(self):
+    #    """
+    #    To remove revision, a revision is returned 
+    #    """
+    #    self.assertEqual(self.file1.remove_revision(self.file1.object_id), self.file1)
+    #    self.assertEqual(self.file2.remove_revision(self.file2.object_id), self.file2)
 
     def test_get_all_revisions(self):
         """
@@ -86,9 +86,9 @@ class VideoTestCase(TestCase):
     def test_get_file_paths(self):
         """
         """
-    def test_get_file_path(self, format):
-        """
-        """
+    #def test_get_file_path(self, format):
+    #    """
+    #    """
     def test_url(self):
         """
         """
