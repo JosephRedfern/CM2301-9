@@ -11,11 +11,10 @@ class CourseworkListView(ListView):
     template_name = "module_coursework.html"
 
     def get_context_data(self, **kwargs):
-        module = Module.objects.get(pk=self.kwargs['pk'])
+        current_module = Module.objects.get(pk=self.kwargs['pk'])
         context = super(CourseworkListView, self).get_context_data(**kwargs)
-        context['coursework_list'] = CourseworkTask.objects.filter(module=module)
         context['modules'] = []
-        context['module'] = module
+        context['module'] = current_module
 
         courses = self.request.user.course.all()
 
@@ -24,10 +23,13 @@ class CourseworkListView(ListView):
 
         context['modules'] = set(context['modules'])
 
-        courseworktasks = CourseworkTask.objects.filter(module=module)
+        courseworktasks = CourseworkTask.objects.filter(module=current_module)
 
         context['tasks_with_results'] = []
         for task in courseworktasks:
+
+            print task.module
+
             try:
                 context['tasks_with_results'].append({'task': task, 'score':task.courseworksubmission_set.get(student=self.request.user).score})
             except ObjectDoesNotExist:
