@@ -15,6 +15,7 @@ class CourseworkListView(ListView):
         context = super(CourseworkListView, self).get_context_data(**kwargs)
         context['modules'] = []
         context['module'] = current_module
+        context['title'] = current_module.title + " - Coursework Tasks"
 
         courses = self.request.user.course.all()
 
