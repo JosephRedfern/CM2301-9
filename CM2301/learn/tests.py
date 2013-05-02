@@ -18,19 +18,16 @@ class AttachmentTestCase(TestCase):
     """
 
     def setUp(self):
-            self.file1 = Attachment(file_name="file1", description="A file", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
-            self.file2 = Attachment(file_name="file2", description="Another File", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
-
-            self.rev1 = Revision(filename="file1")
-
-            revision_uuid="d636abe0-b293-11e2-9e96-0800200c9a66"
-
-    def test_get_total_size(self):
-        """
-        The File Size is determined
-        """
-        self.assertEqual(self.file1.get_total_size(), 0)
-        self.assertEqual(self.file2.get_total_size(), 0)
+            ##self.file1 = Attachment(file_name="file1", description="A file", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
+            ##self.file2 = Attachment(file_name="file2", description="Another File", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
+            """
+            """
+    ##def test_get_total_size(self):
+    ##    """
+    ##    The File Size is determined
+    ##    """
+        ##self.assertEqual(self.file1.get_total_size(), 0)
+        ##self.assertEqual(self.file2.get_total_size(), 0)
 
     def test_remove_revision(self):
         """
@@ -44,10 +41,10 @@ class AttachmentTestCase(TestCase):
             ???
         """
 
-    def test_get_latest_revision(self):
-        """
-        """
-        self.assertEqual(self.file1.get_latest_revision(), self.rev1)
+    ##def test_get_latest_revision(self):
+    ##    """
+    ##    """
+    ##    self.assertEqual(self.file1.get_latest_revision(), self.rev1)
 
     def test_get_absolute_url(self):
         """
@@ -61,15 +58,19 @@ class AttachmentTestCase(TestCase):
 class RevisionTestCase(TestCase):
     def setUp(self):
 
-        self.file1 = Attachment(file_name="file1", description="A file")
-        self.file2 = Attachment(file_name="file2", description="Another File")
+        ##self.file1 = Attachment(file_name="file1", description="A file")
+        ##self.file2 = Attachment(file_name="file2", description="Another File")
 
-        self.revision1 = Revision(version="1", )
+        #self.revision1 = Revision(version="1", )
         ##self.revision2 = 
-
+        self.revision1 = Attachment(file_name="rev123")
+        """
+        """
     def test_filename(self):
-        """
-        """
+
+            self.assertEqual(self.revision1.filename(), "rev123")
+
+
     def test_get_file(self):
         """
         """
@@ -77,8 +78,7 @@ class RevisionTestCase(TestCase):
         """
         """
     def test_get_version_filename(self):
-        """
-        """
+        self.assertEqual(self.revision1.filename(), "rev123")
         ##self.assertEqual(self.revision1.get_version_filename(), str(1) + "_" os.path.basename(self.file.name))
 
 ################################################################
@@ -169,7 +169,7 @@ class TestTestCase(TestCase):
 
 class TestInstanceTestCase(TestCase):
     def setUp(self):
-        self.testInstance1 = TestInstance()
+        self.testInstance1 = TestInstance(test_score)
 
     def test_calc_result(self):
         """
