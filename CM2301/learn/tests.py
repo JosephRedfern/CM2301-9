@@ -18,42 +18,16 @@ class AttachmentTestCase(TestCase):
     """
 
     def setUp(self):
-            ##self.file1 = Attachment(file_name="file1", description="A file", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
-            ##self.file2 = Attachment(file_name="file2", description="Another File", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
+            self.file1 = Attachment(file_name="file1", description="A file", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
+            self.file2 = Attachment(file_name="file2", description="Another File", object_id="d636abe0-b293-11e2-9e96-0800200c9a66")
             """
             """
-    ##def test_get_total_size(self):
-    ##    """
-    ##    The File Size is determined
-    ##    """
-        ##self.assertEqual(self.file1.get_total_size(), 0)
-        ##self.assertEqual(self.file2.get_total_size(), 0)
-
-    def test_remove_revision(self):
+    def test_get_total_size(self):
         """
-        To remove revision, a revision is returned 
+        The File Size is determined
         """
-        #self.assertEqual(self.file1.remove_revision(self.file1.object_id), self.file1)
-        #self.assertEqual(self.file2.remove_revision(self.file2.object_id), self.file2)
-
-    def test_get_all_revisions(self):
-        """
-            ???
-        """
-
-    ##def test_get_latest_revision(self):
-    ##    """
-    ##    """
-    ##    self.assertEqual(self.file1.get_latest_revision(), self.rev1)
-
-    def test_get_absolute_url(self):
-        """
-            Need to understand reverse
-        """
-
-    def test_compress_revisions(self, method='zip'):
-        """
-        """
+        self.assertEqual(self.file1.get_total_size(), 0)
+        self.assertEqual(self.file2.get_total_size(), 0)
 
 class RevisionTestCase(TestCase):
     def setUp(self):
@@ -64,96 +38,22 @@ class RevisionTestCase(TestCase):
         #self.revision1 = Revision(version="1", )
         ##self.revision2 = 
         self.revision1 = Attachment(file_name="rev123")
+        self.revision2 = Attachment(file_name="rev1234")
         """
         """
     def test_filename(self):
 
-            self.assertEqual(self.revision1.filename(), "rev123")
-
+            self.assertEqual(self.revision1.file_name, "rev123")
+            self.assertEqual(self.revision2.file_name, "rev1234")
 
     def test_get_file(self):
         """
         """
-    def test_get_absolute_url(self):
-        """
-        """
+
     def test_get_version_filename(self):
-        self.assertEqual(self.revision1.filename(), "rev123")
+        self.assertEqual(self.revision1.file_name, "rev123")
         ##self.assertEqual(self.revision1.get_version_filename(), str(1) + "_" os.path.basename(self.file.name))
 
-################################################################
-#Lecturing Classes
-################################################################
-
-class VideoTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-
-    def test_get_file_paths(self):
-        """
-        """
-    #def test_get_file_path(self, format):
-    #    """
-    #    """
-    def test_url(self):
-        """
-        """
-    def test_convert(self):
-        """
-        """
-    def test_save(self, *args, **kwargs):
-        """
-        """
-
-class VideoThumbnailTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-
-class VideoFormatTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-
-    def test_get_absolute_url(self):
-        """
-        """
-
-class FAQQuestionTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-
-class FAQAnswerTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-
-class ModuleTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
-
-class LectureTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-    def test_get_absolute_url(self):
-        """
-        """
 
 ################################################################
 #Testing/Marking Classes
@@ -163,53 +63,45 @@ class TestTestCase(TestCase):
     def setUp(self):
         """
         """
+        self.question = Question.objects.get(content="Question1")
+        self.test1 = Test(title="MyTest", questions=self.question)
+
     def test_get_random_questions(self):
         """
         """
+        self.assertEqual(self.test1.get_random_questions(), "Question1")
 
 class TestInstanceTestCase(TestCase):
     def setUp(self):
-        self.testInstance1 = TestInstance(test_score)
+        self.testInstance1 = TestInstance(test_score="100")
 
     def test_calc_result(self):
         """
         """
-    
-    def test_get_absolute_url(self):
-        """
-        """
+        self.assertEqual(self.testInstance1.test_score, "100")
 
 ################################################################
 #Coursework Setting/Marking Classes
 ################################################################
 
-class CourseworkTaskTestCase(TestCase):
-    def setUp(self):
-        """
-        """
-
-    def test_get_absolute_url(self):
-        """
-        """
-
 class CourseworkSubmissionTestCase(TestCase):
     def setUp(self):
         """
         """
+        self.user = User.objects.get(username="geraint")
+        self.coursework1 = CourseworkSubmission(marked=True, student=self.user)
+        self.coursework2 = CourseworkSubmission(marked=True, student=self.user)
+
     def test_set_marked(self):
         """
         """
+        self.assertEqual(self.coursework1.set_marked(), True)
+        self.assertEqual(self.coursework2.set_marked(), True)
     def test_set_unmarked(self):
         """
         """
-
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
-
+        self.assertEqual(self.coursework1.set_marked(), True)
+        self.assertEqual(self.coursework2.set_marked(), True)
 
 
 
