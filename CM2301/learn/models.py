@@ -366,7 +366,8 @@ class Video(Base):
     uploaded_video = models.FileField(upload_to='videos/original/')
     conversion_progress = models.FloatField(null=True, blank=True)
     converting = models.BooleanField(default=False)
-    
+
+
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
     
