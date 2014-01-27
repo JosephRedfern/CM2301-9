@@ -11,6 +11,4 @@ Requirements
 ------------
 * [Django 1.5](https://www.djangoproject.com/download/)
 * [UUIDField](https://github.com/dcramer/django-uuidfield) - "pip install django-uuidfield" should do it.
-* [psutil](http://code.google.com/p/psutil/) (server only)
 * [ffmpeg](http://ffmpeg.mplayerhq.hu)
-* [Python Video Converter](https://github.com/senko/python-video-converter)
