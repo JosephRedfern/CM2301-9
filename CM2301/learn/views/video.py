@@ -48,7 +48,7 @@ def submit(request, video_id):
         
         if form.is_valid():
             form.save()
-            return HttpResponse("MOTHER FUCKER IT UPLOADED")
+            return HttpResponse("Upload Successful!")
 
 @login_required
 def serve(request, video_id):
